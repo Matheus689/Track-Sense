@@ -16,21 +16,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
+            padding: 0px 6%;
             background-color: white;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .logo {
-            height: 50px; /* Espaço para sua logo */
-            width: 150px; 
-            /* background-image: url('caminho_da_sua_logo.png'); */
-            background-size: contain;
-            background-repeat: no-repeat;
+        nav {
             display: flex;
             align-items: center;
-            font-weight: bold;
-            color: #1d3c4c;
+        }
+
+        .logo {
+            height: 90px;
+            width: 90%; 
+            max-width: 400px; 
+            background-image: url('../Assets/img/logo.png'); 
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: left center;
         }
 
         nav a {
@@ -73,7 +76,7 @@
 
         /* Lado Direito - Calculadora */
         .calculator-card {
-            background-color: #1d3c4c; /* Cor base solicitada */
+            background-color: #1d3c4c; 
             width: 450px;
             padding: 40px;
             border-radius: 15px;
@@ -133,12 +136,4 @@
             background-color: rgba(255, 255, 255, 0.1);
             font-size: 0.9rem;
             line-height: 1.5;
-        }
-
-        /* Detalhe Visual Inferior */
-        .wave-bg {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            z-index: -1;
         }

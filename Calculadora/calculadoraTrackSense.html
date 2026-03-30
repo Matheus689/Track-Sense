@@ -10,7 +10,7 @@
 
     <header>
         <div class="logo">
-            <span>LOGO</span> 
+            <span></span> 
         </div>
         <nav>
             <a href="#">Sobre</a>
@@ -55,10 +55,6 @@
         </div>
     </main>
 
-    <svg class="wave-bg" width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 100C50 50 150 150 300 100V200H0V100Z" fill="#1d3c4c" fill-opacity="0.8"/>
-        <path d="M0 150C80 120 180 180 300 140V200H0V150Z" fill="#4687A9"/>
-    </svg>
 
     
     <script>
@@ -83,7 +79,7 @@
 
             divMensagem.innerHTML = `
                 <b>Produção mensal:</b> R$ ${valorProducao.toLocaleString('pt-BR')}<br>
-                <b>Perda por erro (2%):</b> R$ ${perdaTotal.toLocaleString('pt-BR')}<br>
+                <b>Perda por total (2%):</b> R$ ${perdaTotal.toLocaleString('pt-BR')}<br>
                 <hr style="margin: 10px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.2)">
                 <b>Economia potencial:</b> R$ ${economiaSistema.toLocaleString('pt-BR')}
             `;
