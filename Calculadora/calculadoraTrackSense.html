@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSense - Calculadora Financeira</title>
+        <link rel="stylesheet" href="stylesCalculadora.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <span></span> 
+        </div>
+        <nav>
+            <a href="#">Sobre</a>
+            <a href="#">Dashboards</a>
+            <a href="#">Calculadora Financeira</a>
+            <a href="#">Ocorrências</a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="content-left">
+            <h1>TrackSense</h1>
+            <p>Simule as perdas produtivas causadas por erros de contagem e visualize o prejuízo financeiro da operação em poucos segundos.</p>
+        </div>
+
+        <div class="calculator-card">
+            <h2>Calculadora de Perdas</h2>
+            
+            <div class="input-group">
+                <label>Produção (lata/min)</label>
+                <input type="number" id="inputProducao" placeholder="Ex: 500">
+            </div>
+
+            <div class="input-group">
+                <label>Lucro por Lata (R$)</label>
+                <input type="number" id="inputPrecoLata" placeholder="Ex: 0.50">
+            </div>
+
+            <div class="input-group">
+                <label>Quantidade de funcionários</label>
+                <input type="number" id="inputFuncionarios" placeholder="Ex: 50">
+            </div>
+
+            <div class="input-group">
+                <label>Quantidade de máquinas</label>
+                <input type="number" id="inputMaquinas" placeholder="Ex: 500">
+            </div>
+
+            <button onclick="analisarEconomia()">Calcular</button>
+
+            <div id="divMensagem"></div>
+        </div>
+    </main>
+
+
+    
+    <script>
+        function analisarEconomia() {
+            let producao = Number(inputProducao.value)
+            let precoLata = Number(inputPrecoLata.value)
+            let quantFuncionarios = Number(inputFuncionarios.value)
+            let quantMaquinas = Number(inputMaquinas.value)
+            let salarioFuncionario = 2000 // Fonte: Randstad - https://www.randstad.com.br/guia-carreira/procura-de-emprego/vagas-em-logistica/#:~:text=Esses%20valores%20s%C3%A3o%20refer%C3%AAncias%20de%20mercado%20e,da%20localidade%20e%20do%20porte%20da%20empresa.
+
+            // Cálculos 
+            
+            let producaoMensal = producao * 60 * 8 * 22 // produção mensal
+            let perdaInventario = producaoMensal * 0.014 * precoLata // perda de 1,4% das vendas no varejo, divergência entre estoque físico e sistema, fonte: National Retail Federation
+            let valorProducao = producaoMensal * precoLata // valor da produção mensal
+            let perdaErro = (producao * 60 * 8 * 22) * 0.02 * precoLata // Geralmente há 2% de erro nas contagens, fonte:
+            let perdaSalario = salarioFuncionario * quantFuncionarios * quantMaquinas // prejuízo por salario de operadores
+            let perdaTotal = perdaInventario + perdaErro + perdaSalario // soma da perda total (prejuízo)
+            
+            // Calculo da economia
+            let economiaSistema = perdaTotal - 5000
+
+            divMensagem.innerHTML = `
+                <b>Produção mensal:</b> R$ ${valorProducao.toLocaleString('pt-BR')}<br>
+                <b>Perda por total (2%):</b> R$ ${perdaTotal.toLocaleString('pt-BR')}<br>
+                <hr style="margin: 10px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.2)">
+                <b>Economia potencial:</b> R$ ${economiaSistema.toLocaleString('pt-BR')}
+            `;
+        }
+    </script>
+</body>
+</html>

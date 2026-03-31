@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora financeira</title>
+</head>
+<body>
+  <!-- Segundo a IBM:
+Má qualidade de dados custa às empresas dos EUA cerca de US$ 3,1 trilhões por ano.
+Erros de contagem são um tipo clássico de “data quality issue”.
+
+Segundo a APICS:
+Empresas de classe mundial mantêm ≥ 99% de acurácia de inventário
+Um erro de 2% já é considerado alto para operações controladas.
+Calcular o salario do funcionario que foi dispensado por conta da automação 
+input salario, numero de funcionarios contando na case, numero de maquinas
+como fazer a conta do erro de sensor;
+
+-->
+        <h1>Calculadora financeira</h1>
+
+        Digite a produção (lata/min) <input type="text" id="inputProducao">
+        <br>
+        <br>
+        Digite o preço da lata de milho (Lucro/lata) <input type="text" id="inputPrecoLata">
+        <br>
+        <br>
+        Digite o salário do funcionário de contagem <input type="text" id="inputSalario">
+        <button onclick="analisarEconomia()">Analisar economia</button>
+        <div id="divMensagem"></div>
+</body>
+</html>
+<script>
+            function analisarEconomia (){
+                //-	erro = 2% por h
+                // Horas por dia = 8
+                //-	Dias por mês = 22
+                //-	Custo do sistema = 5000 valor ainda a definir
+                //-	dinheiro perdido por erro: produção/mes * erro * preco 
+                //-	dinheiro perdido por parada no mes = latas/min * parada * preço* 22 dias
+
+// 
+// custoReconferencia = horasReconferenciaMes * custoHoraEquipe -- Processos manuais de reconciliação podem consumir até 25% do tempo da equipe de armazém. fonte: APICS
+
+
+                let producao = inputProducao.value
+                let precoLata = inputPrecoLata.value             
+                let producaoMensal = producao * 60 * 8 * 22
+                let valorProducao = producaoMensal * precoLata
+                let perdaErro = producao * 60 * precoLata / 100 * 2 * 8 * 22
+                let perdaTotal = perdaErro // + perdaParada
+                let economiaSistema = perdaTotal - 5000
+
+                divMensagem.innerHTML = `-	Produção mensal: R$ ${producaoMensal.toLocaleString('pt-BR')} <br>
+-	Perda por erro: R$ ${perdaErro.toLocaleString('pt-BR')} <br>
+-	Perda por parada: R$ ${perdaParada.toLocaleString('pt-BR')} <br>
+-	Perda total: R$ ${perdaTotal.toLocaleString('pt-BR')} <br>
+-	Economia com sistema: R$ ${economiaSistema.toLocaleString('pt-BR')}
+`
+            }
+</script>
