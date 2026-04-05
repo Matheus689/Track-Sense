@@ -1,11 +1,1 @@
-# PI-Sprint2
-
-  <!-- conteúdo específico do header e footer -->
-{% extends "base.html" %}
-
-  <!-- titulo -->
-{% block title %}TrackSense | Home{% endblock %}
-
-{% block content %}
-  <!-- conteúdo específico desta página -->
-{% endblock %}
+Módulo de contagem e ritmo de milho em conserva para máquinas legadas
