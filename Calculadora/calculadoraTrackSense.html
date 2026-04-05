@@ -53,11 +53,73 @@
 
             <div id="divMensagem"></div>
         </div>
+        <!-- CARDS -->
+<div id="resultadoContainer" class="resultado-container">
+
+    <div class="result-cards">
+        <div class="card">
+            <h3>📦 Produção</h3>
+            <p id="resProducao">-</p>
+        </div>
+
+        <div class="card">
+            <h3>⚠️ Perda erro</h3>
+            <p id="resErro">-</p>
+        </div>
+
+        <div class="card">
+            <h3>💸 Perda total</h3>
+            <p id="resTotal">-</p>
+        </div>
+
+        <div class="card destaque">
+            <h3>💰 Economia</h3>
+            <p id="resEconomia">-</p>
+        </div>
+    </div>
+
+    <div id="analise"></div>
+    <div>
+        <h3>
+            <br>
+            Valores levados em consideração: 
+            <br>
+            <br>
+            <li>
+            2000 R$ de salario, segundo Randstad
+             </li>
+            <br>
+            <li>
+            Perda de 1,4% das vendas no varejo, divergência entre estoque físico e sistema, segundo National Retail Federation
+            </li>
+            <br>
+            <li>
+            Média de 2% de erro na contagem de case packers, segundo Fibre King
+           </li>
+        </h3>
+    </div>
+    
+
+</div>
     </main>
 
 
-    
-    <script>
+</body>
+</html>
+      <!-- Segundo a IBM:
+Má qualidade de dados custa às empresas dos EUA cerca de US$ 3,1 trilhões por ano.
+Erros de contagem são um tipo clássico de “data quality issue”.
+
+Segundo a APICS:
+Empresas de classe mundial mantêm ≥ 99% de acurácia de inventário
+Um erro de 2% já é considerado alto para operações controladas.
+Calcular o salario do funcionario que foi dispensado por conta da automação 
+input salario, numero de funcionarios contando na case, numero de maquinas
+como fazer a conta do erro de sensor;
+
+-->
+<script>
+
         function analisarEconomia() {
             let producao = Number(inputProducao.value)
             let precoLata = Number(inputPrecoLata.value)
@@ -70,20 +132,29 @@
             let producaoMensal = producao * 60 * 8 * 22 // produção mensal
             let perdaInventario = producaoMensal * 0.014 * precoLata // perda de 1,4% das vendas no varejo, divergência entre estoque físico e sistema, fonte: National Retail Federation
             let valorProducao = producaoMensal * precoLata // valor da produção mensal
-            let perdaErro = (producao * 60 * 8 * 22) * 0.02 * precoLata // Geralmente há 2% de erro nas contagens, fonte:
+            let perdaErro = (producao * 60 * 8 * 22) * 0.02 * precoLata // Geralmente há 2% de erro nas contagens, fonte: https://www.fibreking.com/single-post/2019/06/26/Need-a-case-packer-for-your-canning-line-A-guide-on-what-to-look-for
             let perdaSalario = salarioFuncionario * quantFuncionarios * quantMaquinas // prejuízo por salario de operadores
             let perdaTotal = perdaInventario + perdaErro + perdaSalario // soma da perda total (prejuízo)
             
             // Calculo da economia
             let economiaSistema = perdaTotal - 5000
 
-            divMensagem.innerHTML = `
-                <b>Produção mensal:</b> R$ ${valorProducao.toLocaleString('pt-BR')}<br>
-                <b>Perda por total (2%):</b> R$ ${perdaTotal.toLocaleString('pt-BR')}<br>
-                <hr style="margin: 10px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.2)">
-                <b>Economia potencial:</b> R$ ${economiaSistema.toLocaleString('pt-BR')}
-            `;
+            // RESULTADOS
+            resultadoContainer.classList.add("ativo")
+
+            // CARDS
+            resProducao.innerHTML = producaoMensal.toLocaleString('pt-BR') + " latas"
+            resErro.innerHTML = "R$ " + perdaErro.toLocaleString('pt-BR')
+            resTotal.innerHTML = "R$ " + perdaTotal.toLocaleString('pt-BR')
+            resEconomia.innerHTML = "R$ " + economiaSistema.toLocaleString('pt-BR')
+
+            // ANÁLISE
+            if (economiaSistema > 0) {
+                analise.innerHTML = "✅ O sistema reduz significativamente as perdas."
+            } else {
+                analise.innerHTML = "⚠️ O sistema ainda não se paga neste cenário."
+            }
         }
+
+            
     </script>
-</body>
-</html>
