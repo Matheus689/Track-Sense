@@ -6,8 +6,7 @@ USE trackSense;
 CREATE TABLE empresa( -- INSERIR DADOS
 idEmpresa INT AUTO_INCREMENT PRIMARY KEY ,
 cnpj CHAR(14) UNIQUE ,
-nome VARCHAR(45),
-telefone CHAR(13) 
+nome VARCHAR(45)
 ) AUTO_INCREMENT = 1000;
 
 CREATE TABLE usuario(
@@ -24,11 +23,21 @@ fkEmpresa INT,
     REFERENCES empresa(idEmpresa)
 ) AUTO_INCREMENT = 1000; 
 
+CREATE TABLE maquina(
+idMaquina INT PRIMARY KEY AUTO_INCREMENT,
+setor VARCHAR(45),
+numMaquina VARCHAR(10),
+fkEmpresaMaquina INT,
+	CONSTRAINT chFkEmpresaMaquina FOREIGN KEY (fkEmpresaMaquina) REFERENCES empresa(idEmpresa)
+)AUTO_INCREMENT = 1000;
+
 CREATE TABLE sensor( -- INSERIR DADOS
 idSensor INT PRIMARY KEY AUTO_INCREMENT,
 estadoSensor VARCHAR(10), 
 	CONSTRAINT chEstadoSensor CHECK(estadoSensor IN('Ativo', 'Inativo', 'Manutenção')),
-numSerie CHAR(8)
+numSerie CHAR(8),
+fkMaquina INT,
+	CONSTRAINT chFkMaquina FOREIGN KEY (fkMaquina) REFERENCES maquina(idMaquina)
 ) AUTO_INCREMENT = 1000;
 
 -- tabela sensor e tabela dados do sensor
@@ -42,20 +51,6 @@ fkSensor INT,
     REFERENCES sensor (idSensor)
 ) AUTO_INCREMENT = 1000;
 
-CREATE TABLE ocorrencia(
-idOcorrencia INT PRIMARY KEY AUTO_INCREMENT,
-fkSensorOcorrencia INT,
-	CONSTRAINT chFkSensorOcorrencia 
-    FOREIGN KEY (fkSensorOcorrencia) 
-    REFERENCES sensor (idSensor),
-motivo VARCHAR(300) NOT NULL,
-dtOcorrencia DATETIME NOT NULL,
-fkUsuarioOcorrencia INT,
-	CONSTRAINT chFkUsuarioOcorrencia 
-    FOREIGN KEY (fkUsuarioOcorrencia) 
-    REFERENCES usuario (idUsuario)
--- numSerie CHAR(8) pode usar para ligar na fkSensor?
-)AUTO_INCREMENT = 1000;
 
 -- EXEMPLO DE INSERÇÃO DE DADOS --
 INSERT INTO empresa (cnpj, nome,telefone) VALUES
