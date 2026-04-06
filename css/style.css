@@ -12,6 +12,7 @@ body {
 
 .header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     background-color: #f5f5f5;
     font-weight: bold;
@@ -19,7 +20,7 @@ body {
 }
 
 .header img {
-    width: 7%;
+    width: 5%;
     transition: 0.4s;
 }
 
@@ -27,32 +28,27 @@ body {
     transform: scale(1.2);
 }
 
-.header nav {
-    margin: auto;
-}
-
-
-.nav ul {
+.nav-bar ul {
     display: flex;
     gap: 45px;
     list-style: none;
     padding: 0;
-    margin: 0;
-    font-size: larger;
+    margin-right: 30px;
+    font-size: medium;
 }
 
-.nav a {
+.nav-bar a {
     text-decoration: none;
     color: #333;
     transition: 0.3s;
 }
 
-.nav a:hover {
-    transform: translateY(-5px);
+.nav-bar a:hover {
+    transform: translateX(20px);
     color: #007bff;
 }
 
-.nav a.active {
+.nav-bar a.active {
     color: #007bff;
     border-bottom: 2px solid #007bff;
     padding-bottom: 4px;
@@ -103,7 +99,7 @@ body {
 }
 
 
-.grafico {
+.graphic {
     width: 90%;
     max-width: 900px;
     background-color: #1e293b;
@@ -111,17 +107,17 @@ body {
     border-radius: 15px;
 }
 
-.grafico h2 {
+.graphic h2 {
     color: white;
     margin-bottom: 10px;
 }
 
-.grafico canvas {
-    width: 100% !important;
+.graphic canvas {
+    width: 100%;
 }
 
 
-.alerta {
+.alert {
     width: 90%;
     max-width: 900px;
     background-color: #1e293b;
@@ -152,9 +148,9 @@ body {
 
 
 .footer {
-    background-color: #f5f5f5;
-    font-size: small;
-    display: flex;
-    justify-content: center;
+  background: #111827;
+  color: white;
+  text-align: center;
+  padding: 10px;
 }
 

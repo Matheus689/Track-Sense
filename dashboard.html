@@ -12,7 +12,7 @@
 <body>
     <header class="header">
         <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
-        <nav class="nav">
+        <nav class="nav-bar">
             <ul>
                 <li><a href="#">Sobre</a></li>
                 <li><a class="active" href="#">Dashboards</a></li>
@@ -23,9 +23,9 @@
     </header>
 
     <main class="main">
-        <section class="grafico">
+        <section class="graphic">
             <h2>Produção Real vs Esperado (latas/min)</h2>
-            <canvas id="graficoLinha"></canvas>
+            <canvas id="graphicLine"></canvas>
         </section>
         <section class="boxes">
             <div class="box">
@@ -42,16 +42,15 @@
             </div>
         </section>
 
-        <section class="alerta">
-                <p id="alerta">Sistema operando normalmente</p>
+        <section class="alert">
+            <p id="alert">Sistema operando normalmente</p>
         </section>
 
         <button onclick="atualizarDashboard()" class="btn">Atualizar Dados</button>
-
     </main>
-    
+
     <footer class="footer">
-        <h2>TrackSense © 2026</h2>
+        <p>© 2026 TrackSense. Todos os direitos reservados.</p>
     </footer>
 </body>
 
@@ -97,7 +96,7 @@
     };
 
     const grafico = new Chart(
-        document.getElementById("graficoLinha"),
+        document.getElementById("graphicLine"),
         config
     );
 
@@ -113,10 +112,10 @@
             eficiencia + "% (meta: 90%)";
 
         if (eficiencia < 70) {
-            document.getElementById("alerta").innerText =
+            document.getElementById("alert").innerText =
                 "Produção abaixo do esperado!";
         } else {
-            document.getElementById("alerta").innerText =
+            document.getElementById("alert").innerText =
                 "Produção normal";
         }
 
