@@ -1,0 +1,160 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.header {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    font-weight: bold;
+    box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.137);
+}
+
+.header img {
+    width: 7%;
+    transition: 0.4s;
+}
+
+.header img:hover {
+    transform: scale(1.2);
+}
+
+.header nav {
+    margin: auto;
+}
+
+
+.nav ul {
+    display: flex;
+    gap: 45px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: larger;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #333;
+    transition: 0.3s;
+}
+
+.nav a:hover {
+    transform: translateY(-5px);
+    color: #007bff;
+}
+
+.nav a.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 4px;
+}
+
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    background-image: url(../assets/background-tracksense.png);
+    background-position: center;
+    background-size: cover;
+}
+
+
+.boxes {
+    display: flex;
+    width: 90%;
+    max-width: 900px;
+    gap: 20px;
+}
+
+.box {
+    flex: 1;
+    background-color: #1e293b;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+}
+
+.box h3 {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 5px;
+}
+
+.box p {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+.grafico {
+    width: 90%;
+    max-width: 900px;
+    background-color: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.grafico h2 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.grafico canvas {
+    width: 100% !important;
+}
+
+
+.alerta {
+    width: 90%;
+    max-width: 900px;
+    background-color: #1e293b;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.btn {
+    margin: 20px auto;
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    background-color: #0056b3;
+}
+
+
+.footer {
+    background-color: #f5f5f5;
+    font-size: small;
+    display: flex;
+    justify-content: center;
+}
+

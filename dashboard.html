@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        <nav class="nav">
+            <ul>
+                <li><a href="#">Sobre</a></li>
+                <li><a class="active" href="#">Dashboards</a></li>
+                <li><a href="#">Calculadora Financeira</a></li>
+                <li><a href="#">Ocorrências</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="grafico">
+            <h2>Produção Real vs Esperado (latas/min)</h2>
+            <canvas id="graficoLinha"></canvas>
+        </section>
+        <section class="boxes">
+            <div class="box">
+                <h3>Produção Atual</h3>
+                <p id="producao">0 latas/min</p>
+            </div>
+            <div class="box">
+                <h3>Total Produzido</h3>
+                <p id="total">0 latas</p>
+            </div>
+            <div class="box">
+                <h3>Eficiência</h3>
+                <p id="eficiencia">0% (meta: 90%)</p>
+            </div>
+        </section>
+
+        <section class="alerta">
+                <p id="alerta">Sistema operando normalmente</p>
+        </section>
+
+        <button onclick="atualizarDashboard()" class="btn">Atualizar Dados</button>
+
+    </main>
+    
+    <footer class="footer">
+        <h2>TrackSense © 2026</h2>
+    </footer>
+</body>
+
+</html>
+<script>
+    const labels = [];
+
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: "Produção Real (latas/min)",
+                data: [],
+                borderColor: "green",
+                backgroundColor: "green",
+            },
+            {
+                label: "Produção Esperada (latas/min)",
+                data: [80, 80, 80, 80, 80],
+                borderColor: "red",
+                borderDash: [5, 5],
+            }
+        ]
+    };
+
+    const config = {
+        type: "line",
+        data: data,
+        options: {
+            plugins: {
+                legend: {
+                    labels: { color: "white" }
+                }
+            },
+            scales: {
+                x: { ticks: { color: "white" } },
+                y: {
+                    ticks: { color: "white" },
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    const grafico = new Chart(
+        document.getElementById("graficoLinha"),
+        config
+    );
+
+    function atualizarDashboard() {
+        let producao = Math.floor(Math.random() * 100);
+        let total = Math.floor(Math.random() * 10000);
+        let eficiencia = Math.floor((producao / 80) * 100);
+
+
+        document.getElementById("producao").innerText = producao + " latas/min";
+        document.getElementById("total").innerText = total + " latas";
+        document.getElementById("eficiencia").innerText =
+            eficiencia + "% (meta: 90%)";
+
+        if (eficiencia < 70) {
+            document.getElementById("alerta").innerText =
+                "Produção abaixo do esperado!";
+        } else {
+            document.getElementById("alerta").innerText =
+                "Produção normal";
+        }
+
+        data.labels.push(new Date().toLocaleTimeString());
+        data.datasets[0].data.push(producao);
+        data.datasets[1].data.push(80);
+
+        if (data.labels.length > 10) {
+            data.labels.shift();
+            data.datasets[0].data.shift();
+            data.datasets[1].data.shift();
+        }
+        grafico.update();
+    }
+</script>
