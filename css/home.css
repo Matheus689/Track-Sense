@@ -1,5 +1,5 @@
 ﻿:root {
-  --cor-primaria: #2563eb;
+  --cor-primaria: #007bff;
   --cor-escura: #0f172a;
   --cinza: #64748b;
 }
@@ -16,14 +16,15 @@ body {
 }
 
 
-.cabecalho {
+.header {
+  height: 80px;
   background: white;
   border-bottom: 1px solid #ddd;
   position: sticky;
   top: 0;
 }
 
-.barra-navegacao {
+.menu {
   max-width: 1200px;
   margin: auto;
   padding: 15px;
@@ -43,26 +44,32 @@ body {
   width: 40px;
 }
 
-.menu {
+.nav-bar {
   display: flex;
   gap: 20px;
   list-style: none;
   align-items: center;
 }
 
-.menu a {
+.nav-bar a {
   text-decoration: none;
   color: black;
   font-weight: bold;
 }
 
-.menu a:hover {
+.nav-bar a:hover {
   color: var(--cor-primaria);
 }
 
-.secao-imagem {
+.nav-bar a.active{
+    color: var(--cor-primaria);
+    border-bottom: 2px solid var(--cor-primaria);
+    padding-bottom: 4px;
+}
+
+.image-section {
   position: relative;
-  background: url("Assets/img/background.png") center/cover no-repeat;
+  background: url("../Assets/img/background.png") center/cover no-repeat;
   color: white;
   padding: 100px 20px;
   text-align: center;
@@ -74,19 +81,19 @@ body {
   background: rgba(0,0,0,0.7);
 }
 
-.conteudo-principal {
+.main-content {
   position: relative;
   max-width: 800px;
   margin: auto;
 }
 
-.conteudo-principal h1 {
+.main-content h1 {
   font-size: 40px;
   margin-bottom: 20px;
 }
 
 
-.cards-valores {
+.cards-values {
   position: relative;
   display: flex;
   justify-content: center;
@@ -102,9 +109,9 @@ body {
   border-radius: 10px;
 }
 
-.circulo-icone {
-  width: 120px;
-  height: 120px;
+.icon {
+  width: 130px;
+  height: 130px;
   background: white;
   border-radius: 50%;
   display: flex;
@@ -113,7 +120,7 @@ body {
   margin: auto;
 }
 
-.container-modulo {
+.module-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,35 +132,35 @@ body {
   margin: auto;
 }
 
-.secao-servicos {
+.service-section {
   text-align: center;
   margin: 40px 0 30px;
 }
 
-.secao-servicos h2 {
+.service-section h2 {
   font-size: cover;
 }
 
-.imagem-lateral {
+.side-image {
   display: flex;
   align-items: flex-start;
   align-self: flex-start;
   width: 200px;
 }
 
-.imagem-lateral2 {
+.side-image2 {
   display: flex;
   align-items: flex-end;
   align-self: flex-end;
   width: 200px;
 }
 
-.texto-modulo {
+.module-text {
   max-width: cover;
   text-align: center;
 }
 
-.rodape {
+.footer {
   background: #111827;
   color: white;
   text-align: center;
