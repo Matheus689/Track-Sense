@@ -2,10 +2,9 @@ CREATE DATABASE trackSense;
 USE trackSense;
 
 -- CRIAÇÃO DAS TABELAS --
-
 CREATE TABLE empresa( -- INSERIR DADOS
 idEmpresa INT AUTO_INCREMENT PRIMARY KEY ,
-cnpj CHAR(14) UNIQUE ,
+cnpj CHAR(14) UNIQUE,
 nome VARCHAR(45)
 ) AUTO_INCREMENT = 1000;
 
@@ -14,9 +13,11 @@ idUsuario INT PRIMARY KEY AUTO_INCREMENT,
 nome VARCHAR(50) NOT NULL,
 email VARCHAR(50) NOT NULL,
 senha CHAR(8) NOT NULL,
-nivelAcesso VARCHAR(10) NOT NULL,
-CONSTRAINT chk_acesso CHECK(nivelAcesso IN ('Admin', 'Operador', 'Supervisor')), -- pq operador pode ver essa coisa
 dtCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
+fkSupervisor INT, 
+	CONSTRAINT chFkSupervisor 
+    FOREIGN KEY (fkSupervisor)
+    REFERENCES usuario(idUsuario),
 fkEmpresa INT,
 	CONSTRAINT chFkEmpresa 
     FOREIGN KEY (fkEmpresa) 
@@ -53,56 +54,57 @@ fkSensor INT,
 
 
 -- EXEMPLO DE INSERÇÃO DE DADOS --
-INSERT INTO empresa (cnpj, nome,telefone) VALUES
-('11122233344455','Quero','5511900000000'),
-('11122233344457','Knor','5511900000002'),
-('11122233344458','Predileta','5511900000003');
+INSERT INTO empresa (cnpj, nome) VALUES
+('11122233344455','Quero'),
+('11122233344457','Knor'),
+('11122233344458','Predileta');
 
-SELECT * FROM empresa;
-INSERT INTO usuario (nome, email, senha, nivelAcesso, fkEmpresa) VALUES
-('Giovanna Flores', 'giovanna@email.com', 'gi120511', 'Operador', 1000),
-('Lucas Espindola', 'lucas@email.com', 'lucas699', 'Supervisor', 1001),
-('Matheus Profeta', 'matheus@email.com', 'matheus7', 'Admin', 1002),
-('Max Maya', 'max@email.com', 'max45678', 'Supervisor', 1001),
-('Nathan Fioravanti', 'nathan@email.com', 'nathan79', 'Supervisor', 1000),
-('Sara Cheque', 'sara@email.com', 'sara1234', 'Operador', 1001);
+INSERT INTO usuario (nome, email, senha, fkSupervisor, fkEmpresa)VALUES
+('Giovanna Flores', 'giovanna@email.com', 'gi120511', NULL, 1000),
+('Nathan Fioravanti', 'nathan@email.com', 'nathan79', NULL, 1000),
+('Lucas Espindola', 'lucas@email.com', 'lucas699', 1000, 1001),
+('Matheus Profeta', 'matheus@email.com', 'matheus7', 1002, 1002),
+('Max Maya', 'max@email.com', 'max45678', 1000, 1001),
+('Sara Cheque', 'sara@email.com', 'sara1234', 1003, 1001);
 
-INSERT INTO sensor (estadoSensor, numSerie) VALUES
-('Ativo','10002000'),
-('Inativo','10002001'),
-('Manutenção','10002002');
+INSERT INTO maquina (setor, numMaquina, fkEmpresaMaquina) VALUES
+('Setor 1', 'M01', 1000),
+('Setor 2', 'M02', 1000),
+('Setor 3', 'M03', 1001);
+
+INSERT INTO sensor (estadoSensor, numSerie, fkMaquina) VALUES
+('Ativo','10002000','1000'),
+('Inativo','10002001','1001'),
+('Manutenção','10002002','1002');
 
 INSERT INTO registroSensor (fkSensor) VALUES -- arrumar
 (1000),
 (1001),
-(1002)
-;
-
-INSERT INTO ocorrencia (motivo, dtOcorrencia, fkSensorOcorrencia, fkUsuarioOcorrencia) VALUES
-('Falha na leitura do sensor de contagem', '2026-02-25 08:30:00', 1000, 1012),
-('Sensor desligado para manutenção', '2026-02-25 10:15:00', 1001, 1013),
-('Oscilação detectada no equipamento', '2026-02-26 14:40:00', 1002, 1014),
-('Oscilação detectada no equipamento', '2026-02-26 14:40:00', 1001, 1017),
-('Oscilação detectada no equipamento', '2026-02-26 14:40:00', 1002, 1016),
-('Erro de comunicação com o sistema', '2026-02-27 09:20:00', 1000, 1015);
+(1002);
 
 
 -- VISUALISAÇÃO DE INFORMAÇÕES -- 
 
-SELECT * FROM usuario;
-SELECT * FROM registroSensor;
-SELECT * FROM ocorrencia;
 SELECT * FROM empresa;
+SELECT * FROM usuario;
+SELECT * FROM maquina;
 SELECT * FROM sensor;
+SELECT * FROM registroSensor; 
 
--- Verificando qual o nivel de acesso dos usuarios 
+
+/* SELECTs ANTIGOS
+
 SELECT nome AS Nome, nivelAcesso AS 'Nivel de Acesso' FROM usuario;
 
--- VERIFICANDO OS REGISTROS ENTRE 14H E 15H
+VERIFICANDO OS REGISTROS ENTRE 14H E 15H
 SELECT numSerie, hrApontamento, hrRegistro FROM registroSensor 
 WHERE hrApontamento
 BETWEEN '2026-02-26 14:00:00' 
 AND '2026-02-26 15:00:00';
+
+SELECT empresa.nome AS 'Nome da Empresa',numMaquina AS 'Nº da Máquina'  FROM maquina
+JOIN empresa on fkEmpresaMaquina = idEmpresa
+JOIN usuario ON fkEmpresa = idEmpresa;
 
 -- 
 SELECT empresa.nome, sensor.numSerie, hrApontamento, hrRegistro FROM empresa 
@@ -124,7 +126,20 @@ SELECT empresa.nome AS 'Empresa', usuario.nome AS 'Usuário', nivelAcesso 'Níve
     JOIN sensor ON idSensor = fkSensorOcorrencia;
 
 SELECT usuario.*,ocorrencia.* FROM usuario
-	JOIN ocorrencia ON idUsuario = fkUsuarioOcorrencia;
+	JOIN ocorrencia ON idUsuario = fkUsuarioOcorrencia; */
+    
+    
+/* SELECTS que podemos fazer: 
+1. Buscar registros entre horários;
+2. Empresa + Máquina;
+3. Empresa + Máquina + Sensor;
+4. empresa + maquina + sensor + registro;
+5. Sensores ativos;
+6. Usuários com suas empresas;
+7. Supervisor de cada usuário;
+*/
+    
+    
 
 
 
