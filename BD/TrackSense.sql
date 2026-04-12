@@ -32,7 +32,7 @@ fkEmpresaMaquina INT,
 	CONSTRAINT chFkEmpresaMaquina FOREIGN KEY (fkEmpresaMaquina) REFERENCES empresa(idEmpresa)
 )AUTO_INCREMENT = 1000;
 
-CREATE TABLE sensor( -- INSERIR DADOS
+CREATE TABLE sensor( 
 idSensor INT PRIMARY KEY AUTO_INCREMENT,
 estadoSensor VARCHAR(10), 
 	CONSTRAINT chEstadoSensor CHECK(estadoSensor IN('Ativo', 'Inativo', 'Manutenção')),
@@ -44,6 +44,9 @@ fkMaquina INT,
 -- tabela sensor e tabela dados do sensor
 CREATE TABLE registroSensor(
 idRegistro INT PRIMARY KEY AUTO_INCREMENT,
+	-- Funcionaria uma fk composta (idRegistro, fksensor)?
+valorRegistro TINYINT (1),
+	-- CONSTRAIN chValorRegistro CHECK (valorSensor IN (0,1)),
 hrApontamento DATETIME DEFAULT CURRENT_TIMESTAMP,
 hrRegistro DATETIME DEFAULT CURRENT_TIMESTAMP,
 fkSensor INT,
@@ -77,68 +80,60 @@ INSERT INTO sensor (estadoSensor, numSerie, fkMaquina) VALUES
 ('Inativo','10002001','1001'),
 ('Manutenção','10002002','1002');
 
-INSERT INTO registroSensor (fkSensor) VALUES -- arrumar
-(1000),
-(1001),
-(1002);
+INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES -- arrumar
+(1000, 1),
+(1001, 1),
+(1002, 1);
 
 
 -- VISUALISAÇÃO DE INFORMAÇÕES -- 
-
 SELECT * FROM empresa;
 SELECT * FROM usuario;
 SELECT * FROM maquina;
 SELECT * FROM sensor;
 SELECT * FROM registroSensor; 
-
-
-/* SELECTs ANTIGOS
-
-SELECT nome AS Nome, nivelAcesso AS 'Nivel de Acesso' FROM usuario;
-
-VERIFICANDO OS REGISTROS ENTRE 14H E 15H
-SELECT numSerie, hrApontamento, hrRegistro FROM registroSensor 
+    
+-- Empresa + Máquina + Sensor + Registro
+SELECT e.nome AS 'Empresa', m.numMaquina AS 'Máquina', 
+s.numSerie AS 'Sensor', 
+rS.valorRegistro AS 'Registro', rS.hrRegistro AS 'Data/Hora'
+FROM registroSensor AS rS 
+JOIN sensor AS s 
+ON rS.fkSensor = s.idSensor
+JOIN maquina AS m
+ON s.fkMaquina = m.idMaquina
+JOIN empresa AS e
+ON m.fkEmpresaMaquina = e.idEmpresa;
+-- Buscar registros entre horários; ex: 14H E 15H
+SELECT s.numSerie, rS.hrApontamento, rS.hrRegistro 
+FROM sensor AS s
+JOIN registroSensor AS rS
 WHERE hrApontamento
-BETWEEN '2026-02-26 14:00:00' 
-AND '2026-02-26 15:00:00';
-
+BETWEEN '2026-04-27 14:00:00' 
+AND '2026-04-27 15:00:00'
+;
+-- Empresa + Máquina;
 SELECT empresa.nome AS 'Nome da Empresa',numMaquina AS 'Nº da Máquina'  FROM maquina
-JOIN empresa on fkEmpresaMaquina = idEmpresa
-JOIN usuario ON fkEmpresa = idEmpresa;
+JOIN empresa on fkEmpresaMaquina = idEmpresa;
+-- Máquina + Sensor;
+SELECT m.numMaquina, s.numSerie, s.estadoSensor
+FROM maquina AS m
+JOIN sensor AS s 
+ON m.idMaquina = s.fkMaquina;
+-- Sensores ativos;
+SELECT numSerie FROM sensor WHERE estadoSensor = 'Ativo';
+-- Usuários com suas empresas;
+SELECT e.nome AS 'Empresa', u.nome AS 'Usuário', u.email AS 'Email'
+FROM empresa AS e
+JOIN usuario AS u
+ON idEmpresa = fkEmpresa;
+-- Usuarios com os supervisores 
+SELECT u.nome AS 'Funcionário', s.nome AS 'Supervisor'
+FROM usuario AS u
+LEFT JOIN usuario AS s
+ON u.fkSupervisor = s.idUsuario;
 
--- 
-SELECT empresa.nome, sensor.numSerie, hrApontamento, hrRegistro FROM empresa 
-    JOIN usuario ON idEmpresa = fkEmpresa
-	JOIN ocorrencia ON idUsuario = fkUsuarioOcorrencia
-    JOIN sensor ON idSensor = fkSensorOcorrencia
-    JOIN registroSensor ON idSensor = fkSensor;
 
--- Verificando os motivos das ocorrencias de parada entre as 9h e as 11h
-SELECT nomeUsuario AS NOME, motivo AS Motivo, dtOcorrencia AS 'Data e Hora' FROM usuario
-	JOIN usuario ON idEmpresa = fkEmpresa
-	JOIN ocorrencia ON idUsuario = fkUsuarioOcorrencia
-    JOIN sensor ON idSensor = fkSensorOcorrencia;
-
--- SELCIONAR OCORRENCIAS
-SELECT empresa.nome AS 'Empresa', usuario.nome AS 'Usuário', nivelAcesso 'Nível de Acesso', motivo AS 'Ocorrência', numSerie AS 'Número de Série', dtOcorrencia AS 'Data de Ocorrência'  FROM empresa
-	JOIN usuario ON idEmpresa = fkEmpresa
-	JOIN ocorrencia ON idUsuario = fkUsuarioOcorrencia
-    JOIN sensor ON idSensor = fkSensorOcorrencia;
-
-SELECT usuario.*,ocorrencia.* FROM usuario
-	JOIN ocorrencia ON idUsuario = fkUsuarioOcorrencia; */
-    
-    
-/* SELECTS que podemos fazer: 
-1. Buscar registros entre horários;
-2. Empresa + Máquina;
-3. Empresa + Máquina + Sensor;
-4. empresa + maquina + sensor + registro;
-5. Sensores ativos;
-6. Usuários com suas empresas;
-7. Supervisor de cada usuário;
-*/
-    
     
 
 
