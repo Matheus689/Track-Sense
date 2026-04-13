@@ -17,7 +17,11 @@ body {
 }
 
 .logo1 {
+<<<<<<< HEAD
     background-image: url(../Assets/img/logo1.png); 
+=======
+    background-image: url(logo1.png); 
+>>>>>>> 25832377448da7661ede68e5ec1d600773ade0c4
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -43,7 +47,11 @@ body {
 }
 
 .side1 {
+<<<<<<< HEAD
     background-image: url("../Assets/img/backgroundLogin.png");
+=======
+    background-image: url("background.png");
+>>>>>>> 25832377448da7661ede68e5ec1d600773ade0c4
     background-color: #cccccc;
     background-position: center;
     background-repeat: no-repeat;
