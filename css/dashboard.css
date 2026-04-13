@@ -61,7 +61,7 @@ body {
     align-items: center;
     gap: 20px;
     padding: 20px 0;
-    background-image: url(../assets/background-tracksense.png);
+    background-image: url(../assets/img/background-tracksense.png);
     background-position: center;
     background-size: cover;
 }
