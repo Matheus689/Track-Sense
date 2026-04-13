@@ -60,12 +60,12 @@ fkSensor INT,
 INSERT INTO empresa (cnpj, nome) VALUES
 ('11122233344455','Quero'),
 ('11122233344457','Knor'),
-('11122233344458','Predileta');
+('11122233344458','Predilecta');
 
 INSERT INTO usuario (nome, email, senha, fkSupervisor, fkEmpresa)VALUES
 ('Giovanna Flores', 'giovanna@email.com', 'gi120511', NULL, 1000),
 ('Nathan Fioravanti', 'nathan@email.com', 'nathan79', NULL, 1000),
-('Lucas Espindola', 'lucas@email.com', 'lucas699', 1000, 1001),
+('Lucas Espindola', 'lucas@email.com', 'lucas699', 1000, 1002),
 ('Matheus Profeta', 'matheus@email.com', 'matheus7', 1002, 1002),
 ('Max Maya', 'max@email.com', 'max45678', 1000, 1001),
 ('Sara Cheque', 'sara@email.com', 'sara1234', 1003, 1001);
