@@ -6,8 +6,51 @@
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5f5f5;
+    font-weight: bold;
+    box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.137);
+}
+
+.header img {
+    width: 5%;
+    transition: 0.4s;
+}
+
+.header img:hover {
+    transform: scale(1.2);
+}
+
+.nav-bar ul {
+    display: flex;
+    gap: 45px;
+    list-style: none;
+    padding: 0;
+    margin-right: 30px;
+    font-size: medium;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    color: #333;
+    transition: 0.3s;
+}
+
+.nav-bar a:hover {
+    transform: translateX(20px);
+    color: #007bff;
+}
+
+.nav-bar a.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 4px;
 }
 
 .container {
@@ -17,18 +60,19 @@ body {
 }
 
 .logo1 {
-    background-image: url(../Assets/img/logo1.png); 
+    background-image: url(../Assets/img/logo1.png);
 
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    
-  
-    width: 30vw; 
+
+
+    width: 30vw;
     height: 30vh;
-    
-    margin-bottom: 20px; 
+
+    margin-bottom: 20px;
 }
+
 .bloq {
     display: flex;
     background-color: rgba(235, 235, 235, 0.425);
@@ -68,17 +112,17 @@ body {
     align-content: end;
     justify-content: center;
     text-align: end;
-    border-radius: 30px 0 0 30px ;   
+    border-radius: 30px 0 0 30px;
 }
 
 
 
-.log .text{
+.log .text {
     width: 30vw;
     margin: 2vw;
 }
 
-.cad{
+.cad {
     border-radius: 0 30px 30px 0;
     text-align: start;
 
@@ -110,11 +154,11 @@ body {
 }
 
 input::placeholder {
-    color: #6a6a6a; 
+    color: #6a6a6a;
     font-size: 2vh;
 }
 
-.side2{
+.side2 {
     align-items: center;
     align-content: center;
     justify-content: center;
@@ -133,6 +177,7 @@ input::placeholder {
     background: radial-gradient(50% 50% at 50% 50%, #78BFE4 0%, #4A89AA 100%);
     transition: transform 0.3s ease, background-color 0.3s ease;
     color: #EBEBEB;
+    cursor: pointer;
 }
 
 .bloq button:hover {
@@ -149,11 +194,11 @@ input::placeholder {
 
 }
 
-P{
+P {
     margin: 20PX;
 }
 
-#exibirResultadoCadastro{
-color: rgb(172, 0, 0);
-margin-top: 10px;
+#exibirResultadoCadastro {
+    color: rgb(172, 0, 0);
+    margin-top: 10px;
 }
