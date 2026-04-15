@@ -34,19 +34,22 @@
             </div>
             <div class="box">
                 <h3>Eficiência</h3>
-                <p id="eficiencia">0% (meta: 90%)</p>
+                <p id="eficiencia">0%</p>
+            </div>
+            <div class="box">
+                <h3>Produção no Intervalo</h3>
+                <p id="intervalo">0 latas</p>
             </div>
         </section>
         <section class="graphic">
             <h2>Produção Real vs Esperado (latas/min)</h2>
             <canvas id="graphicLine"></canvas>
         </section>
-        
+
         <section class="alert">
             <p id="alert">Sistema operando normalmente</p>
         </section>
 
-        <button onclick="atualizarDashboard()" class="btn">Atualizar Dados</button>
     </main>
 
     <footer class="footer">
@@ -100,18 +103,39 @@
         config
     );
 
+    let total = 0;
+    let producaoPorMinuto = 80; // base inicial
     function atualizarDashboard() {
-        let producao = Math.floor(Math.random() * 100);
-        let total = Math.floor(Math.random() * 10000);
-        let eficiencia = Math.floor((producao / 80) * 100);
+        // variação pequena (simula máquina real)
+        let variacao = Math.floor(Math.random() * 7) - 3; // -3 a +3
+        producaoPorMinuto += variacao;
 
+        // limites realistas
+        if (producaoPorMinuto < 60) producaoPorMinuto = 60;
+        if (producaoPorMinuto > 100) producaoPorMinuto = 100;
 
-        document.getElementById("producao").innerText = producao + " latas/min";
-        document.getElementById("total").innerText = total + " latas";
+        let producaoPorSegundo = producaoPorMinuto / 60;
+        // calcular produção no intervalo de 3 segundos
+        let producaoNoIntervalo = Math.floor(producaoPorSegundo * 3);
+
+        total += producaoNoIntervalo;
+
+        // eficiência
+        let eficiencia = Math.floor((producaoPorMinuto / 80) * 100);
+
+        
+        document.getElementById("producao").innerText =
+            Math.floor(producaoPorMinuto) + " latas/min";
+
+        document.getElementById("total").innerText =
+            Math.floor(total) + " latas";
+
         document.getElementById("eficiencia").innerText =
-            eficiencia + "% (meta: 90%)";
+            eficiencia + "%";
+        document.getElementById("intervalo").innerText =
+            (producaoNoIntervalo) + " latas";
 
-        if (eficiencia < 70) {
+        if (eficiencia < 80) {
             document.getElementById("alert").innerText =
                 "Produção abaixo do esperado!";
         } else {
@@ -120,7 +144,7 @@
         }
 
         data.labels.push(new Date().toLocaleTimeString());
-        data.datasets[0].data.push(producao);
+        data.datasets[0].data.push(producaoPorMinuto);
         data.datasets[1].data.push(80);
 
         if (data.labels.length > 10) {
@@ -130,4 +154,6 @@
         }
         grafico.update();
     }
+
+    setInterval(atualizarDashboard, 3000);
 </script>
