@@ -85,6 +85,12 @@ body {
   height: 1000px;
 }
 
+.slogan {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
 .cards {
   position: relative;
   color: white;
@@ -114,7 +120,6 @@ body {
   font-size: 40px;
   margin-bottom: 20px;
 }
-
 
 .cards-values {
   position: relative;
