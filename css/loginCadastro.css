@@ -1,8 +1,8 @@
 /* Isso remove as margens e preenchimentos padrão de todos os navegadores */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -164,8 +164,6 @@ input::placeholder {
     justify-content: center;
 }
 
-
-
 .bloq button {
     border-radius: 20px;
     margin-top: 25px;
@@ -201,4 +199,12 @@ P {
 #exibirResultadoCadastro {
     color: rgb(172, 0, 0);
     margin-top: 10px;
+}
+
+.footer {
+  height: 7%;
+  background: #111827;
+  color: white;
+  text-align: center;
+  padding: 5px;
 }
