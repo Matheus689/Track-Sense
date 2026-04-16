@@ -82,12 +82,26 @@ body {
   color: white;
   padding: 100px 20px;
   text-align: center;
+  height: 1000px;
+}
+
+.cards {
+  position: relative;
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
 }
 
 .overlay {
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.7);
+}
+
+.overlay2 {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.178);
 }
 
 .main-content {
