@@ -47,7 +47,6 @@ idRegistro INT PRIMARY KEY AUTO_INCREMENT,
 	-- Funcionaria uma fk composta (idRegistro, fksensor)?
 valorRegistro TINYINT (1),
 	-- CONSTRAIN chValorRegistro CHECK (valorSensor IN (0,1)),
-hrApontamento DATETIME DEFAULT CURRENT_TIMESTAMP,
 hrRegistro DATETIME DEFAULT CURRENT_TIMESTAMP,
 fkSensor INT,
 	CONSTRAINT chFkSensor
@@ -84,7 +83,6 @@ INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES -- arrumar
 (1000, 1),
 (1001, 1),
 (1002, 1);
-
 
 -- VISUALISAÇÃO DE INFORMAÇÕES -- 
 SELECT * FROM empresa;
@@ -134,7 +132,7 @@ LEFT JOIN usuario AS s
 ON u.fkSupervisor = s.idUsuario;
 
 
-    
+
 
 
 
