@@ -37,18 +37,26 @@
                 <p id="eficiencia">0%</p>
             </div>
             <div class="box">
-                <h3>Produção no Intervalo</h3>
-                <p id="intervalo">0 latas</p>
+                <h3>Faturamento Diário</h3>
+                <p id="faturamento">R$ 0,00</p>
             </div>
-        </section>
-        <section class="graphic">
-            <h2>Produção Real vs Esperado (latas/min)</h2>
-            <canvas id="graphicLine"></canvas>
         </section>
 
         <section class="alert">
             <p id="alert">Sistema operando normalmente</p>
         </section>
+
+        <section class="graphic-box">
+            <section class="graphic">
+                <h2>Produção Real vs Esperado (latas/min)</h2>
+                <canvas id="graphicLine"></canvas>
+            </section>
+            <section class="graphic">
+                <h2>Produção Diária Real vs Esperado (R$ por dia)</h2>
+                <canvas id="graphicLine2"></canvas>
+            </section>
+        </section>
+
 
     </main>
 
@@ -98,9 +106,55 @@
         }
     };
 
+    const labels2 = [];
+
+    const data2 = {
+        labels: labels2,
+        datasets: [
+            {
+                label: "Produção Diária (R$)",
+                data: [],
+                borderColor: "green",
+                backgroundColor: "green",
+            },
+            {
+                label: "Produção Diária Esperada (R$)",
+                data: [115000, 115000, 115000, 115000, 115000],
+                borderColor: "red",
+                borderDash: [5, 5],
+                pointRadius: 0,
+
+            }
+        ]
+    };
+
+    const config2 = {
+        type: "line",
+        data: data2,
+        options: {
+            plugins: {
+                legend: {
+                    labels: { color: "white" }
+                }
+            },
+            scales: {
+                x: { ticks: { color: "white" } },
+                y: {
+                    ticks: { color: "white" },
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
     const grafico = new Chart(
         document.getElementById("graphicLine"),
         config
+    );
+
+    const grafico2 = new Chart(
+        document.getElementById("graphicLine2"),
+        config2
     );
 
     let total = 0;
@@ -123,7 +177,7 @@
         // eficiência
         let eficiencia = Math.floor((producaoPorMinuto / 80) * 100);
 
-        
+
         document.getElementById("producao").innerText =
             Math.floor(producaoPorMinuto) + " latas/min";
 
@@ -132,8 +186,6 @@
 
         document.getElementById("eficiencia").innerText =
             eficiencia + "%";
-        document.getElementById("intervalo").innerText =
-            (producaoNoIntervalo) + " latas";
 
         if (eficiencia < 80) {
             document.getElementById("alert").innerText =
@@ -156,4 +208,36 @@
     }
 
     setInterval(atualizarDashboard, 3000);
+
+    let cont = 1;
+    function atualizarDashboard2() {
+        let variacao = Math.floor(Math.random() * 7) - 3; // -3 a +3
+        producaoPorMinuto += variacao;
+        let faturamentoDiario = producaoPorMinuto * 60 * 8 * 3;   // Produção por minuto * 60 (converter para hora), * 8 (horas trabalhadas), * 3 (valor lata do milho)
+
+
+        // limites realistas
+        if (producaoPorMinuto < 60) producaoPorMinuto = 60;
+        if (producaoPorMinuto > 100) producaoPorMinuto = 100;
+
+        if (cont > 30) {
+            cont = 1;
+        }
+
+        document.getElementById("faturamento").innerText =
+            "R$ " + (faturamentoDiario.toLocaleString("pt-BR", { minimumFractionDigits: 2 }));
+
+        data2.labels.push(`Dia ${cont++}`);
+        data2.datasets[0].data.push(faturamentoDiario);
+        data2.datasets[1].data.push(115000);
+
+        if (data2.labels.length > 10) {
+            data2.labels.shift();
+            data2.datasets[0].data.shift();
+            data2.datasets[1].data.shift();
+        }
+        grafico2.update();
+    }
+
+    setInterval(atualizarDashboard2, 3000);
 </script>
