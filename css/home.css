@@ -82,20 +82,22 @@ body {
   color: white;
   padding: 100px 20px;
   text-align: center;
-  height: 1000px;
+  height: 750px;
 }
 
 .slogan {
+  padding: 200px 20px;
   position: relative;
   z-index: 1;
   text-align: center;
+  font-size: xx-large;
 }
 
 .cards {
   position: relative;
   color: white;
   padding: 100px 20px;
-  text-align: center;
+  text-align: center;background-color: #111827;
 }
 
 .overlay {
@@ -117,8 +119,13 @@ body {
 }
 
 .main-content h1 {
-  font-size: 40px;
+  font-size: 45px;
   margin-bottom: 20px;
+}
+
+.main-content p {
+  font-size: 20px;
+  
 }
 
 .cards-values {
@@ -166,7 +173,21 @@ body {
 }
 
 .service-section h2 {
-  font-size: cover;
+  font-size: 45px;
+}
+
+.service-section p {
+  font-size: 30px;
+}
+
+.module-text h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.module-text p {
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .side-image {
@@ -186,6 +207,12 @@ body {
 .module-text {
   max-width: cover;
   text-align: center;
+}
+
+.video-section {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
 }
 
 .footer {
