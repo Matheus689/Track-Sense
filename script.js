@@ -72,7 +72,7 @@ function cadValidarCadastro() {
     }
 
     if (!temCaractere) {
-        exibirResultadoCadastro.innerHTML = "Coloque um caracter especial"
+        exibirResultadoCadastro.innerHTML = "Coloque um caractere especial"
 
     }
 
@@ -95,13 +95,13 @@ function cadValidarCadastro() {
     }
 
     if (temMaiuscula == false) {
-        exibirResultadoCadastro.innerHTML = "Insira no minímo uma letra maiuscula"
+        exibirResultadoCadastro.innerHTML = "Insira no mínimo uma letra maiúscula"
     } else if (temMinuscula == false) {
-        exibirResultadoCadastro.innerHTML = "Insira no minímo uma letra minuscula"
+        exibirResultadoCadastro.innerHTML = "Insira no mínimo uma letra minúscula"
     } else if (temCaractere == false) {
-        exibirResultadoCadastro.innerHTML = "Insira no minímo um caracter especial"
+        exibirResultadoCadastro.innerHTML = "Insira no mínimo um caractere especial"
     } else if (tamanhoSenha == false) {
-        exibirResultadoCadastro.innerHTML = "Insira no minímo 8 digitos"
+        exibirResultadoCadastro.innerHTML = "Insira no mínimo 8 dígitos"
     } else if (senha != sConfirmar) {
         exibirResultadoCadastro.innerHTML = "As senhas devem ser iguais"
     } else {
@@ -117,7 +117,7 @@ function CadCadastrar() {
 
 
     if (emailConfi == false) {
-        exibirResultadoEmail.innerHTML = 'coloque um email valido'
+        exibirResultadoEmail.innerHTML = 'Coloque um email válido'
     } else {
         exibirResultadoEmail.innerHTML = ''
         if (temCaractere && temMaiuscula && temMinuscula && confSenha && tamanhoSenha) {
@@ -164,7 +164,7 @@ function LogEntrar() {
     }
 
     if (!usuarioEncontrado) {
-        alert("Email ou senha incorretos.");
+        alert("E-mail ou senha incorretos.");
     }
 }
 

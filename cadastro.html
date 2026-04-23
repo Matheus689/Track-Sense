@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+    <title>TrackSense | Cadastro</title>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="css/loginCadastro.css">
+    <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -38,10 +39,10 @@
                 <input type="text" id="inpEmail" oninput="cadValidarEmail()" placeholder="Email*">
                 <div id="exibirResultadoEmail"></div>
 
-                <input type="text" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Senha*">
+                <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Senha*">
                 <div id="exibirResultadoCadastro"></div>
 
-                <input type="text" id="inpSenhaConf" oninput="cadValidarCadastro()" placeholder="Confirme sua Senha*">
+                <input type="password" id="inpSenhaConf" oninput="cadValidarCadastro()" placeholder="Confirme sua Senha*">
             </div>
 
             <button onclick="CadCadastrar()" class="button">Cadastrar</button>
