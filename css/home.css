@@ -185,11 +185,13 @@ body {
 .module-text h3 {
   font-size: 22px;
   margin-bottom: 20px;
+  font-size: 40px;
 }
 
 .module-text p {
   font-size: 13px;
   line-height: 1.5;
+  font-size: 15px;
 }
 
 .module-text {
