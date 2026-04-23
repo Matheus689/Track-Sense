@@ -19,11 +19,16 @@ function cadValidarEmail() {
     email = inpEmail.value.toLowerCase();
 
     emailConfi = false;
-    let valiEmail = ["@gmail.com", "@hotmail.com", "@outlook.com", "@yahoo.com", "@icloud.com"];
+    let valiEmail = ["@"];
+    let valiEmail2 = ["."];
 
     for (let j = 0; j < valiEmail.length; j++) {
         if (email.includes(valiEmail[j])) {
-            emailConfi = true;
+            let posicaoArroba = email.indexOf(valiEmail)
+            let posicaoPonto = email.lastIndexOf(valiEmail2)
+            if (email.includes(valiEmail2[j]) && posicaoArroba < posicaoPonto){
+                emailConfi = true;
+            }
         }
     }
 
