@@ -17,47 +17,47 @@ body {
 
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f5f5f5;
-    font-weight: bold;
-    box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.137);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.137);
 }
 
 .header img {
-    width: 5%;
-    transition: 0.4s;
+  width: 5%;
+  transition: 0.4s;
 }
 
 .header img:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .nav-bar ul {
-    display: flex;
-    gap: 45px;
-    list-style: none;
-    padding: 0;
-    margin-right: 30px;
-    font-size: medium;
+  display: flex;
+  gap: 45px;
+  list-style: none;
+  padding: 0;
+  margin-right: 30px;
+  font-size: medium;
 }
 
 .nav-bar a {
-    text-decoration: none;
-    color: #333;
-    transition: 0.3s;
+  text-decoration: none;
+  color: #333;
+  transition: 0.3s;
 }
 
 .nav-bar a:hover {
-    transform: translateX(20px);
-    color: #007bff;
+  transform: translateX(20px);
+  color: #007bff;
 }
 
 .nav-bar a.active {
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 4px;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 4px;
 }
 
 .menu {
