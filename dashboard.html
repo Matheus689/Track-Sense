@@ -7,13 +7,15 @@
     <title>TrackSense | Dashboard</title>
     <link rel="stylesheet" href="css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="Assets/img/Imagem Tracksense (1).png" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
 </head>
 
 <body>
     <header class="header">
         <a href="trackSense.html">
-          <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+            <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
         </a>
         <nav class="nav-bar">
             <ul>
@@ -28,7 +30,7 @@
     <main class="main">
         <section class="boxes">
             <div class="box">
-                <h3>Produção Atual (latas/min)</h3>
+                <h3>Produção Atual (latas/min) por Máquina</h3>
                 <p id="producao">83 latas/min</p>
             </div>
             <div class="box">
@@ -36,7 +38,7 @@
                 <p id="total">676.000 / 845.000 latas (80%)</p>
             </div>
             <div class="box">
-                <h3>Máquina Com Menor Produção (%)</h3>
+                <h3>Máquina com Menor Produção (%)</h3>
                 <p id="maquina">Máquina D (15%)</p>
             </div>
         </section>
@@ -45,11 +47,12 @@
         </section>
         <section class="graphic-box">
             <section class="graphic">
-                <h2>Produção Real vs Esperado (latas/min)</h2>
+                <h2>Produção Real vs Esperado (latas/min)<br>(Máquina D)</h2>
                 <canvas id="graphicLine"></canvas>
             </section>
             <section class="graphic">
-                <h2>Produção de Latas no mês do Ano Atual vs Ano Anterior (latas/mês)</h2>
+                <h2>Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br>
+                    (Máquina D)</h2>
                 <canvas id="graphicBar"></canvas>
             </section>
             <section class="graphic">
