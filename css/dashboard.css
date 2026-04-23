@@ -1,12 +1,13 @@
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -73,11 +74,9 @@ body {
     background-size: cover;
 }
 
-
 .boxes {
     display: flex;
     width: 90%;
-    max-width: 1400px;
     gap: 20px;
 }
 
@@ -85,7 +84,7 @@ body {
     flex: 1;
     background-color: #1e293b;
     color: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 15px;
     transition: 0.3s;
 }
@@ -119,8 +118,11 @@ body {
 }
 
 .graphic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 90%;
-    max-width: 900px;
+    max-width: 100%;
     background-color: #1e293b;
     padding: 20px;
     border-radius: 15px;
@@ -132,7 +134,8 @@ body {
 }
 
 .graphic canvas {
-    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 
@@ -147,30 +150,10 @@ body {
     font-weight: bold;
 }
 
-
-.btn {
-    margin: 20px auto;
-    padding: 12px 25px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    background-color: #0056b3;
-}
-
-
 .footer {
-  height: 7%;
-  background: #111827;
-  color: white;
-  text-align: center;
-  padding: 15px;
+    height: 7%;
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 15px;
 }
-

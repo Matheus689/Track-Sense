@@ -26,34 +26,36 @@
         <section class="boxes">
             <div class="box">
                 <h3>Produção Atual</h3>
-                <p id="producao">0 latas/min</p>
+                <p id="producao">83 latas/min</p>
             </div>
             <div class="box">
                 <h3>Total Produzido</h3>
-                <p id="total">0 latas</p>
+                <p id="total">150 latas</p>
             </div>
             <div class="box">
                 <h3>Eficiência</h3>
-                <p id="eficiencia">0%</p>
+                <p id="eficiencia">100%</p>
             </div>
             <div class="box">
-                <h3>Faturamento Diário</h3>
-                <p id="faturamento">R$ 0,00</p>
+                <h3>Máquina Com Menor Produção (%)</h3>
+                <p id="maquina">Máquina A (15%)</p>
             </div>
         </section>
-
         <section class="alert">
             <p id="alert">Sistema operando normalmente</p>
         </section>
-
         <section class="graphic-box">
             <section class="graphic">
                 <h2>Produção Real vs Esperado (latas/min)</h2>
                 <canvas id="graphicLine"></canvas>
             </section>
             <section class="graphic">
-                <h2>Produção Diária Real vs Esperado (R$ por dia)</h2>
-                <canvas id="graphicLine2"></canvas>
+                <h2>Produção de Latas no mês do Ano Atual vs Ano Anterior (latas/mês)</h2>
+                <canvas id="graphicBar"></canvas>
+            </section>
+            <section class="graphic">
+                <h2>Distribuição de Produção por Máquina (%)</h2>
+                <canvas id="graphicPie"></canvas>
             </section>
         </section>
 
@@ -67,16 +69,16 @@
 
 </html>
 <script>
-    const labels = [];
+    const labelsLine = ['12:15', '12:16', '12:17', '12:18', '12:19'];
 
-    const data = {
-        labels: labels,
+    const dataLine = {
+        labels: labelsLine,
         datasets: [
             {
                 label: "Produção Real (latas/min)",
-                data: [],
-                borderColor: "green",
-                backgroundColor: "green",
+                data: [76, 84, 77, 75, 83],
+                borderColor: "lightblue",
+                backgroundColor: "lightblue",
             },
             {
                 label: "Produção Esperada (latas/min)",
@@ -87,9 +89,9 @@
         ]
     };
 
-    const config = {
+    const configLine = {
         type: "line",
-        data: data,
+        data: dataLine,
         options: {
             plugins: {
                 legend: {
@@ -106,31 +108,30 @@
         }
     };
 
-    const labels2 = [];
+    const labelsBar = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'];
 
-    const data2 = {
-        labels: labels2,
+    const dataBar = {
+        labels: labelsBar,
         datasets: [
             {
-                label: "Produção Diária (R$)",
-                data: [],
-                borderColor: "green",
-                backgroundColor: "green",
+                label: "Produção total no mês do ano anterior (latas/mês)",
+                data: [110000, 95000, 100000, 120000, 140000, 115000],
+                backgroundColor: 'lightblue',
+                borderWidth: 2,
+                borderDash: [5, 5],
             },
             {
-                label: "Produção Diária Esperada (R$)",
-                data: [115000, 115000, 115000, 115000, 115000],
-                borderColor: "red",
-                borderDash: [5, 5],
-                pointRadius: 0,
-
+                label: "Produção total no mês atual (latas/mês)",
+                data: [120000, 105000, 110000, 125000, 135000, 130000],
+                borderColor: "navy",
+                backgroundColor: "navy",
             }
         ]
     };
 
-    const config2 = {
-        type: "line",
-        data: data2,
+    const configBar = {
+        type: "bar",
+        data: dataBar,
         options: {
             plugins: {
                 legend: {
@@ -147,97 +148,51 @@
         }
     };
 
-    const grafico = new Chart(
+    const labelsPie = ["Máquina A","Máquina B","Máquina C","Máquina D"];
+
+    const dataPie = {
+        labels: labelsPie,
+        datasets: [
+            {
+                label: "Produção (%)",
+                data: [35, 25, 20, 15], // porcentagem de produção
+                backgroundColor: [
+                    "blue",
+                    "green",
+                    "yellow",
+                    "red"
+                ],
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const configPie = {
+        type: "pie",
+        data: dataPie,
+        options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "white"
+                    }
+                }
+            }
+        }
+    };
+
+    const graphicLine = new Chart(
         document.getElementById("graphicLine"),
-        config
+        configLine
     );
 
-    const grafico2 = new Chart(
-        document.getElementById("graphicLine2"),
-        config2
+    const graphicBar = new Chart(
+        document.getElementById("graphicBar"),
+        configBar
     );
 
-    let total = 0;
-    let producaoPorMinuto = 80; // base inicial
-    function atualizarDashboard() {
-        // variação pequena (simula máquina real)
-        let variacao = Math.floor(Math.random() * 7) - 3; // -3 a +3
-        producaoPorMinuto += variacao;
-
-        // limites realistas
-        if (producaoPorMinuto < 60) producaoPorMinuto = 60;
-        if (producaoPorMinuto > 100) producaoPorMinuto = 100;
-
-        let producaoPorSegundo = producaoPorMinuto / 60;
-        // calcular produção no intervalo de 3 segundos
-        let producaoNoIntervalo = Math.floor(producaoPorSegundo * 3);
-
-        total += producaoNoIntervalo;
-
-        // eficiência
-        let eficiencia = Math.floor((producaoPorMinuto / 80) * 100);
-
-
-        document.getElementById("producao").innerText =
-            Math.floor(producaoPorMinuto) + " latas/min";
-
-        document.getElementById("total").innerText =
-            Math.floor(total) + " latas";
-
-        document.getElementById("eficiencia").innerText =
-            eficiencia + "%";
-
-        if (eficiencia < 80) {
-            document.getElementById("alert").innerText =
-                "Produção abaixo do esperado!";
-        } else {
-            document.getElementById("alert").innerText =
-                "Produção normal";
-        }
-
-        data.labels.push(new Date().toLocaleTimeString());
-        data.datasets[0].data.push(producaoPorMinuto);
-        data.datasets[1].data.push(80);
-
-        if (data.labels.length > 10) {
-            data.labels.shift();
-            data.datasets[0].data.shift();
-            data.datasets[1].data.shift();
-        }
-        grafico.update();
-    }
-
-    setInterval(atualizarDashboard, 3000);
-
-    let cont = 1;
-    function atualizarDashboard2() {
-        let variacao = Math.floor(Math.random() * 7) - 3; // -3 a +3
-        producaoPorMinuto += variacao;
-        let faturamentoDiario = producaoPorMinuto * 60 * 8 * 3;   // Produção por minuto * 60 (converter para hora), * 8 (horas trabalhadas), * 3 (valor lata do milho)
-
-
-        // limites realistas
-        if (producaoPorMinuto < 60) producaoPorMinuto = 60;
-        if (producaoPorMinuto > 100) producaoPorMinuto = 100;
-
-        if (cont > 30) {
-            cont = 1;
-        }
-
-        document.getElementById("faturamento").innerText =
-            "R$ " + (faturamentoDiario.toLocaleString("pt-BR", { minimumFractionDigits: 2 }));
-
-        data2.labels.push(`Dia ${cont++}`);
-        data2.datasets[0].data.push(faturamentoDiario);
-        data2.datasets[1].data.push(115000);
-
-        if (data2.labels.length > 10) {
-            data2.labels.shift();
-            data2.datasets[0].data.shift();
-            data2.datasets[1].data.shift();
-        }
-        grafico2.update();
-    }
-
-    setInterval(atualizarDashboard2, 3000);
+    const graphicPie = new Chart(
+        document.getElementById("graphicPie"),
+        configPie
+    );
 </script>
