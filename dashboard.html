@@ -26,12 +26,12 @@
     <main class="main">
         <section class="boxes">
             <div class="box">
-                <h3>Produção Atual</h3>
+                <h3>Produção Atual (latas/min)</h3>
                 <p id="producao">83 latas/min</p>
             </div>
             <div class="box">
-                <h3>Meta de Produção Mensal por Máquina</h3>
-                <p id="total">8.200 / 10.000 latas (82%)</p>
+                <h3>Meta de Produção Mensal por Máquina (%)</h3>
+                <p id="total">676.000 / 845.000 latas (80%)</p>
             </div>
             <div class="box">
                 <h3>Máquina Com Menor Produção (%)</h3>
@@ -115,13 +115,15 @@
                 data: [845000, 835500, 850000, 845000, 850500, 835000],
                 backgroundColor: 'lightblue',
                 borderWidth: 2,
-                borderDash: [5, 5],
+                order: 2
+
             },
             {
                 label: "Produção total no mês atual (latas/mês)",
-                data: [855500, 850000, 860000, 855000, 845000, 850500],
+                data: [860000, 850000, 860000, 855000, 845000, 850500],
                 borderColor: "navy",
                 backgroundColor: "navy",
+                order: 2
             }
         ]
     };
@@ -145,7 +147,7 @@
         }
     };
 
-    const labelsPie = ["Máquina A","Máquina B","Máquina C","Máquina D"];
+    const labelsPie = ["Máquina A", "Máquina B", "Máquina C", "Máquina D"];
 
     const dataPie = {
         labels: labelsPie,
@@ -162,7 +164,7 @@
                 borderWidth: 1
             }
         ]
-    };  
+    };
 
     const configPie = {
         type: "pie",
