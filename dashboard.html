@@ -29,16 +29,12 @@
                 <p id="producao">83 latas/min</p>
             </div>
             <div class="box">
-                <h3>Total Produzido</h3>
-                <p id="total">150 latas</p>
-            </div>
-            <div class="box">
-                <h3>Eficiência</h3>
-                <p id="eficiencia">100%</p>
+                <h3>Meta de Produção Mensal por Máquina</h3>
+                <p id="total">8.200 / 10.000 latas (82%)</p>
             </div>
             <div class="box">
                 <h3>Máquina Com Menor Produção (%)</h3>
-                <p id="maquina">Máquina A (15%)</p>
+                <p id="maquina">Máquina D (15%)</p>
             </div>
         </section>
         <section class="alert">
@@ -115,14 +111,14 @@
         datasets: [
             {
                 label: "Produção total no mês do ano anterior (latas/mês)",
-                data: [110000, 95000, 100000, 120000, 140000, 115000],
+                data: [845000, 835500, 850000, 845000, 850500, 835000],
                 backgroundColor: 'lightblue',
                 borderWidth: 2,
                 borderDash: [5, 5],
             },
             {
                 label: "Produção total no mês atual (latas/mês)",
-                data: [120000, 105000, 110000, 125000, 135000, 130000],
+                data: [855500, 850000, 860000, 855000, 845000, 850500],
                 borderColor: "navy",
                 backgroundColor: "navy",
             }
@@ -157,15 +153,15 @@
                 label: "Produção (%)",
                 data: [35, 25, 20, 15], // porcentagem de produção
                 backgroundColor: [
-                    "blue",
-                    "green",
-                    "yellow",
-                    "red"
+                    "#6395EE",
+                    "#1104fc",
+                    "#2a15bc",
+                    "#000080"
                 ],
                 borderWidth: 1
             }
         ]
-    };
+    };  
 
     const configPie = {
         type: "pie",
