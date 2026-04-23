@@ -91,6 +91,7 @@ body {
   z-index: 1;
   text-align: center;
   font-size: x-large;
+  text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.488);
 }
 
 .cards {
@@ -142,6 +143,7 @@ body {
   padding: 20px;
   width: 250px;
   border-radius: 10px;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.488);
 }
 
 .icon {
@@ -190,7 +192,7 @@ body {
 
 .module-text {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto 100px;
   text-align: center;
 }
 
