@@ -82,7 +82,7 @@ body {
   color: white;
   padding: 100px 20px;
   text-align: center;
-  height: 750px;
+  height: 700px;
 }
 
 .slogan {
@@ -90,7 +90,7 @@ body {
   position: relative;
   z-index: 1;
   text-align: center;
-  font-size: xx-large;
+  font-size: x-large;
 }
 
 .cards {
@@ -159,12 +159,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  background: white;
   padding: 40px;
   border-radius: 20px;
-  max-width: 1200px;
-  margin: auto;
+  max-width: cover;
+  margin: cover;
 }
 
 .service-section {
@@ -190,29 +188,31 @@ body {
   line-height: 1.5;
 }
 
+.module-text {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .side-image {
-  display: flex;
+  display: grid;
   align-items: flex-start;
   align-self: flex-start;
-  width: 200px;
+  width: 250px;
 }
 
 .side-image2 {
-  display: flex;
+  display: grid;
   align-items: flex-end;
   align-self: flex-end;
-  width: 200px;
-}
-
-.module-text {
-  max-width: cover;
-  text-align: center;
+  width: 250px;
 }
 
 .video-section {
   display: flex;
   justify-content: center;
-  margin: 40px 0;
+  margin: 30px 17px;
+  height: 350px;
 }
 
 .footer {
