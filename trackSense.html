@@ -12,18 +12,25 @@
 <body>
 
   <header class="header">
-        <a href="trackSense.html">
-          <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
-        </a>
+    <a href="trackSense.html">
+      <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+    </a>
 
-        <nav class="nav-bar">
-            <ul>
-                <li><a class="active" href="#">Home</a></li>
-                <li><a href="dashboard.html">Dashboards</a></li>
-                <li><a href="calculadora.html">Calculadora Financeira</a></li>
-                <li><a href="login.html">Login</a></li>
-            </ul>
-        </nav>
+    <nav class="nav-bar">
+      <ul>
+        <li><a class="active" href="#">Home</a></li>
+        <li id="linkDashboard" style="display: none;">
+          <a href="dashboard.html">Dashboard</a>
+        </li>
+        <li>
+          <a href="calculadora.html">Calculadora Financeira</a>
+        </li>
+        <li id="linkLogin"><a href="login.html">Login</a></li>
+        <li id="linkLogout" style="display: none;">
+          <a href="#" onclick="logout()">Sair</a>
+        </li>
+      </ul>
+    </nav>
   </header>
 
   <main>
@@ -31,12 +38,12 @@
     <!-- SEÇÃO PRINCIPAL -->
     <section class="image-section" id="sobre">
       <div class="slogan">
-      <h1> Não deixe sua margem de lucro pipocar <br></h1>
-      <h2>conte com a gente</h2>
+        <h1> Não deixe sua margem de lucro pipocar <br></h1>
+        <h2>conte com a gente</h2>
       </div>
       <div class="overlay"></div>
     </section>
-    
+
     <section class="cards">
       <div class="overlay2"></div>
 
@@ -95,33 +102,40 @@
 
         <img src="Assets/img/sensor.png" class="side-image">
 
-          <div class="video-section" id="video">
-            <iframe width="710" height="400"
-              src="https://www.youtube.com/embed/xlEtyCTrIdQ?autoplay=1&mute=1&loop=1&playlist=xlEtyCTrIdQ&controls=0&start=13"
-              title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media"
-              allowfullscreen>
-            </iframe>
-          </div>
+        <div class="video-section" id="video">
+          <iframe width="710" height="400"
+            src="https://www.youtube.com/embed/xlEtyCTrIdQ?autoplay=1&mute=1&loop=1&playlist=xlEtyCTrIdQ&controls=0&start=13"
+            title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+          </iframe>
+        </div>
 
         <img src="Assets/img/maquina.png" class="side-image2">
 
       </div>
 
     </section>
-<br><br>
+    <br><br>
     <section class="section-module" id="modulo">
 
       <div class="module-text">
         <h3>
           Módulo de contagem e ritmo de milho em conserva para máquinas legadas
         </h3>
-            <p>
-              A implementação do MCR elimina as discrepâncias entre a produção física e o registro no sistema, estancando
-              perdas financeiras causadas por erros humanos e falhas de inventário. Com uma contagem automatizada e
-              precisa, a fábrica evita prejuízos ocultos e garante que cada unidade produzida seja devidamente
-              contabilizada, protegendo diretamente a margem de lucro da operação.Lorem ipsum dolor sit amet, consectetur adipiscing <br> elit. Nullam non felis in nibh placerat ultricies. Aliquam nisi erat, eleifend pretium augue non, tincidunt ultricies eros. Quisque lacinia justo vel ipsum faucibus bibendum. Quisque quis efficitur ex. Praesent scelerisque sapien a eleifend pharetra. Curabitur imperdiet facilisis varius. Vestibulum rhoncus posuere <br> sem, sit amet euismod diam sollicitudin ac. Nam vel porttitor sapien. Vestibulum dictum massa non felis lacinia dapibus. Praesent mattis vulputate orci dapibus vehicula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Aliquam at interdum nibh. Nunc scelerisque, felis ac lobortis mollis, turpis lectus molestie magna, sed dignissim orci diam in nunc. Etiam lectus dolor, euismod semper sem vel, rhoncus feugiat turpis.
-              </p>
-            </div>
+        <p>
+          A implementação do MCR elimina as discrepâncias entre a produção física e o registro no sistema, estancando
+          perdas financeiras causadas por erros humanos e falhas de inventário. Com uma contagem automatizada e
+          precisa, a fábrica evita prejuízos ocultos e garante que cada unidade produzida seja devidamente
+          contabilizada, protegendo diretamente a margem de lucro da operação.Lorem ipsum dolor sit amet, consectetur
+          adipiscing <br> elit. Nullam non felis in nibh placerat ultricies. Aliquam nisi erat, eleifend pretium augue
+          non, tincidunt ultricies eros. Quisque lacinia justo vel ipsum faucibus bibendum. Quisque quis efficitur ex.
+          Praesent scelerisque sapien a eleifend pharetra. Curabitur imperdiet facilisis varius. Vestibulum rhoncus
+          posuere <br> sem, sit amet euismod diam sollicitudin ac. Nam vel porttitor sapien. Vestibulum dictum massa non
+          felis lacinia dapibus. Praesent mattis vulputate orci dapibus vehicula. Pellentesque habitant morbi tristique
+          senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Aliquam at interdum nibh. Nunc
+          scelerisque, felis ac lobortis mollis, turpis lectus molestie magna, sed dignissim orci diam in nunc. Etiam
+          lectus dolor, euismod semper sem vel, rhoncus feugiat turpis.
+        </p>
+      </div>
 
     </section>
 
@@ -134,3 +148,15 @@
 </body>
 
 </html>
+<script>
+  if (localStorage.getItem("logado") === "true") {
+    document.getElementById("linkDashboard").style.display = "block";
+    document.getElementById("linkLogout").style.display = "block";
+    document.getElementById("linkLogin").style.display = "none";
+  }
+
+  function logout() {
+    localStorage.removeItem("logado");
+    window.location.href = "login.html";
+  }
+</script>

@@ -18,9 +18,11 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
-                <li><a class="active" href="#">Dashboards</a></li>
+                <li><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li id="linkLogout" style="display: block;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -197,4 +199,9 @@
         document.getElementById("graphicPie"),
         configPie
     );
+
+    function logout() {
+        localStorage.removeItem("logado");
+        window.location.href = "login.html";
+    };
 </script>
