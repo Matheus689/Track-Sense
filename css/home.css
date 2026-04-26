@@ -117,6 +117,11 @@ body {
   border-radius: 5px;
   cursor: pointer;
   margin: 15px 10px;
+  transition: 0.3s;
+}
+
+.botCal:hover {
+  transform: scale(1.1);
 }
 
 .cards {
@@ -175,7 +180,11 @@ body {
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-20px);
+}
+
+.card h3 {
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
 
 .icon {
