@@ -229,15 +229,17 @@ body {
 }
 
 .module-text p {
-  font-size: 13px;
   line-height: 1.5;
   font-size: 15px;
+  text-align: justify
 }
 
 .module-text {
   max-width: 800px;
   margin: 0 auto 100px;
   text-align: center;
+
+  padding: 20px;
 }
 
 .side-image {
