@@ -97,6 +97,7 @@ body {
 }
 
 .slogan2 {
+  font-weight: bold;
   padding: 20px 20px;
   position: relative;
   z-index: 1;
@@ -109,6 +110,7 @@ body {
 .botCal {
   padding: 10px 20px;
   font-size: medium;
+  font-weight: bold;
   background-color: #007bff;
   color: white;
   border: none;
@@ -121,7 +123,8 @@ body {
   position: relative;
   color: white;
   padding: 100px 20px;
-  text-align: center;background-color: #111827;
+  text-align: center;
+  background-color: #111827;
 }
 
 .overlay {
@@ -168,6 +171,11 @@ body {
   width: 250px;
   border-radius: 10px;
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.488);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .icon {
@@ -179,6 +187,7 @@ body {
   align-items: center;
   justify-content: center;
   margin: auto;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);
 }
 
 .module-container {
