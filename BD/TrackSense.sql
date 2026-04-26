@@ -177,7 +177,11 @@ SELECT u.nome AS 'Funcionário', s.nome AS 'Supervisor'
 FROM usuario AS u
 LEFT JOIN usuario AS s
 ON u.fkSupervisor = s.idUsuario;
-
+-- Empresas com os ceps
+SELECT e.nome AS 'Empresa', cep AS 'CEP'
+FROM empresa AS e 
+JOIN endereco 
+ON e.fkEndereco = idEndereco;
 
 
 

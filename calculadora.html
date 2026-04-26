@@ -12,13 +12,22 @@
 <body>
 
     <header class="header">
-        <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        <a href="trackSense.html">
+            <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        </a>
         <nav class="nav-bar">
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
-                <li><a href="dashboard.html">Dashboards</a></li>
+                <li id="linkDashboard" style="display: none;">
+                    <a href="dashboard.html">Dashboard</a>
+                </li>
                 <li><a class="active" href="#">Calculadora Financeira</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li id="linkLogin">
+                    <a href="login.html">Login</a>
+                </li>
+                <li id="linkLogout" style="display: none;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -164,5 +173,15 @@ como fazer a conta do erro de sensor;
         }
     }
 
+    if (localStorage.getItem("logado") === "true") {
+        document.getElementById("linkDashboard").style.display = "block";
+        document.getElementById("linkLogout").style.display = "block";
+        document.getElementById("linkLogin").style.display = "none";
+    }
+
+    function logout() {
+        localStorage.removeItem("logado");
+        window.location.href = "login.html";
+    }
 
 </script>

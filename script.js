@@ -26,7 +26,7 @@ function cadValidarEmail() {
         if (email.includes(valiEmail[j])) {
             let posicaoArroba = email.indexOf(valiEmail)
             let posicaoPonto = email.lastIndexOf(valiEmail2)
-            if (email.includes(valiEmail2[j]) && posicaoArroba < posicaoPonto){
+            if (email.includes(valiEmail2[j]) && posicaoArroba < posicaoPonto) {
                 emailConfi = true;
             }
         }
@@ -71,7 +71,7 @@ function cadValidarCadastro() {
 
 
 
-    // valida o tamnaho da senha
+    // valida o tamanho da senha
     if (senha.length >= 8) {
         tamanhoSenha = true
     }
@@ -162,9 +162,11 @@ function LogEntrar() {
 
         if (emailDigitado == emailCadastrado && senhaDigitada == senhaCadastrada) {
             usuarioEncontrado = true;
-            let nomeUsuario = usuario[i][0]; 
+            let nomeUsuario = usuario[i][0];
 
             alert(`Bem-vindo, ${nomeUsuario}! Você entrou na sua página.`);
+            localStorage.setItem("logado", "true");
+            window.location.href = "dashboard.html";
         }
     }
 
@@ -173,17 +175,56 @@ function LogEntrar() {
     }
 }
 
+function cadValidarCNPJ() {
+    function cadValidarCNPJ() {
+    let cnpj = ipt_cnpj.value.replace(/\D/g, ''); // remove tudo que não for número
 
+    // Verifica tamanho
+    if (cnpj.length != 14) {
+        alert("CNPJ inválido!");
+        return false;
+    }
 
+    // Elimina CNPJs inválidos conhecidos
+    if (/^(\d)\1+$/.test(cnpj)) {
+        alert("CNPJ inválido!");
+        return false;
+    }
 
+    // Validação do primeiro dígito
+    let soma = 0;
+    let peso = 5;
 
+    for (let i = 0; i < 12; i++) {
+        soma += cnpj[i] * peso;
+        peso--;
+        if (peso < 2) peso = 9;
+    }
 
+    let resto = soma % 11;
+    let dig1 = resto < 2 ? 0 : 11 - resto;
 
+    // Validação do segundo dígito
+    soma = 0;
+    peso = 6;
 
+    for (let i = 0; i < 13; i++) {
+        soma += cnpj[i] * peso;
+        peso--;
+        if (peso < 2) peso = 9;
+    }
 
+    resto = soma % 11;
+    let dig2 = resto < 2 ? 0 : 11 - resto;
 
-
-
-
-
-
+    // Verifica se bate com os dígitos finais
+    if (dig1 == cnpj[12] && dig2 == cnpj[13]) {
+        alert("CNPJ válido!");
+        return true;
+    } else {
+        alert("CNPJ inválido!");
+        return false;
+    }
+}
+    
+}
