@@ -26,7 +26,7 @@ function cadValidarEmail() {
         if (email.includes(valiEmail[j])) {
             let posicaoArroba = email.indexOf(valiEmail)
             let posicaoPonto = email.lastIndexOf(valiEmail2)
-            if (email.includes(valiEmail2[j]) && posicaoArroba < posicaoPonto){
+            if (email.includes(valiEmail2[j]) && posicaoArroba < posicaoPonto) {
                 emailConfi = true;
             }
         }
@@ -162,9 +162,11 @@ function LogEntrar() {
 
         if (emailDigitado == emailCadastrado && senhaDigitada == senhaCadastrada) {
             usuarioEncontrado = true;
-            let nomeUsuario = usuario[i][0]; 
+            let nomeUsuario = usuario[i][0];
 
             alert(`Bem-vindo, ${nomeUsuario}! Você entrou na sua página.`);
+            localStorage.setItem("logado", "true");
+            window.location.href = "dashboard.html";
         }
     }
 

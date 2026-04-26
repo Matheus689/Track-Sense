@@ -13,14 +13,16 @@
 <body>
     <header class="header">
         <a href="trackSense.html">
-          <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+            <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
         </a>
         <nav class="nav-bar">
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
-                <li><a class="active" href="#">Dashboards</a></li>
+                <li><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li id="linkLogout" style="display: block;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -28,7 +30,7 @@
     <main class="main">
         <section class="boxes">
             <div class="box">
-                <h3>Produção Atual (latas/min)</h3>
+                <h3>Produção Atual (latas/min) por Máquina</h3>
                 <p id="producao">83 latas/min</p>
             </div>
             <div class="box">
@@ -36,7 +38,7 @@
                 <p id="total">676.000 / 845.000 latas (80%)</p>
             </div>
             <div class="box">
-                <h3>Máquina Com Menor Produção (%)</h3>
+                <h3>Máquina com Menor Produção (%)</h3>
                 <p id="maquina">Máquina D (15%)</p>
             </div>
         </section>
@@ -45,11 +47,12 @@
         </section>
         <section class="graphic-box">
             <section class="graphic">
-                <h2>Produção Real vs Esperado (latas/min)</h2>
+                <h2>Produção Real vs Esperado (latas/min)<br>(Máquina D)</h2>
                 <canvas id="graphicLine"></canvas>
             </section>
             <section class="graphic">
-                <h2>Produção de Latas no mês do Ano Atual vs Ano Anterior (latas/mês)</h2>
+                <h2>Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br>
+                    (Máquina D)</h2>
                 <canvas id="graphicBar"></canvas>
             </section>
             <section class="graphic">
@@ -196,4 +199,9 @@
         document.getElementById("graphicPie"),
         configPie
     );
+
+    function logout() {
+        localStorage.removeItem("logado");
+        window.location.href = "login.html";
+    };
 </script>
