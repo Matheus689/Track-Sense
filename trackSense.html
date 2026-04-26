@@ -44,7 +44,7 @@
       </div>
       <div class="overlay"></div>
       <p class="slogan2">Faça sua simulação com a gente <br>
-        <button class="botCal" onclick="ir()">Teste</button>
+        <button class="botCal" onclick="ir()">Simule</button>
       </p>
       <script>
         function ir() {
@@ -146,6 +146,31 @@
         </p>
       </div>
 
+    </section>
+
+    <section>
+      <div class="bloq side1 cad">
+        </div>
+
+        <div class="bloq side2">
+            <div class="logo1"></div>
+
+            <div class="input">
+                <input type="text" id="inpNome" placeholder="Nome">
+
+                <input type="text" id="inpCNPJ" oninput="cadValidarCNPJ()" placeholder="CNPJ">
+                <div id="exibirResultadoCNPJ"></div>
+                <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Senha">
+                <div id="exibirResultadoCadastro"></div>
+
+                <input type="password" id="inpSenhaConf" oninput="cadValidarCadastro()" placeholder="Confirme sua Senha">
+            </div>
+
+            <button onclick="CadCadastrar()" class="button">Cadastrar</button>
+
+            <p class="text">Já tem uma conta? <b><a href="login.html">Faça login!</a></b></p>
+
+        </div>
     </section>
 
   </main>

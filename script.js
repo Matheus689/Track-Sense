@@ -176,22 +176,22 @@ function LogEntrar() {
 }
 
 function cadValidarCNPJ() {
-    function cadValidarCNPJ() {
-    let cnpj = ipt_cnpj.value.replace(/\D/g, ''); // remove tudo que não for número
 
-    // Verifica tamanho
+    let cnpj = ipt_cnpj.value.replace(/\D/g, '');
+
+    // tamanho
     if (cnpj.length != 14) {
-        alert("CNPJ inválido!");
+        exibirResultadoCNPJ.innerHTML = "CNPJ deve ter 14 números";
         return false;
     }
 
-    // Elimina CNPJs inválidos conhecidos
+    // números repetidos
     if (/^(\d)\1+$/.test(cnpj)) {
-        alert("CNPJ inválido!");
+        exibirResultadoCNPJ.innerHTML = "CNPJ inválido";
         return false;
     }
 
-    // Validação do primeiro dígito
+    // primeiro dígito
     let soma = 0;
     let peso = 5;
 
@@ -204,7 +204,7 @@ function cadValidarCNPJ() {
     let resto = soma % 11;
     let dig1 = resto < 2 ? 0 : 11 - resto;
 
-    // Validação do segundo dígito
+    // segundo dígito
     soma = 0;
     peso = 6;
 
@@ -217,14 +217,13 @@ function cadValidarCNPJ() {
     resto = soma % 11;
     let dig2 = resto < 2 ? 0 : 11 - resto;
 
-    // Verifica se bate com os dígitos finais
-    if (dig1 == cnpj[12] && dig2 == cnpj[13]) {
-        alert("CNPJ válido!");
-        return true;
-    } else {
-        alert("CNPJ inválido!");
+    // validação final
+    if (dig1 != cnpj[12] || dig2 != cnpj[13]) {
+        exibirResultadoCNPJ.innerHTML = "CNPJ inválido";
         return false;
     }
-}
-    
+
+    // válido
+    exibirResultadoCNPJ.innerHTML = "";
+    return true;
 }
