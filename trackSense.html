@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrackSense | Home</title>
+  <script src="script.js" defer></script>
   <link rel="stylesheet" href="css/home.css">
   <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
 </head>
@@ -35,6 +36,14 @@
       <h2>conte com a gente</h2>
       </div>
       <div class="overlay"></div>
+      <p class="slogan2">Faça sua simulação com a gente <br>
+        <button class="botCal" onclick="ir()">Teste</button>
+      </p>
+      <script>
+        function ir() {
+          window.location.href = "calculadora.html";
+        }
+      </script>
     </section>
     
     <section class="cards">
@@ -122,7 +131,27 @@
               contabilizada, protegendo diretamente a margem de lucro da operação.Lorem ipsum dolor sit amet, consectetur adipiscing <br> elit. Nullam non felis in nibh placerat ultricies. Aliquam nisi erat, eleifend pretium augue non, tincidunt ultricies eros. Quisque lacinia justo vel ipsum faucibus bibendum. Quisque quis efficitur ex. Praesent scelerisque sapien a eleifend pharetra. Curabitur imperdiet facilisis varius. Vestibulum rhoncus posuere <br> sem, sit amet euismod diam sollicitudin ac. Nam vel porttitor sapien. Vestibulum dictum massa non felis lacinia dapibus. Praesent mattis vulputate orci dapibus vehicula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisi. Aliquam at interdum nibh. Nunc scelerisque, felis ac lobortis mollis, turpis lectus molestie magna, sed dignissim orci diam in nunc. Etiam lectus dolor, euismod semper sem vel, rhoncus feugiat turpis.
               </p>
             </div>
+    </section>
 
+    <section class="cad-empresa">
+      <div class="bloq side2"><h2>Cadastre já sua empresa</h2>
+      
+      <br>
+        <div class="bloq side2">
+          <div class="logo1"></div>
+
+          <div class="input cad">
+            <input type="text" id="inpNomeEmpresa" placeholder="NomeEmpresa">
+            <input type="text" id="inpCNPJ" oninput="cadValidarCNPJ()" placeholder="CNPJ">
+            <input type="text" id="codigoEmpresa" placeholder="Código da Empresa">
+          </div>
+              
+          <button onclick="CadCadastrar()" class="button">Cadastrar</button>
+          <p class="text">Já tem uma conta? <b><a href="Login.html">Faça login</a></b></p>
+                
+            
+        </div>
+      </div>
     </section>
 
   </main>
