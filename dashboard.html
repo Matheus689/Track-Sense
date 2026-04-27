@@ -39,7 +39,7 @@
             </div>
             <div class="box">
                 <h3>Máquina com Menor Produção (%)</h3>
-                <p id="maquina">Máquina D (15%)</p>
+                <p id="maquina">Máquina D (22,71%)</p>
             </div>
         </section>
         <section class="alert">
@@ -82,10 +82,10 @@
     const labelsLine = ['12:15', '12:16', '12:17', '12:18', '12:19'];
 
     const dadosMeta = {
-        A: { atual: 680000, meta: 845000 },
-        B: { atual: 650000, meta: 845000 },
-        C: { atual: 720000, meta: 845000 },
-        D: { atual: 600000, meta: 845000 }
+        A: { atual: 850500, meta: 845000 },
+        B: { atual: 832000, meta: 845000 },
+        C: { atual: 870000, meta: 845000 },
+        D: { atual: 812000, meta: 845000 }
     };
 
     const dadosMaquinas = {
@@ -97,9 +97,9 @@
 
     const dadosBarraMaquinas = {
         A: [855500, 850000, 860000, 855000, 845000, 850500],
-        B: [820000, 830000, 825000, 835000, 828000, 832000],
+        B: [820000, 830000, 825000, 835000, 828000, 800000],
         C: [870000, 860000, 875000, 865000, 880000, 870000],
-        D: [800000, 810000, 805000, 815000, 808000, 812000]
+        D: [800000, 720000, 805000, 815000, 808000, 750000]
     };
     const dataLine = {
         labels: labelsLine,
@@ -187,7 +187,7 @@
         datasets: [
             {
                 label: "Produção (%)",
-                data: [35, 25, 20, 15], 
+                data: [25.75, 25.19, 26.31, 22.71], 
                 backgroundColor: [
                     "#6395EE",
                     "#1104fc",
