@@ -231,14 +231,15 @@ body {
 .module-text p {
   line-height: 1.5;
   font-size: 15px;
-  text-align: justify
+  text-align: justify;
+  margin-bottom: -150px;
+  
 }
 
 .module-text {
   max-width: 800px;
   margin: 0 auto 100px;
   text-align: center;
-
   padding: 20px;
 }
 
@@ -289,8 +290,19 @@ body {
 
 .h2 h2{
   font-size: 40px;
-  color: #111827;
+  color: whitesmoke;
   justify-items: flex-end;
+}
+
+.cadEmpresa{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: #111827;
+  width: 500px;
+  height: 800px;
+  border-radius: 10px;
 }
 
 .bloq {
@@ -299,7 +311,6 @@ body {
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  
 }
 
 .log {
@@ -316,7 +327,7 @@ body {
   background-color: #EBEBEB;
   height: 7vh;
   margin-top: 20px;
-  width: 30%;
+  width: 80%;
   padding-left: 15px;
 }
 
@@ -364,6 +375,7 @@ input::placeholder {
 
 .bloq .text {
   margin-bottom: 2px;
+  color: whitesmoke;
 }
 
 .texto {
