@@ -88,7 +88,7 @@ body {
 }
 
 .slogan {
-  padding: 0 20px;
+  padding: 40px 20px;
   position: relative;
   z-index: 1;
   text-align: center;
@@ -97,38 +97,29 @@ body {
 }
 
 .slogan2 {
+  font-weight: bold;
   padding: 20px 20px;
   position: relative;
   z-index: 1;
   text-align: center;
   font-size: x-large;
   text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.488);
-  margin: 350px 10px;
-}
-
-.botCal {
-  padding: 10px 20px;
-  font-size: medium;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 15px 10px;
+  margin: 100px 10px;
 }
 
 .cards {
   position: relative;
   color: white;
   padding: 100px 20px;
-  text-align: center;background-color: #111827;
+  text-align: center;
+  background-color: #111827;
 }
 
 .overlay {
   position: absolute;
   pointer-events: none;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .overlay2 {
@@ -150,7 +141,7 @@ body {
 
 .main-content p {
   font-size: 20px;
-  
+
 }
 
 .cards-values {
@@ -168,6 +159,15 @@ body {
   width: 250px;
   border-radius: 10px;
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.488);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-20px);
+}
+
+.card h3 {
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
 
 .icon {
@@ -179,6 +179,7 @@ body {
   align-items: center;
   justify-content: center;
   margin: auto;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);
 }
 
 .module-container {
@@ -211,15 +212,18 @@ body {
 }
 
 .module-text p {
-  font-size: 13px;
   line-height: 1.5;
   font-size: 15px;
+  text-align: justify;
+  margin-bottom: -150px;
+
 }
 
 .module-text {
   max-width: 800px;
   margin: 0 auto 100px;
   text-align: center;
+  padding: 20px;
 }
 
 .side-image {
@@ -267,13 +271,29 @@ body {
   margin-bottom: 20px;
 }
 
+.h2 h2 {
+  font-size: 40px;
+  color: whitesmoke;
+  justify-items: flex-end;
+}
+
+.cadEmpresa {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: #111827;
+  width: 500px;
+  height: 800px;
+  border-radius: 10px;
+}
+
 .bloq {
   display: flex;
   padding: 20px;
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  
 }
 
 .log {
@@ -290,7 +310,7 @@ body {
   background-color: #EBEBEB;
   height: 7vh;
   margin-top: 20px;
-  width: 30%;
+  width: 80%;
   padding-left: 15px;
 }
 
@@ -317,27 +337,27 @@ input::placeholder {
   justify-content: center;
 }
 
-.bloq button {
-  border-radius: 20px;
-  margin-top: 25px;
-  width: 10vw;
-  height: 6vh;
-  border-style: none;
-  background-color: aqua;
+button {
+  margin-top: 30px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(to right, #4687A9, #78BFE4);
+  color: white;
+  font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background: radial-gradient(50% 50% at 50% 50%, #78BFE4 0%, #4A89AA 100%);
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  color: #EBEBEB;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.bloq button:hover {
-  transform: scale(1.1);
+button:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
 }
 
 .bloq .text {
   margin-bottom: 2px;
+  color: whitesmoke;
 }
 
 .texto {
@@ -351,9 +371,17 @@ P {
 }
 
 .footer {
-  height: 7%;
+  
   background: #111827;
   color: white;
   text-align: center;
   padding: 5px;
+}
+
+.footer p {
+  text-align: start left;
+}
+
+.footer span {
+  text-align: start right;
 }
