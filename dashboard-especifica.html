@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrackSense | Dashboard</title>
+    <title>Document</title>
     <link rel="stylesheet" href="css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
 </head>
-
 <body>
     <header class="header">
         <a href="trackSense.html">
@@ -28,55 +25,40 @@
     </header>
 
     <main class="main">
+        <h1>Máquina X</h1>
         <section class="boxes">
             <div class="box">
-                <h3>Produção Atual (latas/min) por Máquina</h3>
+                <h3>Produção Atual (latas/min)</h3>
                 <p id="producao">83 latas/min</p>
             </div>
             <div class="box">
-                <h3>Meta de Produção Mensal por Máquina (%)</h3>
+                <h3>Meta de Produção Mensal (%)</h3>
                 <p id="total">676.000 / 845.000 latas (80%)</p>
             </div>
-            <div class="box">
+            <!-- <div class="box">
                 <h3>Máquina com Menor Produção (%)</h3>
                 <p id="maquina">Máquina D (15%)</p>
-            </div>
+            </div> -->
         </section>
         <section class="alert">
             <p id="alert">Sistema operando normalmente</p>
         </section>
-        
-        <section class="filtro">
-            <button onclick="trocarMaquina('A')">Máquina A</button>
-            <button onclick="trocarMaquina('B')">Máquina B</button>
-            <button onclick="trocarMaquina('C')">Máquina C</button>
-            <button onclick="trocarMaquina('D')">Máquina D</button>
-        </section>
 
         <section class="graphic-box">
             <section class="graphic">
-                <h2 id="tituloLinha">Produção Real vs Esperado (latas/min)<br>(Máquina A)</h2>
+                <h2 id="tituloLinha">Produção Real vs Esperado (latas/min)</h2>
                 <canvas id="graphicLine"></canvas>
             </section>
             <section class="graphic">
-                <h2 id="tituloBarra">Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br>
-                    (Máquina A)</h2>
+                <h2 id="tituloBarra">Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br></h2>
                 <canvas id="graphicBar"></canvas>
             </section>
-            <section class="graphic">
+            <!-- <section class="graphic">
                 <h2>Distribuição de Produção por Máquina (%)</h2>
                 <canvas id="graphicPie"></canvas>
-            </section>
+            </section> -->
         </section>
-
-
-    </main>
-
-    <footer class="footer">
-        <p>© 2026 TrackSense. Todos os direitos reservados.</p>
-    </footer>
 </body>
-
 </html>
 <script>
     const labelsLine = ['12:15', '12:16', '12:17', '12:18', '12:19'];
@@ -180,39 +162,6 @@
         }
     };
 
-    const labelsPie = ["Máquina A", "Máquina B", "Máquina C", "Máquina D"];
-
-    const dataPie = {
-        labels: labelsPie,
-        datasets: [
-            {
-                label: "Produção (%)",
-                data: [35, 25, 20, 15], 
-                backgroundColor: [
-                    "#6395EE",
-                    "#1104fc",
-                    "#2a15bc",
-                    "#000080"
-                ],
-                borderWidth: 1
-            }
-        ]
-    };
-
-    const configPie = {
-        type: "pie",
-        data: dataPie,
-        options: {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: "white"
-                    }
-                }
-            }
-        }
-    };
-
     const graphicLine = new Chart(
         document.getElementById("graphicLine"),
         configLine
@@ -222,54 +171,5 @@
         document.getElementById("graphicBar"),
         configBar
     );
-
-    const graphicPie = new Chart(
-        document.getElementById("graphicPie"),
-        configPie
-    );
-
-    function logout() {
-        localStorage.removeItem("logado");
-        window.location.href = "login.html";
-    };
-
-       function trocarMaquina(maquina) {
-    // gráfico de linha
-    graphicLine.data.datasets[0].data = dadosMaquinas[maquina];
-    graphicLine.update();
-
-    // gráfico de barras
-    graphicBar.data.datasets[1].data = dadosBarraMaquinas[maquina];
-    graphicBar.update();
-
-        // Produção Atual
-        const ultimoValor = dadosMaquinas[maquina][dadosMaquinas[maquina].length - 1];
-        document.getElementById("producao").innerText = ultimoValor + " latas/min";
-
-        if (ultimoValor < 80) {
-            document.getElementById("alert").innerText = "Processo com problema de produção";
-            document.getElementById("alert").style.color = "red";
-        } else {
-            document.getElementById("alert").innerText = "Sistema operando normalmente";
-            document.getElementById("alert").style.color = "lightgreen";
-        }
-        
-        // Meta Mensal
-        const atual = dadosMeta[maquina].atual;
-        const meta = dadosMeta[maquina].meta;
-        const porcentagem = Math.round((atual / meta) * 100);
-
-        document.getElementById("total").innerText =
-            `${atual.toLocaleString()} / ${meta.toLocaleString()} latas (${porcentagem}%)`;
-
-        
-        document.getElementById("tituloLinha").innerHTML =
-            "Produção Real vs Esperado (latas/min)<br>(Máquina " + maquina + ")";
-
-        document.getElementById("tituloBarra").innerHTML =
-            "Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br>(Máquina " + maquina + ")";
-    }
-
-
 
 </script>

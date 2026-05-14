@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSense | Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <header class="header">
+        <a href="trackSense.html">
+            <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        </a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a href="trackSense.html">Home</a></li>
+                <li><a class="active" href="#">Dashboard</a></li>
+                <li><a href="calculadora.html">Calculadora Financeira</a></li>
+                <li id="linkLogout" style="display: block;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+
+        <section class="ranking-section">
+
+            <div class="ranking-header">
+                <div>
+                    <h2>Produção Geral da Fábrica</h2>
+                </div>
+
+                <div class="ranking-filters">
+                    <button>Todas</button>
+                    <button>Normal</button>
+                    <button>Atenção</button>
+                    <button>Crítica</button>
+                </div>
+            </div>
+
+            <table class="ranking-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Máquina</th>
+                        <th>Linha</th>
+                        <th>Eficiência</th>
+                        <th>Produção Atual</th>
+                        <th>Meta</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="rankingBody">
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 TrackSense. Todos os direitos reservados.</p>
+    </footer>
+</body>
+
+</html>
+<script>
+    const maquinasRanking = [
+        {
+            maquina: "Máquina J",
+            linha: "L5",
+            eficiencia: 95,
+            producao: 92,
+            meta: 90
+        },
+        {
+            maquina: "Máquina A",
+            linha: "L1",
+            eficiencia: 92,
+            producao: 88,
+            meta: 90
+        },
+        {
+            maquina: "Máquina G",
+            linha: "L3",
+            eficiencia: 91,
+            producao: 88,
+            meta: 90
+        },
+        {
+            maquina: "Máquina I",
+            linha: "L4",
+            eficiencia: 88,
+            producao: 85,
+            meta: 90
+        },
+        {
+            maquina: "Máquina B",
+            linha: "L1",
+            eficiencia: 87,
+            producao: 84,
+            meta: 90
+        },
+        {
+            maquina: "Máquina K",
+            linha: "L5",
+            eficiencia: 83,
+            producao: 80,
+            meta: 90
+        },
+        {
+            maquina: "Máquina C",
+            linha: "L2",
+            eficiencia: 82,
+            producao: 80,
+            meta: 90
+        },
+        {
+            maquina: "Máquina E",
+            linha: "L2",
+            eficiencia: 78,
+            producao: 76,
+            meta: 90
+        },
+        {
+            maquina: "Máquina F",
+            linha: "L3",
+            eficiencia: 75,
+            producao: 72,
+            meta: 90
+        },
+        {
+            maquina: "Máquina H",
+            linha: "L4",
+            eficiencia: 69,
+            producao: 65,
+            meta: 90
+        },
+        {
+            maquina: "Máquina D",
+            linha: "L2",
+            eficiencia: 15,
+            producao: 14,
+            meta: 90
+        }
+    ];
+
+    // const labelsPie = ["Máquina A", "Máquina B", "Máquina C", "Máquina D"];
+
+    // const dataPie = {
+    //     labels: labelsPie,
+    //     datasets: [
+    //         {
+    //             label: "Produção (%)",
+    //             data: [35, 25, 20, 15],
+    //             backgroundColor: [
+    //                 "#6395EE",
+    //                 "#1104fc",
+    //                 "#2a15bc",
+    //                 "#000080"
+    //             ],
+    //             borderWidth: 1
+    //         }
+    //     ]
+    // };
+
+    // const configPie = {
+    //     type: "pie",
+    //     data: dataPie,
+    //     options: {
+    //         plugins: {
+    //             legend: {
+    //                 labels: {
+    //                     color: "white"
+    //                 }
+    //             }
+    //         }
+    //     }
+    // };
+
+    // const graphicLine = new Chart(
+    //     document.getElementById("graphicLine"),
+    //     configLine
+    // );
+
+    // const graphicBar = new Chart(
+    //     document.getElementById("graphicBar"),
+    //     configBar
+    // );
+
+    // const graphicPie = new Chart(
+    //     document.getElementById("graphicPie"),
+    //     configPie
+    // );
+
+    function logout() {
+        localStorage.removeItem("logado");
+        window.location.href = "login.html";
+    };
+
+    // function trocarMaquina(maquina) {
+    //     // gráfico de linha
+    //     graphicLine.data.datasets[0].data = dadosMaquinas[maquina];
+    //     graphicLine.update();
+
+    //     // gráfico de barras
+    //     graphicBar.data.datasets[1].data = dadosBarraMaquinas[maquina];
+    //     graphicBar.update();
+
+    //     // Produção Atual
+    //     const ultimoValor = dadosMaquinas[maquina][dadosMaquinas[maquina].length - 1];
+    //     document.getElementById("producao").innerText = ultimoValor + " latas/min";
+
+    //     if (ultimoValor < 80) {
+    //         document.getElementById("alert").innerText = "Processo com problema de produção";
+    //         document.getElementById("alert").style.color = "red";
+    //     } else {
+    //         document.getElementById("alert").innerText = "Sistema operando normalmente";
+    //         document.getElementById("alert").style.color = "lightgreen";
+    //     }
+
+    //     // Meta Mensal
+    //     const atual = dadosMeta[maquina].atual;
+    //     const meta = dadosMeta[maquina].meta;
+    //     const porcentagem = Math.round((atual / meta) * 100);
+
+    //     document.getElementById("total").innerText =
+    //         `${atual.toLocaleString()} / ${meta.toLocaleString()} latas (${porcentagem}%)`;
+
+
+    //     document.getElementById("tituloLinha").innerHTML =
+    //         "Produção Real vs Esperado (latas/min)<br>(Máquina " + maquina + ")";
+
+    //     document.getElementById("tituloBarra").innerHTML =
+    //         "Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br>(Máquina " + maquina + ")";
+    // }
+
+    function carregarRanking() {
+
+        const tbody = document.getElementById("rankingBody");
+
+        tbody.innerHTML = "";
+
+        maquinasRanking.forEach((item, index) => {
+
+            let cor = "green";
+            let statusClasse = "status-normal";
+            let statusTexto = "Normal";
+
+            if (item.eficiencia < 80 && item.eficiencia >= 50) {
+                cor = "yellow";
+                statusClasse = "status-warning";
+                statusTexto = "Atenção";
+            }
+
+            if (item.eficiencia < 50) {
+                cor = "red";
+                statusClasse = "status-critical";
+                statusTexto = "Crítica";
+            }
+
+            tbody.innerHTML += `
+        
+        <tr>
+            <td>${index + 1}</td>
+
+            <td><a href="dashboard-especifica.html">${item.maquina}</a></td>
+
+            <td>${item.linha}</td>
+
+            <td>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    
+                    <div class="progress-container">
+                        <div 
+                            class="progress-bar ${cor}"
+                            style="width:${item.eficiencia}%">
+                        </div>
+                    </div>
+
+                    <span>${item.eficiencia}%</span>
+
+                </div>
+            </td>
+
+            <td>${item.producao} l/min</td>
+
+            <td>${item.meta}%</td>
+
+            <td>
+                <span class="status ${statusClasse}">
+                    ${statusTexto}
+                </span>
+            </td>
+        </tr>
+        `;
+        });
+    }
+
+    carregarRanking();
+
+</script>

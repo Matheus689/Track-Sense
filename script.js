@@ -166,7 +166,7 @@ function LogEntrar() {
 
             alert(`Bem-vindo, ${nomeUsuario}! Você entrou na sua página.`);
             localStorage.setItem("logado", "true");
-            window.location.href = "dashboard.html";
+            window.location.href = "selecionar-fabrica.html";
         }
     }
 

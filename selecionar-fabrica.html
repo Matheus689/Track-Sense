@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Selecionar Fábrica</title>
+    <link rel="stylesheet" href="css/fabricas.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="trackSense.html">
+            <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        </a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a href="trackSense.html">Home</a></li>
+                <li><a class="active" href="#">Dashboard</a></li>
+                <li><a href="calculadora.html">Calculadora Financeira</a></li>
+                <li id="linkLogout" style="display: block;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <section class="container">
+
+        <div class="conteudoContainer">
+            <h1>Selecione uma fábrica</h1>
+
+            <div class="fabricas">
+
+                <div class="card" onclick="selecionarFabrica('SP')">
+                    <h2>Fábrica São Paulo</h2>
+                    <p>24 máquinas</p>
+                    <span class="normal">Operando normalmente</span> <!-- pega a API-->
+                </div>
+
+                <div class="card" onclick="selecionarFabrica('CP')">
+                    <h2>Fábrica Campinas</h2>
+                    <p>18 máquinas</p>
+                    <span class="alerta">2 alertas críticos</span>
+                </div>
+
+                <div class="card" onclick="selecionarFabrica('SC')">
+                    <h2>Fábrica Sorocaba</h2>
+                    <p>31 máquinas</p>
+                    <span class="normal">Operando normalmente</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>
+
+<script>
+    function selecionarFabrica(nome) {
+
+        localStorage.setItem("fabricaSelecionada", nome);
+
+        window.location.href = "dashboard-geral.html";
+    }
+</script>
