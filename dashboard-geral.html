@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackSense | Dashboard</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard-geral.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
 </head>
@@ -28,43 +28,74 @@
     </header>
 
     <main class="main">
-
-        <section class="ranking-section">
-
-            <div class="ranking-header">
-                <div>
-                    <h2>Produção Geral da Fábrica</h2>
-                </div>
-
-                <div class="ranking-filters">
-                    <button>Todas</button>
-                    <button>Normal</button>
-                    <button>Atenção</button>
-                    <button>Crítica</button>
-                </div>
+        <section class="boxes">
+            <div class="box">
+                <h3>Eficiência Média por hora</h3>
+                <p id="producao">87%</p>
+                <h3>4.3% vs ontem</h3>
             </div>
+            <div class="box">
+                <h3>Máquinas em risco</h3>
+                <p id="total">Máquina D</p>
+            </div>
+            <div class="box">
+                <h3>Ajuste de velocidade</h3>
+                <p id="total">Máquina E</p>
+                <h3>22% abaixo da média. Faltam 15.000 latas para a meta.</h3>
+            </div>
+        </section>
+        <section class="grafs">
+            <section class="ranking-section">
+                
+                <div class="ranking-header">
+                    <div>
+                        <h2>Produção Geral da Fábrica</h2>
+                    </div>
+    
+                    <div class="ranking-filters">
+                        <button>Todas</button>
+                        <button>Normal</button>
+                        <button>Atenção</button>
+                        <button>Crítica</button>
+                    </div>
+                </div>
+    
+                <table class="ranking-table">
+    
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Máquina</th>
+                            <!-- <th>Linha</th> -->
+                            <th>Eficiência</th>
+                            <th>Produção Atual</th>
+                            <!-- <th>Meta</th> -->
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody id="rankingBody">
+                    </tbody>
+    
+                </table>
+                
+            </section>
 
-            <table class="ranking-table">
-
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Máquina</th>
-                        <th>Linha</th>
-                        <th>Eficiência</th>
-                        <th>Produção Atual</th>
-                        <th>Meta</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <tbody id="rankingBody">
-                </tbody>
-
-            </table>
-
+            <section class="box-graficos">
+                <section class="grafProd-section">
+                    <div class="grafico-container">
+                        <canvas id="graficoProducao"></canvas>
+                    </div>
+                </section>
+                <section class="grafMaq-section">
+                    <div class="grafico-container">
+                        <canvas id="graficoMaquinas"></canvas>
+                    </div>
+                </section>
+            </section>
         </section>
 
+        
     </main>
 
     <footer class="footer">
@@ -77,82 +108,157 @@
     const maquinasRanking = [
         {
             maquina: "Máquina J",
-            linha: "L5",
+            // linha: "L5",
             eficiencia: 95,
             producao: 92,
-            meta: 90
+            // meta: 90
         },
         {
             maquina: "Máquina A",
-            linha: "L1",
+            // linha: "L1",
             eficiencia: 92,
             producao: 88,
-            meta: 90
+            // meta: 90
         },
         {
             maquina: "Máquina G",
-            linha: "L3",
+            // linha: "L3",
             eficiencia: 91,
             producao: 88,
-            meta: 90
+            // meta: 90
         },
         {
             maquina: "Máquina I",
-            linha: "L4",
+            // linha: "L4",
             eficiencia: 88,
             producao: 85,
-            meta: 90
+            // meta: 90
         },
-        {
-            maquina: "Máquina B",
-            linha: "L1",
-            eficiencia: 87,
-            producao: 84,
-            meta: 90
-        },
-        {
-            maquina: "Máquina K",
-            linha: "L5",
-            eficiencia: 83,
-            producao: 80,
-            meta: 90
-        },
-        {
-            maquina: "Máquina C",
-            linha: "L2",
-            eficiencia: 82,
-            producao: 80,
-            meta: 90
-        },
+        // {
+        //     maquina: "Máquina B",
+        //     // linha: "L1",
+        //     eficiencia: 87,
+        //     producao: 84,
+        //     // meta: 90
+        // },
+        // {
+        //     maquina: "Máquina K",
+        //     // linha: "L5",
+        //     eficiencia: 83,
+        //     producao: 80,
+        //     meta: 90
+        // },
+        // {
+        //     maquina: "Máquina C",
+        //     // linha: "L2",
+        //     eficiencia: 82,
+        //     producao: 80,
+        //     // meta: 90
+        // },
         {
             maquina: "Máquina E",
-            linha: "L2",
+            // linha: "L2",
             eficiencia: 78,
             producao: 76,
-            meta: 90
+            // meta: 90
         },
         {
             maquina: "Máquina F",
-            linha: "L3",
+            // linha: "L3",
             eficiencia: 75,
             producao: 72,
-            meta: 90
+            // meta: 90
         },
         {
             maquina: "Máquina H",
-            linha: "L4",
+            // linha: "L4",
             eficiencia: 69,
             producao: 65,
-            meta: 90
+            // meta: 90
         },
         {
             maquina: "Máquina D",
-            linha: "L2",
+            // linha: "L2",
             eficiencia: 15,
             producao: 14,
-            meta: 90
+            // meta: 90
         }
     ];
+
+    const labelsProducao = [
+        '08:00',
+        '09:00',
+        '10:00',
+        '11:00',
+        '12:00',
+        '13:00',
+        '14:00',
+        '15:00',
+        '16:00',
+        '17:00',
+        '18:00',
+    ];
+    const data = {
+        labels: labelsProducao,
+        datasets: [{
+            label: 'Produção Real',
+            backgroundColor: 'rgb(90, 180, 13, 0.8)',
+            borderColor: 'rgb(90, 180, 13, 0.8)',
+            data: [55000, 62000, 58000, 70000, 90000, 85000, 60000, 75000, 80000, 75000, 85000],
+        },
+        {
+            label: 'Meta',
+            borderDash: [10, 5], 
+            borderWidth: 2,
+            pointRadius: 0,
+            backgroundColor: 'rgb(255, 255, 255, 0.8)',
+            borderColor: 'rgb(255, 255, 255, 0.8)',
+            data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
+        }
+        ]
+    };
+
+    const labelsMaquinas = [
+        'Máquina J',
+        'Máquina A',
+        'Máquina G',
+        'Máquina I',
+        'Máquina E',
+        'Máquina F',
+        'Máquina H',
+        'Máquina D',
+    ];
+    const data2 = {
+        labels: labelsMaquinas,
+        datasets: [{
+            label: 'Produção Diária Máquina',
+            backgroundColor: 'rgb(90, 180, 13, 0.8)',
+            borderColor: 'rgb(90, 180, 13, 0.8)',
+            data: [85000, 82000, 81000, 78000, 75000, 65000, 60000, 30000],
+        },
+        {
+            label: 'Meta',
+            type: 'line',
+            borderDash: [10, 5], 
+            borderWidth: 2,
+            pointRadius: 0,
+            backgroundColor: 'rgb(255, 255, 255, 0.8)',
+            borderColor: 'rgb(255, 255, 255, 0.8)',
+            data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
+        }
+        ]
+    };
+    
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+    const config2 = {
+        type: 'bar',
+        data: data2,
+        options: {}
+    };
 
     // const labelsPie = ["Máquina A", "Máquina B", "Máquina C", "Máquina D"];
 
@@ -275,37 +381,47 @@
 
             <td><a href="dashboard-especifica.html">${item.maquina}</a></td>
 
-            <td>${item.linha}</td>
-
+            
             <td>
                 <div style="display:flex; align-items:center; gap:10px;">
                     
                     <div class="progress-container">
                         <div 
-                            class="progress-bar ${cor}"
-                            style="width:${item.eficiencia}%">
+                        class="progress-bar ${cor}"
+                        style="width:${item.eficiencia}%">
                         </div>
-                    </div>
-
-                    <span>${item.eficiencia}%</span>
-
-                </div>
-            </td>
-
-            <td>${item.producao} l/min</td>
-
-            <td>${item.meta}%</td>
-
-            <td>
-                <span class="status ${statusClasse}">
-                    ${statusTexto}
-                </span>
-            </td>
-        </tr>
-        `;
-        });
-    }
-
-    carregarRanking();
-
+                        </div>
+                        
+                        <span>${item.eficiencia}%</span>
+                        
+                        </div>
+                        </td>
+                        
+                        <td>${item.producao} l/min</td>
+                        
+                        
+                        <td>
+                            <span class="status ${statusClasse}">
+                                ${statusTexto}
+                                </span>
+                                </td>
+                                </tr>
+                                `;
+                            });
+                        }
+                        
+                        carregarRanking();
+                        
+                        </script>
+<script>
+    const graficoProducao = new Chart(
+        document.getElementById('graficoProducao'),
+        config
+    );
+    const graficoMaquinas = new Chart(
+        document.getElementById('graficoMaquinas'),
+        config2
+    );
 </script>
+    <!-- <td>${item.linha}</td> -->
+    <!-- <td>${item.meta}%</td> -->
