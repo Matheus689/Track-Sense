@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSense | Login</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="css/loginCadastro.css">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+
+
+<body>
+    <header class="header">
+        <a href="trackSense.html">
+            <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        </a>
+
+        <nav class="nav-bar">
+            <ul>
+                <li><a href="trackSense.html">Home</a></li>
+                <li><a href="calculadora.html">Calculadora Financeira</a></li>
+                <li><a class="active" href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="bloq side2">
+            <div class="logo1"></div>
+
+            <div class="input log">
+                <input type="text" id="inpEmail" placeholder="Email">
+                <input type="password" id="inpSenha" placeholder="Senha">
+            </div>
+
+            <button onclick="entrar()" class="button">Entrar</button>
+            <p class="text">Não tem uma conta? <b><a href="cadastro.html">Cadastre-se</a></b></p>
+
+        </div>
+
+        <div class="bloq side1 log">
+            <p class="title">Bem vindo de volta!</p>
+            <p class="text title">Para continuar conectado conosco, entre com suas informações pessoais</p>
+        </div>
+
+    </div>
+    <footer class="footer">
+        <p>© 2026 TrackSense. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+
+</html>
+
+<script>
+    function entrar() {
+
+        var emailVar = inpEmail.value;
+        var senhaVar = inpSenha.value;
+
+        if (emailVar == "" || senhaVar == "") {
+            // cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            // finalizarAguardar();
+            return false;
+        }
+        else {
+            // setInterval(sumirMensagem, 5000)
+        }
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log("resposta");
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.idUsuario;
+                    window.location.href = "selecionar-fabrica.html";
+                    // sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
+
+                    
+                    // apenas para exibir o loading
+                    
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    // finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    // function sumirMensagem() {
+    //     cardErro.style.display = "none"
+    // }
+</script>

@@ -80,7 +80,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 30px;
-    background-image: url(../assets/img/background-tracksense.png);
+    background-image: url(../assets/background-tracksense.png);
     background-position: center;
     background-size: cover;
 }

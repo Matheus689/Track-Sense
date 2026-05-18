@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSense | Cadastro</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="css/loginCadastro.css">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <header class="header">
+        <a href="trackSense.html">
+            <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        </a>
+        <nav class="nav-bar">
+            <ul>
+                <li><a href="trackSense.html">Home</a></li>
+                <li><a href="calculadora.html">Calculadora Financeira</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+
+
+        <div class="bloq side1 cad">
+            <p class="title">Crie sua conta</p>
+            <p class="text">Informe seus dados pessoais e comece sua jornada conosco</p>
+        </div>
+
+        <div class="bloq side2">
+            <div class="logo1"></div>
+
+            <div class="input">
+                <input type="text" id="inpNome" placeholder="Nome*">
+
+                <input type="text" id="inpEmail" oninput="cadValidarEmail()" placeholder="Email*">
+                <div id="exibirResultadoEmail"></div>
+
+                <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Senha*">
+                <div id="exibirResultadoCadastro"></div>
+
+                <input type="password" id="inpSenhaConf" oninput="cadValidarCadastro()"
+                    placeholder="Confirme sua Senha*">
+                <div id="mensagem_erro"></div>
+
+                <!-- <input type="text" id="inpCodEmpresa" oninput="cadCodEmpresa()" placeholder="Código da Empresa"> -->
+            </div>
+
+            <button onclick="cadastrar()" class="button">Cadastrar</button>
+
+            <p class="text">Já tem uma conta? <b><a href="login.html">Faça login!</a></b></p>
+
+        </div>
+
+
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 TrackSense. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+
+</html>
+<script>
+    function cadastrar() {
+        // aguardar();
+
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeVar = inpNome.value;
+        var emailVar = inpEmail.value;
+        var senhaVar = inpSenha.value;
+        var confirmacaoSenhaVar = inpSenhaConf.value;
+        // var codigoVar = codigo_input.value;
+        // var idEmpresaVincular
+
+        // Verificando se há algum campo em branco
+        if (
+            nomeVar == "" ||
+            emailVar == "" ||
+            senhaVar == "" ||
+            confirmacaoSenhaVar == ""
+            //   codigoVar == ""
+        ) {
+            //   cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "(Mensagem de erro para todos os campos em branco)";
+
+            //   finalizarAguardar();
+            return false;
+        } else {
+            //   setInterval(sumirMensagem, 5000);
+        }
+
+        // Verificando se o código de ativação é de alguma empresa cadastrada
+        // for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
+        //   if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
+        //     idEmpresaVincular = listaEmpresasCadastradas[i].id
+        //     console.log("Código de ativação válido.");
+        //     break;
+        //   } else {
+        //     cardErro.style.display = "block";
+        //     mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
+        //     finalizarAguardar();
+        //   }
+        // }
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                // idEmpresaVincularServer: idEmpresaVincular
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    //   cardErro.style.display = "block";
+
+                    mensagem_erro.innerHTML =
+                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+
+
+                    window.location = "Login.html";
+
+                    //   limparFormulario();
+                    //   finalizarAguardar();
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                // finalizarAguardar();
+            });
+
+        return false;
+    }
+
+    // Listando empresas cadastradas 
+    //   function listar() {
+    //     fetch("/empresas/listar", {
+    //       method: "GET",
+    //     })
+    //       .then(function (resposta) {
+    //         resposta.json().then((empresas) => {
+    //           empresas.forEach((empresa) => {
+    //             listaEmpresasCadastradas.push(empresa);
+
+    //             console.log("listaEmpresasCadastradas")
+    //             console.log(listaEmpresasCadastradas[0].codigo_ativacao)
+    //           });
+    //         });
+    //       })
+    //       .catch(function (resposta) {
+    //         console.log(`#ERRO: ${resposta}`);
+    //       });
+    //   }
+
+    //   function sumirMensagem() {
+    //     cardErro.style.display = "none";
+    //   }
+</script>

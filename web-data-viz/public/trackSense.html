@@ -7,14 +7,14 @@
   <title>TrackSense | Home</title>
   <script src="script.js" defer></script>
   <link rel="stylesheet" href="css/home.css">
-  <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
 
   <header class="header">
     <a href="trackSense.html">
-      <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+      <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
     </a>
 
     <nav class="nav-bar">
@@ -70,7 +70,7 @@
 
         <div class="card">
           <div class="icon">
-            <img src="Assets/img/confiança.png">
+            <img src="assets/confiança.png">
           </div> <br>
           <h3>Confiança</h3>
           <p>Sobre ela estruturamos todas as nossas atitudes, buscando fornecê-la a cada dia através de um trabalho
@@ -79,7 +79,7 @@
 
         <div class="card">
           <div class="icon">
-            <img src="Assets/img/credibilidade.png">
+            <img src="assets/credibilidade.png">
           </div> <br>
           <h3>Credibilidade</h3>
           <p>Uma qualidade que se conquista com um trabalho de excelência oferecido de maneira uniforme a todos os
@@ -88,7 +88,7 @@
 
         <div class="card">
           <div class="icon">
-            <img src="Assets/img/etica.png">
+            <img src="assets/etica.png">
           </div> <br>
           <h3>Ética</h3>
           <p>Um pilar fundamental baseado em nossos valores que norteia as ações de nossa equipe, definindo critérios
@@ -128,7 +128,7 @@
 
       <div class="module-container">
 
-        <img src="Assets/img/sensor.png" class="side-image">
+        <img src="assets/sensor.png" class="side-image">
 
         <div class="video-section" id="video">
           <iframe width="710" height="400"
@@ -137,7 +137,7 @@
           </iframe>
         </div>
 
-        <img src="Assets/img/maquina.png" class="side-image2">
+        <img src="assets/maquina.png" class="side-image2">
 
       </div>
 
@@ -146,26 +146,33 @@
     
 
     <section>
-     <div class="service-section" id="cadEmpresa">
-        <h1>Leve sua produção para o próximo nível</h1>
-        <p>Monitore suas máquinas em tempo real, reduza desperdícios e tenha mais controle sobre sua linha de produção com a TrackSense.</p>
-       <button onclick="redCadEmpresa()">Cadastrar Empresa</button>
-     </div>
+      <div class="bloq side2">
+            <div class="cadEmpresa">
+              <div class="h2"><h2>Cadastre sua empresa</h2></div>
+              <div class="logo1"></div>
+              <div class="input">
+                  <input type="text" id="inpNome" placeholder="Nome da Empresa">
+  
+                  <input type="text" id="inpCNPJ" oninput="cadValidarCNPJ()" placeholder="CNPJ da Empresa">
+                  <div id="exibirResultadoCNPJ"></div>
+                  <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Código da Empresa">
+              </div>
+  
+              <button onclick="CadCadastrar()" class="button">Cadastrar</button>
+  
+              <p class="text">Já tem uma conta? <b><a href="login.html">Faça login!</a></b></p>
+  
+          </div>
+        </div>
     </section>
-
-    <script>
-      function redCadEmpresa(){
-        window.location.href = "cadEmpresa.html"
-      }
-    </script>
 
   </main>
 
   <footer class="footer">
-    <p>© 2026 TrackSense. Todos os direitos reservados.</p> <span>Email:tracksense@gmail.com      Tel: (11)9 4002-8922</span>
+    <p>© 2026 TrackSense. Todos os direitos reservados.</p> <span>Contato: TrackSense@gmail.com  Tel: (11)9 4002-8922</span>
   </footer>
 
-</body> 
+</body>
 
 </html>
 <script>

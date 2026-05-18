@@ -7,18 +7,18 @@
     <title>TrackSense | Dashboard</title>
     <link rel="stylesheet" href="css/dashboard-geral.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="shortcut icon" href="Assets/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
     <header class="header">
         <a href="trackSense.html">
-            <img src="assets/img/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+            <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
         </a>
         <nav class="nav-bar">
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
-                <li><a class="active" href="selecionar-fabrica.html">Dashboard</a></li>
+                <li><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
                 <li id="linkLogout" style="display: block;">
                     <a href="#" onclick="logout()">Sair</a>
@@ -46,12 +46,12 @@
         </section>
         <section class="grafs">
             <section class="ranking-section">
-                
+
                 <div class="ranking-header">
                     <div>
                         <h2>Produção Geral da Fábrica</h2>
                     </div>
-    
+
                     <div class="ranking-filters">
                         <button>Todas</button>
                         <button>Normal</button>
@@ -59,9 +59,9 @@
                         <button>Crítica</button>
                     </div>
                 </div>
-    
+
                 <table class="ranking-table">
-    
+
                     <thead>
                         <tr>
                             <th>#</th>
@@ -73,12 +73,12 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-    
+
                     <tbody id="rankingBody">
                     </tbody>
-    
+
                 </table>
-                
+
             </section>
 
             <section class="box-graficos">
@@ -95,7 +95,7 @@
             </section>
         </section>
 
-        
+
     </main>
 
     <footer class="footer">
@@ -105,6 +105,21 @@
 
 </html>
 <script>
+    window.onload = function () {
+        carregarDadosProd();
+    }
+
+    function carregarDadosProd() {
+        fetch(`/tempo-real/`)
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (resposta) {
+                var dados = resposta[0];
+                console.log(dados);
+            });
+    }
+
     const maquinasRanking = [
         {
             maquina: "Máquina J",
@@ -208,7 +223,7 @@
         },
         {
             label: 'Meta',
-            borderDash: [10, 5], 
+            borderDash: [10, 5],
             borderWidth: 2,
             pointRadius: 0,
             backgroundColor: 'rgb(255, 255, 255, 0.8)',
@@ -239,7 +254,7 @@
         {
             label: 'Meta',
             type: 'line',
-            borderDash: [10, 5], 
+            borderDash: [10, 5],
             borderWidth: 2,
             pointRadius: 0,
             backgroundColor: 'rgb(255, 255, 255, 0.8)',
@@ -248,7 +263,7 @@
         }
         ]
     };
-    
+
     const config = {
         type: 'line',
         data: data,
@@ -260,95 +275,19 @@
         options: {}
     };
 
-    // const labelsPie = ["Máquina A", "Máquina B", "Máquina C", "Máquina D"];
-
-    // const dataPie = {
-    //     labels: labelsPie,
-    //     datasets: [
-    //         {
-    //             label: "Produção (%)",
-    //             data: [35, 25, 20, 15],
-    //             backgroundColor: [
-    //                 "#6395EE",
-    //                 "#1104fc",
-    //                 "#2a15bc",
-    //                 "#000080"
-    //             ],
-    //             borderWidth: 1
-    //         }
-    //     ]
-    // };
-
-    // const configPie = {
-    //     type: "pie",
-    //     data: dataPie,
-    //     options: {
-    //         plugins: {
-    //             legend: {
-    //                 labels: {
-    //                     color: "white"
-    //                 }
-    //             }
-    //         }
-    //     }
-    // };
-
-    // const graphicLine = new Chart(
-    //     document.getElementById("graphicLine"),
-    //     configLine
-    // );
-
-    // const graphicBar = new Chart(
-    //     document.getElementById("graphicBar"),
-    //     configBar
-    // );
-
-    // const graphicPie = new Chart(
-    //     document.getElementById("graphicPie"),
-    //     configPie
-    // );
+    const graficoProducao = new Chart(
+        document.getElementById('graficoProducao'),
+        config
+    );
+    const graficoMaquinas = new Chart(
+        document.getElementById('graficoMaquinas'),
+        config2
+    );
 
     function logout() {
         localStorage.removeItem("logado");
         window.location.href = "login.html";
     };
-
-    // function trocarMaquina(maquina) {
-    //     // gráfico de linha
-    //     graphicLine.data.datasets[0].data = dadosMaquinas[maquina];
-    //     graphicLine.update();
-
-    //     // gráfico de barras
-    //     graphicBar.data.datasets[1].data = dadosBarraMaquinas[maquina];
-    //     graphicBar.update();
-
-    //     // Produção Atual
-    //     const ultimoValor = dadosMaquinas[maquina][dadosMaquinas[maquina].length - 1];
-    //     document.getElementById("producao").innerText = ultimoValor + " latas/min";
-
-    //     if (ultimoValor < 80) {
-    //         document.getElementById("alert").innerText = "Processo com problema de produção";
-    //         document.getElementById("alert").style.color = "red";
-    //     } else {
-    //         document.getElementById("alert").innerText = "Sistema operando normalmente";
-    //         document.getElementById("alert").style.color = "lightgreen";
-    //     }
-
-    //     // Meta Mensal
-    //     const atual = dadosMeta[maquina].atual;
-    //     const meta = dadosMeta[maquina].meta;
-    //     const porcentagem = Math.round((atual / meta) * 100);
-
-    //     document.getElementById("total").innerText =
-    //         `${atual.toLocaleString()} / ${meta.toLocaleString()} latas (${porcentagem}%)`;
-
-
-    //     document.getElementById("tituloLinha").innerHTML =
-    //         "Produção Real vs Esperado (latas/min)<br>(Máquina " + maquina + ")";
-
-    //     document.getElementById("tituloBarra").innerHTML =
-    //         "Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br>(Máquina " + maquina + ")";
-    // }
 
     function carregarRanking() {
 
@@ -407,21 +346,9 @@
                                 </td>
                                 </tr>
                                 `;
-                            });
-                        }
-                        
-                        carregarRanking();
-                        
-                        </script>
-<script>
-    const graficoProducao = new Chart(
-        document.getElementById('graficoProducao'),
-        config
-    );
-    const graficoMaquinas = new Chart(
-        document.getElementById('graficoMaquinas'),
-        config2
-    );
+        });
+    }
+
+    carregarRanking();
+
 </script>
-    <!-- <td>${item.linha}</td> -->
-    <!-- <td>${item.meta}%</td> -->
