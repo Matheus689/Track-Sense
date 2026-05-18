@@ -130,7 +130,6 @@ body {
 .cad {
     border-radius: 0 30px 30px 0;
     text-align: start;
-
 }
 
 
@@ -140,7 +139,7 @@ body {
     border-style: none;
     background-color: #EBEBEB;
     height: 7vh;
-    margin-top: 20px;
+    margin-top: 15px;
     width: 60%;
     padding-left: 15px;
 }
@@ -215,19 +214,31 @@ P {
 }
 
 
-#sessaoCadEmpresa{
+
+
+#sessaoCadEmpresa {
     display: flex;
     padding: 0;
 }
 
-.cadEmpresa{
+.cadEmpresa {
+    margin-top: 5vh;
+    margin-bottom: 5vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 35vw;
+    height:100vh;
+    padding: 1vh;
 }
 
-#div_localizacao{
+.cadEmpresa .logo1{
+    width: 30vw;
+    height: 30vh;
+}
+
+#div_localizacao {
     display: flex;
     flex-direction: row;
     gap: 0.5vw;
@@ -236,7 +247,7 @@ P {
 
 
 
-.side3{
+.side3 {
     background-image: url("../Assets/img/backgroundLogin.png");
     background-color: #cccccc;
     background-position: center;
@@ -265,29 +276,32 @@ P {
     border-radius: 30px 0 0 30px;
 }
 
-#botaos{
+#botaos {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+
     width: 60%;
 }
 
-#botaos .text{
+#botaos .text {
     margin-top: 15px;
     text-align: center;
-    max-width: 1400px;
 }
 
-#sessaoCadEmpresa input{
+#sessaoCadEmpresa input {
     width: 22vw;
 }
 
-    #sessaoCadEmpresa #inpNumero{
-        width: 5vw ;
-        padding: 0.5vw;
-    }
-    
-    #sessaoCadEmpresa #inpCep{
-        width: 16.5vw;
-    }
+#sessaoCadEmpresa #inpNumero {
+    width: 5vw;
+    padding: 0.5vw;
+}
+
+#sessaoCadEmpresa #inpCep {
+    width: 16.5vw;
+}
+
+#sessaoCadEmpresa #inpNome{
+    margin-top: 0;
+}
