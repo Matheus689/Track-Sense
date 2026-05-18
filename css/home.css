@@ -277,7 +277,7 @@ body {
   justify-items: flex-end;
 }
 
-.cadEmpresa {
+/* .cadEmpresa {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -286,7 +286,7 @@ body {
   width: 500px;
   height: 800px;
   border-radius: 10px;
-}
+} */
 
 .bloq {
   display: flex;
@@ -384,4 +384,16 @@ P {
 
 .footer span {
   text-align: start right;
+}
+
+#cadEmpresa{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#cadEmpresa p{
+  font-size: 1.5vw;
+  max-width: 60vw;
 }

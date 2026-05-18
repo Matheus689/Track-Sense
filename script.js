@@ -35,6 +35,7 @@ function cadValidarEmail() {
     if (emailConfi) {
         exibirResultadoEmail.innerHTML = '';
     } else {
+        document.getElementById('exibirResultadoEmail').style.color = "red"
         exibirResultadoEmail.innerHTML = 'Coloque um e-mail válido';
     }
 }
