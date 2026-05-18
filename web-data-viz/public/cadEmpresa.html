@@ -4,7 +4,7 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>TrackSense | Login</title>
+   <title>TrackSense | Cadastro de Empresa</title>
    <script src="script.js" defer></script>
    <link rel="stylesheet" href="css/loginCadastro.css">
    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
@@ -29,35 +29,32 @@
    <section id="sessaoCadEmpresa">
       <div class="bloq side2">
 
-         <div class="cadEmpresa">
-            <div class="logo1"></div>
+         <div class="logo1"></div>
 
-            <div class="input">
-               <input type="text" id="inpNome" placeholder="Nome da Empresa">
+         <div class="input">
+            <input type="text" id="inpNome" placeholder="Nome da Empresa">
 
-               <input type="text" id="inpCNPJ" oninput="cadValidarCNPJ()" placeholder="CNPJ da Empresa">
-               <div id="exibirResultadoCNPJ"></div>
+            <input type="text" id="inpCNPJ" oninput="cadValidarCNPJ()" placeholder="CNPJ da Empresa">
+            <div id="exibirResultadoCNPJ"></div>
 
-               <div id="div_localizacao">
-                  <input type="text" id="inpCep" placeholder="CEP da Empresa">
-                  <input type="text" id="inpNumero" placeholder="N°">
-               </div>
-
-               <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Código da Empresa">
+            <div id="div_localizacao">
+               <input type="text" id="inpCep" placeholder="CEP da Empresa">
+               <input type="text" id="inpNumero" placeholder="N°">
             </div>
 
-            <div id="botaos">
-               <button onclick="CadCadastrar()" class="button">Cadastrar</button>
-   
-               <p class="text">Sua empresa já possui cadastro? <b><a href="cadastro.html">Cadastre seu usuário</a></b></p>
-
-               <p class="text">Não possui código da empresa?<br>
-                  Entre em contato:<br> Email: tracksense@gmail.com <br> Tel: (11)94002-8922
-            </div>
+            <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Código da Empresa">
 
          </div>
 
+            <div id="botaos">
+               <button onclick="CadCadastrar()" class="button">Cadastrar</button>
 
+               <p class="text">Sua empresa já possui cadastro? <br><b><a href="cadastro.html">Cadastre seu usuário</a></b>
+               </p>
+
+               <p class="text">Não possui código da empresa?
+                  Entre em contato:<br> Email: tracksense@gmail.com <br> Tel: (11)94002-8922
+            </div>
       </div>
 
       <div class="bloq side3 log">

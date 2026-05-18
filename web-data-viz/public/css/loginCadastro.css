@@ -78,12 +78,10 @@ body {
 .bloq {
     display: flex;
     background-color: rgba(235, 235, 235, 0.425);
-    padding: 20px;
     align-items: start;
     align-content: start;
     justify-content: center;
     flex-direction: column;
-    padding-left: 5vw;
     margin: 0;
     width: 50%;
     height: 100vh;
@@ -145,7 +143,6 @@ body {
 .bloq .input {
     display: flex;
     padding: 20px;
-    padding-left: 0px;
     width: 100%;
     align-items: center;
     align-content: center;
@@ -278,6 +275,14 @@ P {
     width: 22vw;
 }
 
+#sessaoCadEmpresa .logo1{
+    padding-bottom: 0;
+}
+
+#sessaoCadEmpresa #inpNome {
+    margin-top: 0;
+}
+
 #sessaoCadEmpresa #inpNumero {
     width: 5vw;
     padding: 0.5vw;
@@ -285,4 +290,8 @@ P {
 
 #sessaoCadEmpresa #inpCep {
     width: 16.5vw;
+}
+
+#sessaoCadEmpresa .input p{
+    font-size: 0.10vh;
 }
