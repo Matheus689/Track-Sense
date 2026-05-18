@@ -69,8 +69,8 @@ body {
     background-size: contain;
 
 
-    width: 30vw;
-    height: 30vh;
+    min-width: 30vw;
+    min-height: 30vh;
 
     margin-bottom: 0;
 }
@@ -139,15 +139,15 @@ body {
     border-style: none;
     background-color: #EBEBEB;
     height: 7vh;
-    margin-top: 15px;
+    /* margin-top: 15px; */
     width: 60%;
-    padding-left: 15px;
+    /* padding-left: 15px; */
 }
 
 
 .bloq .input {
     display: flex;
-    padding: 20px;
+    padding: 0px;
     padding-left: 0px;
     width: 100%;
     align-items: center;
@@ -305,3 +305,10 @@ P {
 #sessaoCadEmpresa #inpNome{
     margin-top: 0;
 }
+
+.msgErro{
+    color: red;
+    font-weight: 1vw;
+}
+
+

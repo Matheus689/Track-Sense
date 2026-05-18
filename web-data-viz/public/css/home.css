@@ -385,3 +385,9 @@ P {
 .footer span {
   text-align: start right;
 }
+
+
+#cadEmpresa{
+  display: flex;
+  
+}
