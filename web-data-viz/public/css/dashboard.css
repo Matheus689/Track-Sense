@@ -71,7 +71,7 @@ body {
     align-items: center;
     gap: 20px;
     padding: 20px 0;
-    background-image: url(../assets/img/background-tracksense.png);
+    background-image: url(../assets/background-tracksense.png);
     background-position: center;
     background-size: cover;
 }
@@ -191,7 +191,6 @@ button:hover {
     padding: 15px;
 }
 
-
 .ranking-section {
     margin-top: 30px;
     background-color: #1d263b;
@@ -308,4 +307,3 @@ button:hover {
     background-color: rgba(239, 68, 68, 0.15);
     color: #f87171;
 }
-

@@ -1,0 +1,288 @@
+/* Isso remove as margens e preenchimentos padrão de todos os navegadores */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5f5f5;
+    font-weight: bold;
+    box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.137);
+    padding: 10px;
+}
+
+.header img {
+    width: 5%;
+    transition: 0.4s;
+}
+
+.header img:hover {
+    transform: scale(1.2);
+}
+
+.nav-bar ul {
+    display: flex;
+    gap: 45px;
+    list-style: none;
+    padding: 0;
+    margin-right: 30px;
+    font-size: medium;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    color: #333;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.nav-bar a:hover {
+    transform: translateX(20px);
+    color: #007bff;
+}
+
+.nav-bar a.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 4px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.logo1 {
+    background-image: url(../assets/logo1.png);
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+
+    width: 30vw;
+    height: 30vh;
+
+    margin-bottom: 20px;
+}
+
+.bloq {
+    display: flex;
+    background-color: rgba(235, 235, 235, 0.425);
+    padding: 20px;
+    align-items: start;
+    align-content: start;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 5vw;
+    margin: 0;
+    width: 50%;
+    height: 100vh;
+}
+
+.side1 {
+    background-image: url("../assets/backgroundLogin.png");
+    background-color: #cccccc;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0px;
+}
+
+.side1 .title {
+    color: #EBEBEB;
+    font-weight: bolder;
+    font-size: 10vh;
+    text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.655);
+}
+
+.side1 .text {
+    color: #EBEBEB;
+    font-size: 5vh;
+    font-weight: lighter;
+    width: 20vw;
+}
+
+.log {
+    align-items: end;
+    align-content: end;
+    justify-content: center;
+    text-align: end;
+    border-radius: 30px 0 0 30px;
+}
+
+.log .text {
+    width: 30vw;
+    margin: 2vw;
+}
+
+.cad {
+    border-radius: 0 30px 30px 0;
+    text-align: start;
+
+}
+
+.bloq input {
+    border-radius: 5px;
+    border-style: none;
+    background-color: #EBEBEB;
+    height: 7vh;
+    margin-top: 20px;
+    width: 60%;
+    padding-left: 15px;
+}
+
+
+.bloq .input {
+    display: flex;
+    padding: 20px;
+    padding-left: 0px;
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0px;
+}
+
+input::placeholder {
+    color: #6a6a6a;
+    font-size: 2vh;
+}
+
+.side2 {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+button {
+    width: 150px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(to right, #4687A9, #78BFE4);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+}
+
+.bloq .text {
+    margin-bottom: 2px;
+}
+
+.texto {
+    text-align: start;
+    align-items: start;
+
+}
+
+P {
+    margin: 20PX;
+}
+
+#exibirResultadoCadastro {
+    color: rgb(172, 0, 0);
+    margin-top: 10px;
+}
+
+.footer {
+    height: 7%;
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+#sessaoCadEmpresa {
+    display: flex;
+    padding: 0;
+}
+
+.cadEmpresa {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#div_localizacao {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5vw;
+}
+
+
+
+
+.side3 {
+    background-image: url("../assets/backgroundLogin.png");
+    background-color: #cccccc;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+}
+
+.side3 .title {
+    color: #EBEBEB;
+    font-weight: bolder;
+    font-size: 10vh;
+    text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.655);
+}
+
+.side3 .text {
+    color: #EBEBEB;
+    font-size: 5vh;
+    font-weight: lighter;
+    width: 20vw;
+    max-width: 30vw;
+}
+
+.log2 {
+    border-radius: 30px 0 0 30px;
+}
+
+#botaos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 60%;
+}
+
+#botaos .text {
+    margin-top: 15px;
+    text-align: center;
+    max-width: 1400px;
+}
+
+#sessaoCadEmpresa input {
+    width: 22vw;
+}
+
+#sessaoCadEmpresa #inpNumero {
+    width: 5vw;
+    padding: 0.5vw;
+}
+
+#sessaoCadEmpresa #inpCep {
+    width: 16.5vw;
+}
