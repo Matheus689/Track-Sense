@@ -38,10 +38,10 @@
                 <input type="text" id="inpNome" placeholder="Nome*">
 
                 <input type="text" id="inpEmail" oninput="cadValidarEmail()" placeholder="Email*">
-                <div id="exibirResultadoEmail"></div>
+                <div style="color: red;" id="exibirResultadoEmail"></div>
 
                 <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Senha*">
-                <div id="exibirResultadoCadastro"></div>
+                <div style="color: red;" id="exibirResultadoCadastro"></div>
 
                 <input type="password" id="inpSenhaConf" oninput="cadValidarCadastro()" placeholder="Confirme sua Senha*">
 
@@ -49,6 +49,8 @@
             </div>
 
             <button onclick="CadCadastrar()" class="button">Cadastrar</button>
+
+            <p class="text">Sua empresa não está cadastrada? <b><a href="cadEmpresa.html">Cadastre-a</a></b></p>
 
             <p class="text">Já tem uma conta? <b><a href="login.html">Faça login!</a></b></p>
 
