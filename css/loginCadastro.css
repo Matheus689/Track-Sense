@@ -234,14 +234,6 @@ P {
 }
 
 
-#inpNumero{
-    width: 4vw ;
-    padding: 0.5vw;
-}
-
-#inpCep{
-    width: 12.8vw;
-}
 
 
 .side3{
@@ -277,7 +269,7 @@ P {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    
     width: 60%;
 }
 
@@ -287,3 +279,15 @@ P {
     max-width: 1400px;
 }
 
+#sessaoCadEmpresa input{
+    width: 22vw;
+}
+
+    #sessaoCadEmpresa #inpNumero{
+        width: 5vw ;
+        padding: 0.5vw;
+    }
+    
+    #sessaoCadEmpresa #inpCep{
+        width: 16.5vw;
+    }
