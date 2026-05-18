@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackSense | Cadastro</title>
-    <script src="script.js" defer></script>
+    <script src="../public/js/script.js" defer></script>
     <link rel="stylesheet" href="css/loginCadastro.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
@@ -19,7 +19,7 @@
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="Login.html">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -38,21 +38,24 @@
                 <input type="text" id="inpNome" placeholder="Nome*">
 
                 <input type="text" id="inpEmail" oninput="cadValidarEmail()" placeholder="Email*">
-                <div id="exibirResultadoEmail"></div>
+                <div class="msgErro" id="exibirResultadoEmail"></div>
 
                 <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Senha*">
-                <div id="exibirResultadoCadastro"></div>
+                <div class="msgErro" id="exibirResultadoCadastro"></div>
 
                 <input type="password" id="inpSenhaConf" oninput="cadValidarCadastro()"
                     placeholder="Confirme sua Senha*">
-                <div id="mensagem_erro"></div>
+                <div class="msgErro" id="mensagem_erro"></div>
 
                 <!-- <input type="text" id="inpCodEmpresa" oninput="cadCodEmpresa()" placeholder="Código da Empresa"> -->
             </div>
 
             <button onclick="cadastrar()" class="button">Cadastrar</button>
 
-            <p class="text">Já tem uma conta? <b><a href="login.html">Faça login!</a></b></p>
+            <p class="text">Já tem uma conta? <b><a href="Login.html">Faça login!</a></b></p>
+            
+            <p class="text">Sua empresa ainda não está cadastrada? <b><a href="Login.html">Faça o Cadastro!</a></b></p>
+
 
         </div>
 
