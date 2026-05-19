@@ -11,10 +11,6 @@ router.get("/tempo-real/:idSensor", function (req, res) {
     medidaController.buscarMedidasEmTempoReal(req, res);
 })
 
-router.get("/producao-real/:idSensor", function (req, res) {
-    medidaController.buscarMedidasEmTempoReal(req, res);
-})
-
 // dashboard
 router.get("/maquinas/:idEmpresa", function (req, res) {
     medidaController.buscarTodasMaquinas(req, res);

@@ -65,40 +65,65 @@
 </html>
 <script>
 
-    // 1. Lê o idSensor da URL
-const idMaquina = new URLSearchParams(window.location.search).get('idMaquina');
+    const idSensor = new URLSearchParams(window.location.search).get('idSensor');
 
-// 2. Busca os dados
-fetch(`/tempo-real/${idMaquina}`)
+fetch(`/medidas/tempo-real/${idSensor}`)
     .then(res => res.json())
     .then(dados => {
 
-        // 3. Monta os labels com os horários que vieram do banco
-        const labels = dados.map(d => d.momento_grafico);
+        const labels = dados.map(d => {
+            return new Date(d.momento_grafico).toLocaleTimeString();
+        });
 
-        // 4. Monta os valores com a produção que veio do banco
         const valores = dados.map(d => d.registro);
 
-        // 5. Cria o gráfico com os dados do banco
-        const graphicLine = new Chart(document.getElementById("graphicLine"), {
+        new Chart(document.getElementById("graphicLine"), {
             type: "line",
             data: {
                 labels: labels,
                 datasets: [
                     {
-                        label: "Produção Real (latas/min)",
+                        label: "Produção Real",
                         data: valores,
                         borderColor: "lightblue",
+                        backgroundColor: "lightblue",
+                        tension: 0.3
                     },
                     {
-                        label: "Produção Esperada",
-                        data: valores.map(() => 80), // linha de meta
+                        label: "Meta Esperada",
+                        data: valores.map(() => 80),
                         borderColor: "red",
-                        borderDash: [5, 5],
+                        borderDash: [5, 5]
                     }
                 ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "white"
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "white"
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: "white"
+                        }
+                    }
+                }
             }
         });
+
+    })
+    .catch(erro => {
+        console.log("Erro ao buscar dados:", erro);
     });
 
     const labelsBar = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'];
