@@ -24,11 +24,35 @@ function buscarUltimasMedidas(req, res) {
 
 function buscarMedidasEmTempoReal(req, res) {
 
-    var idAquario = req.params.idAquario;
+    var idSensor = req.params.idSensor;
 
-    console.log(`Recuperando medidas em tempo real`);
+    console.log("Recuperando medidas em tempo real");
 
-    medidaModel.buscarMedidasEmTempoReal(idAquario).then(function (resultado) {
+    medidaModel.buscarMedidasEmTempoReal(idSensor)
+        .then(function (resultado) {
+
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!");
+            }
+
+        }).catch(function (erro) {
+
+            console.log(erro);
+            console.log("Erro ao buscar medidas:", erro.sqlMessage);
+
+            res.status(500).json(erro.sqlMessage);
+
+        });
+}
+
+function buscarTodasMaquinas (req, res){
+    var idEmpresa = req.params.idEmpresa;
+
+    console.log(`Buscando máquinas da empresa:`, idEmpresa);
+
+    medidaModel.buscarTodasMaquinas(idEmpresa).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -41,7 +65,45 @@ function buscarMedidasEmTempoReal(req, res) {
     });
 }
 
+function buscarProducaoGeral(req, res) {
+
+    var idEmpresa = req.params.idEmpresa;
+
+    medidaModel.buscarProducaoGeral(idEmpresa)
+        .then(function(resultado){
+
+            res.status(200).json(resultado);
+
+        }).catch(function(erro){
+
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+
+        });
+}
+
+function buscarProducaoDiariaMaquina(req, res) {
+
+    var idEmpresa = req.params.idEmpresa;
+
+    medidaModel.buscarProducaoDiariaMaquina(idEmpresa)
+        .then(function(resultado){
+
+            res.status(200).json(resultado);
+
+        }).catch(function(erro){
+
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+
+        });
+}
+
+
 module.exports = {
     buscarUltimasMedidas,
-    buscarMedidasEmTempoReal
+    buscarMedidasEmTempoReal,
+    buscarTodasMaquinas,
+    buscarProducaoGeral,
+    buscarProducaoDiariaMaquina
 }

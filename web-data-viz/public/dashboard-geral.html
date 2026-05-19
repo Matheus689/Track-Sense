@@ -110,7 +110,7 @@
     }
 
     function carregarDadosProd() {
-        fetch(`/tempo-real/`)
+        fetch('/medidas/tempo-real/1000')
             .then(function (resposta) {
                 return resposta.json();
             })
@@ -120,136 +120,69 @@
             });
     }
 
-    const maquinasRanking = [
-        {
-            maquina: "Máquina J",
-            // linha: "L5",
-            eficiencia: 95,
-            producao: 92,
-            // meta: 90
-        },
-        {
-            maquina: "Máquina A",
-            // linha: "L1",
-            eficiencia: 92,
-            producao: 88,
-            // meta: 90
-        },
-        {
-            maquina: "Máquina G",
-            // linha: "L3",
-            eficiencia: 91,
-            producao: 88,
-            // meta: 90
-        },
-        {
-            maquina: "Máquina I",
-            // linha: "L4",
-            eficiencia: 88,
-            producao: 85,
-            // meta: 90
-        },
-        // {
-        //     maquina: "Máquina B",
-        //     // linha: "L1",
-        //     eficiencia: 87,
-        //     producao: 84,
-        //     // meta: 90
-        // },
-        // {
-        //     maquina: "Máquina K",
-        //     // linha: "L5",
-        //     eficiencia: 83,
-        //     producao: 80,
-        //     meta: 90
-        // },
-        // {
-        //     maquina: "Máquina C",
-        //     // linha: "L2",
-        //     eficiencia: 82,
-        //     producao: 80,
-        //     // meta: 90
-        // },
-        {
-            maquina: "Máquina E",
-            // linha: "L2",
-            eficiencia: 78,
-            producao: 76,
-            // meta: 90
-        },
-        {
-            maquina: "Máquina F",
-            // linha: "L3",
-            eficiencia: 75,
-            producao: 72,
-            // meta: 90
-        },
-        {
-            maquina: "Máquina H",
-            // linha: "L4",
-            eficiencia: 69,
-            producao: 65,
-            // meta: 90
-        },
-        {
-            maquina: "Máquina D",
-            // linha: "L2",
-            eficiencia: 15,
-            producao: 14,
-            // meta: 90
-        }
-    ];
+    let maquinasRanking = [];
 
-    const labelsProducao = [
-        '08:00',
-        '09:00',
-        '10:00',
-        '11:00',
-        '12:00',
-        '13:00',
-        '14:00',
-        '15:00',
-        '16:00',
-        '17:00',
-        '18:00',
-    ];
-    const data = {
-        labels: labelsProducao,
-        datasets: [{
-            label: 'Produção Real',
-            backgroundColor: 'rgb(90, 180, 13, 0.8)',
-            borderColor: 'rgb(90, 180, 13, 0.8)',
-            data: [55000, 62000, 58000, 70000, 90000, 85000, 60000, 75000, 80000, 75000, 85000],
-        },
-        {
-            label: 'Meta',
-            borderDash: [10, 5],
-            borderWidth: 2,
-            pointRadius: 0,
-            backgroundColor: 'rgb(255, 255, 255, 0.8)',
-            borderColor: 'rgb(255, 255, 255, 0.8)',
-            data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
-        }
-        ]
-    };
+    fetch('/medidas/maquinas/1000')
+        .then(res => res.json())
+        .then(dados => {
+            maquinasRanking = dados;
+            carregarRanking();
+        });
 
-    const labelsMaquinas = [
-        'Máquina J',
-        'Máquina A',
-        'Máquina G',
-        'Máquina I',
-        'Máquina E',
-        'Máquina F',
-        'Máquina H',
-        'Máquina D',
-    ];
+    fetch('/medidas/producao-geral/1000')
+        .then(res => res.json())
+        .then(dados => {
+
+            const labels = dados.map(item => item.horario);
+
+            const valores = dados.map(item => item.producao);
+
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Produção Real',
+                    backgroundColor: 'rgb(90, 180, 13, 0.8)',
+                    borderColor: 'rgb(90, 180, 13, 0.8)',
+                    data: valores,
+                },
+                {
+                    label: 'Meta',
+                    borderDash: [10, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    backgroundColor: 'rgb(255, 255, 255, 0.8)',
+                    borderColor: 'rgb(255, 255, 255, 0.8)',
+                    data: Array(valores.length).fill(90000),
+                }]
+            };
+
+            new Chart(
+                document.getElementById('graficoProducao'),
+                {
+                    type: 'line',
+                    data: data
+                }
+            );
+
+        });
+
+        fetch('/medidas/producao-diaria/1000')
+        .then(res => res.json())
+        .then(dados => {
+
+    const labelsMaquinas = dados.map(item => item.maquina);
+
+    const valoresMaquinas = dados.map(item => item.producao);
+
     const data2 = {
+
         labels: labelsMaquinas,
+
         datasets: [{
             label: 'Produção Diária Máquina',
             backgroundColor: 'rgb(90, 180, 13, 0.8)',
             borderColor: 'rgb(90, 180, 13, 0.8)',
-            data: [85000, 82000, 81000, 78000, 75000, 65000, 60000, 30000],
+            data: valoresMaquinas,
         },
         {
             label: 'Meta',
@@ -259,30 +192,98 @@
             pointRadius: 0,
             backgroundColor: 'rgb(255, 255, 255, 0.8)',
             borderColor: 'rgb(255, 255, 255, 0.8)',
-            data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
-        }
-        ]
+            data: Array(valoresMaquinas.length).fill(90000),
+        }]
     };
 
-    const config = {
-        type: 'line',
-        data: data,
-        options: {}
-    };
-    const config2 = {
-        type: 'bar',
-        data: data2,
-        options: {}
-    };
-
-    const graficoProducao = new Chart(
-        document.getElementById('graficoProducao'),
-        config
-    );
-    const graficoMaquinas = new Chart(
+    new Chart(
         document.getElementById('graficoMaquinas'),
-        config2
+        {
+            type: 'bar',
+            data: data2
+        }
     );
+
+});
+    // const labelsProducao = [
+    //     '08:00',
+    //     '09:00',
+    //     '10:00',
+    //     '11:00',
+    //     '12:00',
+    //     '13:00',
+    //     '14:00',
+    //     '15:00',
+    //     '16:00',
+    //     '17:00',
+    //     '18:00',
+    // ];
+    // const data = {
+    //     labels: labelsProducao,
+    //     datasets: [{
+    //         label: 'Produção Real',
+    //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
+    //         borderColor: 'rgb(90, 180, 13, 0.8)',
+    //         data: [55000, 62000, 58000, 70000, 90000, 85000, 60000, 75000, 80000, 75000, 85000],
+    //     },
+    //     {
+    //         label: 'Meta',
+    //         borderDash: [10, 5],
+    //         borderWidth: 2,
+    //         pointRadius: 0,
+    //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
+    //         borderColor: 'rgb(255, 255, 255, 0.8)',
+    //         data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
+    //     }
+    //     ]
+    // };
+
+    // const labelsMaquinas = [
+    //     'Máquina J',
+    //     'Máquina A',
+    //     'Máquina G',
+    //     'Máquina I',
+    //     'Máquina E',
+    //     'Máquina F',
+    //     'Máquina H',
+    //     'Máquina D',
+    // ];
+    // const data2 = {
+    //     labels: labelsMaquinas,
+    //     datasets: [{
+    //         label: 'Produção Diária Máquina',
+    //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
+    //         borderColor: 'rgb(90, 180, 13, 0.8)',
+    //         data: [85000, 82000, 81000, 78000, 75000, 65000, 60000, 30000],
+    //     },
+    //     {
+    //         label: 'Meta',
+    //         type: 'line',
+    //         borderDash: [10, 5],
+    //         borderWidth: 2,
+    //         pointRadius: 0,
+    //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
+    //         borderColor: 'rgb(255, 255, 255, 0.8)',
+    //         data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
+    //     }
+    //     ]
+    // };
+
+    // const config = {
+    //     type: 'line',
+    //     data: data,
+    //     options: {}
+    // };
+    // const config2 = {
+    //     type: 'bar',
+    //     data: data2,
+    //     options: {}
+    // };
+
+    // const graficoMaquinas = new Chart(
+    //     document.getElementById('graficoMaquinas'),
+    //     config2
+    // );
 
     function logout() {
         localStorage.removeItem("logado");
@@ -317,8 +318,8 @@
         
         <tr>
             <td>${index + 1}</td>
-
-            <td><a href="dashboard-especifica.html">${item.maquina}</a></td>
+    
+        <td><a href="dashboard-especifica.html?idSensor=${item.idSensor}">${item.maquina}</a></td>
 
             
             <td>
