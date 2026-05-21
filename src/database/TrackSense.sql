@@ -399,3 +399,4 @@ GROUP BY m.fkEmpresaMaquina;
 
 -- Adiciona 6 máquinas novas na empresa 1000
 SELECT idMaquina, numMaquina FROM maquina WHERE fkEmpresaMaquina = 1000;
+

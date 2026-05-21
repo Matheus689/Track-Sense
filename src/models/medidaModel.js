@@ -42,7 +42,6 @@ function buscarTodasMaquinas(idEmpresa) {
         JOIN sensor s ON s.fkMaquina = m.idMaquina
         LEFT JOIN registroSensor r 
             ON r.fkSensor = s.idSensor
-            
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
         GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
         ORDER BY eficiencia DESC;
