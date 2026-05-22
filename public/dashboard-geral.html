@@ -152,7 +152,7 @@
                     pointRadius: 0,
                     backgroundColor: 'rgb(255, 255, 255, 0.8)',
                     borderColor: 'rgb(255, 255, 255, 0.8)',
-                    data: Array(valores.length).fill(90000),
+                    data: Array(valores.length).fill(30),
                 }]
             };
 
@@ -192,7 +192,7 @@
             pointRadius: 0,
             backgroundColor: 'rgb(255, 255, 255, 0.8)',
             borderColor: 'rgb(255, 255, 255, 0.8)',
-            data: Array(valoresMaquinas.length).fill(90000),
+            data: Array(valoresMaquinas.length).fill(50),
         }]
     };
 
@@ -205,85 +205,6 @@
     );
 
 });
-    // const labelsProducao = [
-    //     '08:00',
-    //     '09:00',
-    //     '10:00',
-    //     '11:00',
-    //     '12:00',
-    //     '13:00',
-    //     '14:00',
-    //     '15:00',
-    //     '16:00',
-    //     '17:00',
-    //     '18:00',
-    // ];
-    // const data = {
-    //     labels: labelsProducao,
-    //     datasets: [{
-    //         label: 'Produção Real',
-    //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
-    //         borderColor: 'rgb(90, 180, 13, 0.8)',
-    //         data: [55000, 62000, 58000, 70000, 90000, 85000, 60000, 75000, 80000, 75000, 85000],
-    //     },
-    //     {
-    //         label: 'Meta',
-    //         borderDash: [10, 5],
-    //         borderWidth: 2,
-    //         pointRadius: 0,
-    //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
-    //         borderColor: 'rgb(255, 255, 255, 0.8)',
-    //         data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
-    //     }
-    //     ]
-    // };
-
-    // const labelsMaquinas = [
-    //     'Máquina J',
-    //     'Máquina A',
-    //     'Máquina G',
-    //     'Máquina I',
-    //     'Máquina E',
-    //     'Máquina F',
-    //     'Máquina H',
-    //     'Máquina D',
-    // ];
-    // const data2 = {
-    //     labels: labelsMaquinas,
-    //     datasets: [{
-    //         label: 'Produção Diária Máquina',
-    //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
-    //         borderColor: 'rgb(90, 180, 13, 0.8)',
-    //         data: [85000, 82000, 81000, 78000, 75000, 65000, 60000, 30000],
-    //     },
-    //     {
-    //         label: 'Meta',
-    //         type: 'line',
-    //         borderDash: [10, 5],
-    //         borderWidth: 2,
-    //         pointRadius: 0,
-    //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
-    //         borderColor: 'rgb(255, 255, 255, 0.8)',
-    //         data: [90000, 90000, 90000, 90000, 90000, 90000, 90000, 90000],
-    //     }
-    //     ]
-    // };
-
-    // const config = {
-    //     type: 'line',
-    //     data: data,
-    //     options: {}
-    // };
-    // const config2 = {
-    //     type: 'bar',
-    //     data: data2,
-    //     options: {}
-    // };
-
-    // const graficoMaquinas = new Chart(
-    //     document.getElementById('graficoMaquinas'),
-    //     config2
-    // );
 
     function logout() {
         localStorage.removeItem("logado");

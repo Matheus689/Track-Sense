@@ -15,12 +15,13 @@ function buscarUltimasMedidas(idSensor) {
 function buscarMedidasEmTempoReal(idSensor) {
     var instrucaoSql = `
         SELECT 
-            valorRegistro as registro, 
-            hrRegistro as momento_grafico
+            DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
+            COUNT(*) AS registro
         FROM registroSensor
         WHERE fkSensor = ${idSensor}
         AND DATE(hrRegistro) = CURDATE()
-        ORDER BY hrRegistro ASC;
+        GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
+        ORDER BY momento_grafico ASC
     `;
 
     console.log(instrucaoSql);
@@ -43,33 +44,29 @@ function buscarTodasMaquinas(idEmpresa) {
         LEFT JOIN registroSensor r 
             ON r.fkSensor = s.idSensor
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
+        AND DATE(r.hrRegistro) = CURDATE()
         GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
         ORDER BY eficiencia DESC;
     `
-// AND DATE(r.hrRegistro) = CURDATE()
     console.log(instrucaoSql);
 
     return database.executar(instrucaoSql);
 }
 
 function buscarProducaoGeral(idEmpresa) {
-
     var instrucaoSql = `
         SELECT 
             DATE_FORMAT(r.hrRegistro, '%H:00') AS horario,
-            SUM(r.valorRegistro) AS producao
+            COUNT(r.idRegistro) AS producao
         FROM registroSensor r
-        JOIN sensor s
-            ON r.fkSensor = s.idSensor
-        JOIN maquina m
-            ON s.fkMaquina = m.idMaquina
+        JOIN sensor s ON r.fkSensor = s.idSensor
+        JOIN maquina m ON s.fkMaquina = m.idMaquina
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
+        AND DATE(r.hrRegistro) = CURDATE()
         GROUP BY horario
         ORDER BY horario;
     `;
-
     console.log(instrucaoSql);
-
     return database.executar(instrucaoSql);
 }
 
@@ -79,16 +76,15 @@ function buscarProducaoDiariaMaquina (idEmpresa) {
     
         SELECT 
             m.numMaquina AS maquina,
-            SUM(r.valorRegistro) AS producao
+            COUNT(r.idRegistro) AS producao
         FROM maquina m
-        JOIN sensor s
-            ON s.fkMaquina = m.idMaquina
-        JOIN registroSensor r
+        JOIN sensor s ON s.fkMaquina = m.idMaquina
+        LEFT JOIN registroSensor r
             ON r.fkSensor = s.idSensor
+            AND DATE(r.hrRegistro) = CURDATE()
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
         GROUP BY m.idMaquina
         ORDER BY producao DESC;
-    
     `;
 
     console.log(instrucaoSql);
