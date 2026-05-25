@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackSense | Login</title>
-    <script src="./js/script.js" defer></script>
+    <script src="js/script.js" defer></script>
     <link rel="stylesheet" href="css/loginCadastro.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
@@ -73,6 +73,7 @@
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
 
+
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
@@ -104,7 +105,7 @@
 
             } else {
 
-                console.log("Houve um erro ao tentar realizar o login!");
+                alert(`Email ou senha inválidos`)
 
                 resposta.text().then(texto => {
                     console.error(texto);
