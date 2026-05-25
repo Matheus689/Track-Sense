@@ -19,7 +19,7 @@ function buscarMedidasEmTempoReal(idSensor) {
             COUNT(*) AS registro
         FROM registroSensor
         WHERE fkSensor = ${idSensor}
-        AND DATE(hrRegistro) = CURDATE()
+        AND DATE(hrRegistro) <= CURDATE()
         GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
         ORDER BY momento_grafico ASC
     `;
@@ -44,9 +44,9 @@ function buscarTodasMaquinas(idEmpresa) {
         LEFT JOIN registroSensor r 
             ON r.fkSensor = s.idSensor
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
-        AND DATE(r.hrRegistro) = CURDATE()
+        AND DATE(r.hrRegistro) <= CURDATE()
         GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
-        ORDER BY eficiencia DESC;
+        ORDER BY eficiencia ASC;
     `
     console.log(instrucaoSql);
 
@@ -62,7 +62,7 @@ function buscarProducaoGeral(idEmpresa) {
         JOIN sensor s ON r.fkSensor = s.idSensor
         JOIN maquina m ON s.fkMaquina = m.idMaquina
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
-        AND DATE(r.hrRegistro) = CURDATE()
+        AND DATE(r.hrRegistro) <= CURDATE()
         GROUP BY horario
         ORDER BY horario;
     `;
@@ -81,7 +81,7 @@ function buscarProducaoDiariaMaquina (idEmpresa) {
         JOIN sensor s ON s.fkMaquina = m.idMaquina
         LEFT JOIN registroSensor r
             ON r.fkSensor = s.idSensor
-            AND DATE(r.hrRegistro) = CURDATE()
+            AND DATE(r.hrRegistro) <= CURDATE()
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
         GROUP BY m.idMaquina
         ORDER BY producao DESC;
