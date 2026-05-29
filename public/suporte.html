@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="/public/css/suporte.css">
+   <title>Suporte</title>
+</head>
+<body>
+   <header class="header">
+        <a href="trackSense.html">
+            <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+         </a>
+         
+         <nav class="nav-bar">
+            <ul>
+               <li><a href="trackSense.html">Home</a></li>
+               <li><a class="active" id="a_suporte" style="display: none;" href="suporte.html">Suporte</a></li>
+               <li><a href="calculadora.html">Calculadora Financeira</a></li>
+               <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="sessao1">
+       <div id="bobia">
+           <h1>BobIA</h1>
+           <textarea id="pergunta" type="text" placeholder="Digite a pergunta..."></textarea>
+           <br><br>
+           <button onclick="gerarResposta()">Gerar Resposta</button>
+           <h3>Resposta da IA:</h3>
+           <div id="resposta"></div>
+       </div>
+    </section>
+
+
+
+</body>
+</html>
+
+<script>
+   if(sessionStorage.getItem('SUPORTE')){
+      document.getElementById('a_suporte').style.display = "block";
+   }  
+
+   async function gerarResposta() {
+            const pergunta = document.getElementById('pergunta').value;
+
+            const response = await fetch('/perguntar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pergunta })
+            });
+
+            const data = await response.json();
+
+            resposta.style.display = 'block';
+            document.getElementById('resposta').innerText = data.resultado;
+        }
+
+</script>
