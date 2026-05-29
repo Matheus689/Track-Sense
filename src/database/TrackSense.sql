@@ -367,6 +367,8 @@ INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
 (1005,1,'2026-04-20 08:00:00'),(1005,1,'2026-04-25 08:00:00'),
 (1005,1,'2026-05-10 08:00:00'),(1005,1,'2026-05-20 08:00:00');
 
+SELECT * FROM usuario;
+select * from registroSensor;
 -- suporte
 /*
 SET FOREIGN_KEY_CHECKS = 0;
