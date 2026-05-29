@@ -33,6 +33,7 @@
             <div class="input log">
                 <input type="text" id="inpEmail" placeholder="Email">
                 <input type="password" id="inpSenha" placeholder="Senha">
+                <input type="text" id="inpCodEmpresa" placeholder="Cód. Empresa">
             </div>
 
             <button onclick="entrar()" class="button">Entrar</button>
@@ -55,6 +56,10 @@
 </html>
 
 <script>
+
+
+
+
     function entrar() {
 
         var emailVar = inpEmail.value;
@@ -89,6 +94,10 @@
             if (resposta.ok) {
                 console.log("resposta");
 
+                if (inpCodEmpresa.value == "TR4CK") {
+                    sessionStorage.setItem("SUPORTE","true")
+                }
+
                 resposta.json().then(json => {
                     console.log(json);
                     console.log(JSON.stringify(json));
@@ -98,9 +107,9 @@
                     window.location.href = "selecionar-fabrica.html";
                     // sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
 
-                    
+
                     // apenas para exibir o loading
-                    
+
                 });
 
             } else {
