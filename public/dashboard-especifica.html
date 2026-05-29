@@ -126,89 +126,61 @@ fetch(`/medidas/tempo-real/${idSensor}`)
         console.log("Erro ao buscar dados:", erro);
     });
 
-    const labelsBar = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'];
+    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
-    const dataBar = {
-        labels: labelsBar,
-        datasets: [
-            {
-                label: "Produção total no mês do ano anterior (latas/mês)",
-                data: dadosBarraMaquinas["A"],
-                backgroundColor: 'lightblue',
-                borderWidth: 2,
-                order: 2
+fetch(`/medidas/producao-mensal/${idSensor}`)
+    .then(res => res.json())
+    .then(dados => {
 
-            },
-            {
-                label: "Produção total no mês atual (latas/mês)",
-                data: dadosBarraMaquinas["A"],
-                borderColor: "navy",
-                backgroundColor: "navy",
-                order: 2
+        // separa ano atual e ano anterior
+        const anoAtual = new Date().getFullYear();
+        const anoAnterior = anoAtual - 1;
+
+        const dadosAnoAtual    = new Array(12).fill(0);
+        const dadosAnoAnterior = new Array(12).fill(0);
+
+        dados.forEach(d => {
+            const indice = d.mes - 1; 
+            if (d.ano == anoAtual) {
+                dadosAnoAtual[indice] = d.totalLatas;
+            } else if (d.ano == anoAnterior) {
+                dadosAnoAnterior[indice] = d.totalLatas;
             }
-        ]
-    };
+        });
 
-    const configBar = {
-        type: "bar",
-        data: dataBar,
-        options: {
-            plugins: {
-                legend: {
-                    labels: { color: "white" }
-                }
-            },
-            scales: {
-                x: { ticks: { color: "white" } },
-                y: {
-                    ticks: { color: "white" },
-                    beginAtZero: true
-                }
-            }
-        }
-    };
-
-    const labelsPie = ["Máquina A", "Máquina B", "Máquina C", "Máquina D"];
-
-    const dataPie = {
-        labels: labelsPie,
-        datasets: [
-            {
-                label: "Produção (%)",
-                data: [25.75, 25.19, 26.31, 22.71], 
-                backgroundColor: [
-                    "#6395EE",
-                    "#1104fc",
-                    "#2a15bc",
-                    "#000080"
-                ],
-                borderWidth: 1
-            }
-        ]
-    };
-
-    const configPie = {
-        type: "pie",
-        data: dataPie,
-        options: {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: "white"
+        new Chart(document.getElementById("graphicBar"), {
+            type: "bar",
+            data: {
+                labels: nomesMeses,
+                datasets: [
+                    {
+                        label: `Produção ${anoAnterior}`,
+                        data: dadosAnoAnterior,
+                        backgroundColor: "lightblue",
+                        borderWidth: 2
+                    },
+                    {
+                        label: `Produção ${anoAtual}`,
+                        data: dadosAnoAtual,
+                        backgroundColor: "navy",
+                        borderColor: "navy"
                     }
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: { labels: { color: "white" } }
+                },
+                scales: {
+                    x: { ticks: { color: "white" } },
+                    y: { beginAtZero: true, ticks: { color: "white" } }
                 }
             }
-        }
-    };
-
-    const graphicLine = new Chart(
-        document.getElementById("graphicLine"),
-        configLine
-    );
-
-    const graphicBar = new Chart(
-        document.getElementById("graphicBar"),
-        configBar
-    );
+        });
+    })
+    .catch(erro => {
+        console.log("Erro ao buscar produção mensal:", erro);
+    });
 
 </script>

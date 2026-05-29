@@ -151,9 +151,9 @@ function CadCadastrar() {
 }
 
 function LogEntrar() {
-    let emailDigitado = inpEmail.value.toLowerCase();
-    let senhaDigitada = inpSenha.value;
-    let usuarioEncontrado = false;
+        // let emailDigitado = inpEmail.value.toLowerCase();
+    // let senhaDigitada = inpSenha.value;
+    // let usuarioEncontrado = false;
 
 
     // for (let i = 0; i < usuario.length; i++) {
@@ -166,12 +166,12 @@ function LogEntrar() {
 
     //         alert(`Bem-vindo, ${nomeUsuario}! Você entrou na sua página.`);
     //         localStorage.setItem("logado", "true");
-    //         // window.location.href = "selecionar-fabrica.html";
+    //         window.location.href = "selecionar-fabrica.html";
     //     }
     // }
 
     // if (!usuarioEncontrado) {
-    //     alert("E-mail ou senha incorretos.");
+    //     alert("Email ou senha inválidos");
     // }
 }
 
