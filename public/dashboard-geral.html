@@ -35,14 +35,19 @@
                 <h3>4.3% vs ontem</h3>
             </div>
             <div class="box">
-                <h3>Máquinas em risco</h3>
-                <p id="total">Máquina D</p>
+                <h3>Máquinas em risco - Abaixo de 80%</h3>
+                <p id="maquinaRisco">Máquina D</p>
             </div>
-            <div class="box">
-                <h3>Ajuste de velocidade</h3>
-                <p id="total">Máquina E</p>
-                <h3>22% abaixo da média. Faltam 15.000 latas para a meta.</h3>
-            </div>
+        <div class="box">
+            <h3>Ajuste de velocidade</h3>
+
+            <p id="maquinaCritica">Máquina E</p>
+
+            <h3 id="textoCritico">
+                22% abaixo da média.
+                Faltam 15.000 latas para a meta.
+            </h3>
+        </div>
         </section>
         <section class="grafs">
             <section class="ranking-section">
@@ -125,9 +130,72 @@
     fetch('/medidas/maquinas/1000')
         .then(res => res.json())
         .then(dados => {
-            maquinasRanking = dados;
-            carregarRanking();
+
+        maquinasRanking = dados;
+
+        carregarRanking();
+
+       // KPI Eficiencia méida
+        let soma = 0;
+        dados.forEach(item => {
+            soma += Number(item.eficiencia);
         });
+        let media = Math.round(soma / dados.length);
+        document.getElementById("producao").innerHTML =
+            media + "%";
+
+
+  // KPI Máquina em risco
+        let maquinasRisco = dados.filter(item =>
+            Number(item.eficiencia) < 80 
+        );
+
+        if (maquinasRisco.length > 0) {
+
+            let nomes = maquinasRisco.map(item => item.maquina);
+
+            document.getElementById("maquinaRisco").innerHTML =
+                nomes.join(", ");
+
+        } else {
+
+            document.getElementById("maquinaRisco").innerHTML =
+                "Nenhuma";
+        }
+
+
+    // KPI Ajuste de velocidade
+        // pega a pior máquina
+       let piorMaquina = dados.reduce((menor, atual) => {
+
+        if (Number(atual.eficiencia) < Number(menor.eficiencia)) {
+            return atual;
+        }
+
+        return menor;
+
+    }, dados[0]);
+
+        document.getElementById("maquinaCritica").innerHTML =
+            piorMaquina.maquina;
+
+
+        // calcula quanto falta pra meta
+        let faltando = 30 - piorMaquina.producao;
+
+        if (faltando < 0) {
+            faltando = 0;
+        }
+
+
+        // calcula diferença percentual
+        let abaixoMedia = 100 - piorMaquina.eficiencia;
+
+        document.getElementById("textoCritico").innerHTML =
+            `${abaixoMedia}% abaixo da meta. 
+            Faltam ${faltando} registros para atingir a meta.`;
+
+    });
 
     fetch('/medidas/producao-geral/1000')
         .then(res => res.json())
