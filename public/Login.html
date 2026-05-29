@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackSense | Login</title>
-    <script src="./js/script.js" defer></script>
+    <script src="js/script.js" defer></script>
     <link rel="stylesheet" href="css/loginCadastro.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
@@ -33,6 +33,7 @@
             <div class="input log">
                 <input type="text" id="inpEmail" placeholder="Email">
                 <input type="password" id="inpSenha" placeholder="Senha">
+                <input type="text" id="inpCodEmpresa" placeholder="Cód. Empresa">
             </div>
 
             <button onclick="entrar()" class="button">Entrar</button>
@@ -55,6 +56,10 @@
 </html>
 
 <script>
+
+
+
+
     function entrar() {
 
         var emailVar = inpEmail.value;
@@ -73,6 +78,7 @@
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
 
+
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
@@ -88,6 +94,10 @@
             if (resposta.ok) {
                 console.log("resposta");
 
+                if (inpCodEmpresa.value == "TR4CK") {
+                    sessionStorage.setItem("SUPORTE","true")
+                }
+
                 resposta.json().then(json => {
                     console.log(json);
                     console.log(JSON.stringify(json));
@@ -97,14 +107,14 @@
                     window.location.href = "selecionar-fabrica.html";
                     // sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
 
-                    
+
                     // apenas para exibir o loading
-                    
+
                 });
 
             } else {
 
-                console.log("Houve um erro ao tentar realizar o login!");
+                alert(`Email ou senha inválidos`)
 
                 resposta.text().then(texto => {
                     console.error(texto);

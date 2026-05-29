@@ -6,22 +6,22 @@ function buscarUltimasMedidas(idSensor) {
         valorRegistro as registro, 
                         hrRegistro as momento_grafico
                     FROM registroSensor
-                    WHERE fkSensor = ${idSensor}`;
+                    WHERE fkSensor = ${idSensor};`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function buscarMedidasEmTempoReal(idSensor) {
-
     var instrucaoSql = `
         SELECT 
-            valorRegistro as registro, 
-            hrRegistro as momento_grafico
+            DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
+            COUNT(*) AS registro
         FROM registroSensor
-        WHERE fkSensor = ${idSensor} 
-        ORDER BY idRegistro DESC 
-        LIMIT 1
+        WHERE fkSensor = ${idSensor}
+        AND DATE(hrRegistro) = CURDATE()
+        GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
+        ORDER BY momento_grafico ASC
     `;
 
     console.log(instrucaoSql);
@@ -34,43 +34,39 @@ function buscarTodasMaquinas(idEmpresa) {
     var instrucaoSql = `
         SELECT 
             m.idMaquina,
-            m.numMaquina as maquina,
+            m.numMaquina AS maquina,
             s.idSensor,
             s.estadoSensor,
-            r.valorRegistro as eficiencia,
-            r.valorRegistro as producao,
-            r.hrRegistro
+            COUNT(r.idRegistro) AS producao,
+            ROUND((COUNT(r.idRegistro) / 30) * 100, 0) AS eficiencia
         FROM maquina m
         JOIN sensor s ON s.fkMaquina = m.idMaquina
-        LEFT JOIN registroSensor r ON r.idRegistro = (
-            SELECT idRegistro 
-            FROM registroSensor
-            WHERE fkSensor = s.idSensor
-            ORDER BY hrRegistro DESC
-            LIMIT 1
-        )
-        WHERE m.fkEmpresaMaquina = ${idEmpresa}`
+        LEFT JOIN registroSensor r 
+            ON r.fkSensor = s.idSensor
+        WHERE m.fkEmpresaMaquina = ${idEmpresa}
+        AND DATE(r.hrRegistro) = CURDATE()
+        GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
+        ORDER BY eficiencia ASC;
+    `
+    console.log(instrucaoSql);
+
     return database.executar(instrucaoSql);
 }
 
 function buscarProducaoGeral(idEmpresa) {
-
     var instrucaoSql = `
         SELECT 
             DATE_FORMAT(r.hrRegistro, '%H:00') AS horario,
-            SUM(r.valorRegistro) AS producao
+            COUNT(r.idRegistro) AS producao
         FROM registroSensor r
-        JOIN sensor s
-            ON r.fkSensor = s.idSensor
-        JOIN maquina m
-            ON s.fkMaquina = m.idMaquina
+        JOIN sensor s ON r.fkSensor = s.idSensor
+        JOIN maquina m ON s.fkMaquina = m.idMaquina
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
+        AND DATE(r.hrRegistro) = CURDATE()
         GROUP BY horario
         ORDER BY horario;
     `;
-
     console.log(instrucaoSql);
-
     return database.executar(instrucaoSql);
 }
 
@@ -80,16 +76,33 @@ function buscarProducaoDiariaMaquina (idEmpresa) {
     
         SELECT 
             m.numMaquina AS maquina,
-            SUM(r.valorRegistro) AS producao
+            COUNT(r.idRegistro) AS producao
         FROM maquina m
-        JOIN sensor s
-            ON s.fkMaquina = m.idMaquina
-        JOIN registroSensor r
+        JOIN sensor s ON s.fkMaquina = m.idMaquina
+        LEFT JOIN registroSensor r
             ON r.fkSensor = s.idSensor
+            AND DATE(r.hrRegistro) = CURDATE()
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
         GROUP BY m.idMaquina
         ORDER BY producao DESC;
-    
+    `;
+
+    console.log(instrucaoSql);
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarProducaoMensal(idSensor) {
+    var instrucaoSql = `
+        SELECT 
+            MONTH(hrRegistro) as mes,
+            YEAR(hrRegistro) as ano,
+            COUNT(*) as totalLatas
+        FROM registroSensor
+        WHERE fkSensor = ${idSensor}
+        AND valorRegistro = 1
+        GROUP BY YEAR(hrRegistro), MONTH(hrRegistro)
+        ORDER BY ano, mes
     `;
 
     console.log(instrucaoSql);
@@ -102,5 +115,6 @@ module.exports = {
     buscarMedidasEmTempoReal,
     buscarTodasMaquinas,
     buscarProducaoGeral,
-    buscarProducaoDiariaMaquina
+    buscarProducaoDiariaMaquina,
+    buscarProducaoMensal
 }

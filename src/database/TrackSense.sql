@@ -1,189 +1,390 @@
 
+CREATE DATABASE trackSense;
 USE trackSense;
 
--- CRIAÇÃO DAS TABELAS --
+-- criaçao das tabelas
 CREATE TABLE endereco (
-idEndereco INT AUTO_INCREMENT PRIMARY KEY ,
-estado CHAR(2),
-cidade VARCHAR(45),
-bairro VARCHAR(45),
-rua VARCHAR(45),
-numero CHAR(4),
-cep CHAR(8)
-) AUTO_INCREMENT = 1000; 
-
-CREATE TABLE empresa( 
-idEmpresa INT AUTO_INCREMENT PRIMARY KEY ,
-cnpj CHAR(14) UNIQUE,
-nome VARCHAR(45),
-fkMatriz INT,
-	CONSTRAINT chFkMatriz
-    FOREIGN KEY (fkMatriz)
-    REFERENCES empresa(idEmpresa),
-fkEndereco INT, 
-	CONSTRAINT chFkEndereco 
-    FOREIGN KEY (fkEndereco)
-    REFERENCES endereco(idEndereco)
+    idEndereco INT AUTO_INCREMENT PRIMARY KEY,
+    numero CHAR(4),
+    cep CHAR(8)
 ) AUTO_INCREMENT = 1000;
 
-CREATE TABLE usuario(
-idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-nome VARCHAR(50) NOT NULL,
-email VARCHAR(50) NOT NULL,
-senha CHAR(8) NOT NULL,
-dtCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
-fkSupervisor INT, 
-	CONSTRAINT chFkSupervisor 
-    FOREIGN KEY (fkSupervisor)
-    REFERENCES usuario(idUsuario),
-fkEmpresa INT,
-	CONSTRAINT chFkEmpresa 
-    FOREIGN KEY (fkEmpresa) 
-    REFERENCES empresa(idEmpresa)
-) AUTO_INCREMENT = 1000; 
-
-CREATE TABLE maquina(
-idMaquina INT PRIMARY KEY AUTO_INCREMENT,
-setor VARCHAR(45),
-numMaquina VARCHAR(10),
-fkEmpresaMaquina INT,
-	CONSTRAINT chFkEmpresaMaquina 
-    FOREIGN KEY (fkEmpresaMaquina) 
-    REFERENCES empresa(idEmpresa)
-)AUTO_INCREMENT = 1000;
-
-CREATE TABLE sensor( 
-idSensor INT PRIMARY KEY AUTO_INCREMENT,
-estadoSensor VARCHAR(10), 
-	CONSTRAINT chEstadoSensor CHECK(estadoSensor IN('Ativo', 'Inativo', 'Manutenção')),
-numSerie CHAR(8),
-fkMaquina INT,
-	CONSTRAINT chFkMaquina FOREIGN KEY (fkMaquina) REFERENCES maquina(idMaquina)
+CREATE TABLE empresa (
+    idEmpresa INT AUTO_INCREMENT PRIMARY KEY,
+    cnpj CHAR(14) UNIQUE,
+    nome VARCHAR(45),
+    fkMatriz INT,
+        CONSTRAINT chFkMatriz FOREIGN KEY (fkMatriz) REFERENCES empresa(idEmpresa),
+    fkEndereco INT,
+        CONSTRAINT chFkEndereco FOREIGN KEY (fkEndereco) REFERENCES endereco(idEndereco)
 ) AUTO_INCREMENT = 1000;
 
--- tabela sensor e tabela dados do sensor
-CREATE TABLE registroSensor(
-idRegistro INT PRIMARY KEY AUTO_INCREMENT,
-valorRegistro TINYINT,
-hrRegistro DATETIME DEFAULT CURRENT_TIMESTAMP,
-fkSensor INT,
-	CONSTRAINT chFkSensor
-    FOREIGN KEY (fkSensor)
-    REFERENCES sensor (idSensor)
+CREATE TABLE usuario (
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    senha VARCHAR(14) NOT NULL,
+    dtCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fkSupervisor INT,
+        CONSTRAINT chFkSupervisor FOREIGN KEY (fkSupervisor) REFERENCES usuario(idUsuario),
+    fkEmpresa INT,
+        CONSTRAINT chFkEmpresa FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa)
 ) AUTO_INCREMENT = 1000;
 
+CREATE TABLE maquina (
+    idMaquina INT PRIMARY KEY AUTO_INCREMENT,
+    numMaquina VARCHAR(10),
+    fkEmpresaMaquina INT,
+        CONSTRAINT chFkEmpresaMaquina FOREIGN KEY (fkEmpresaMaquina) REFERENCES empresa(idEmpresa)
+) AUTO_INCREMENT = 1000;
 
--- EXEMPLO DE INSERÇÃO DE DADOS --
-INSERT INTO endereco (estado, cidade, bairro, rua, numero, cep) VALUES
-('SP','São Paulo','Bela Vista','Avenida Paulista','1000','09100200'),
-('SP','São Bernardo do Campo','Nova Petrópolis','Rua Giovanne Pinheiro','1001','09100201'),
-('MG','Belo Horizonte','Tiradentes','Rua Carlos Alberto','1002','09100202'),
-('MG','Poços de Calda','Jardim Vergueiro','Rua Roberto Magalhães','1003','09100203'),
-('RJ','Rio de Janeiro','Vila da Penha','Rua Severino Araújo de Lima','1004','09100204'),
-('BA','Xique-Xique','Cidade das Flores','Rua Bartolomeu de Gusmão','1005','09100205'),
-('PE','Recife','Boa Viagem','Avenida Litoral','1006','09100206');
+CREATE TABLE sensor (
+    idSensor INT PRIMARY KEY AUTO_INCREMENT,
+    estadoSensor VARCHAR(10),
+        CONSTRAINT chEstadoSensor CHECK(estadoSensor IN('Ativo', 'Inativo', 'Manutenção')),
+    numSerie CHAR(8),
+    fkMaquina INT,
+        CONSTRAINT chFkMaquina FOREIGN KEY (fkMaquina) REFERENCES maquina(idMaquina)
+) AUTO_INCREMENT = 1000;
+
+CREATE TABLE registroSensor (
+    idRegistro INT PRIMARY KEY AUTO_INCREMENT,
+    valorRegistro TINYINT,
+    hrRegistro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fkSensor INT,
+        CONSTRAINT chFkSensor FOREIGN KEY (fkSensor) REFERENCES sensor(idSensor)
+) AUTO_INCREMENT = 1000;
+
+-- inserts básicos
+
+INSERT INTO endereco (numero, cep) VALUES
+('1000','09100200'),('1001','09100201'),('1002','09100202'),
+('1003','09100203'),('1004','09100204'),('1005','09100205'),('1006','09100206');
 
 INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11122233344455','Quero Paulista', NULL, 1000),
-('11122233377755','Quero São Bernardo do Campo', 1000, 1001),
-('11122288877755','Quero Belo Horizonte', 1000, 1002),
-('11122233344457','Knor Poços de Calda', NULL, 1003),
-('11122233344476','Knor Rio de Janeiro', 1003, 1004),
-('11122233344458','Predilecta Xique-xique', NULL, 1005),
-('11199933344458','Predilecta Recife', 1005, 1006);
+('11122233344455','Quero Paulista',            NULL, 1000),
+('11122233377755','Quero São Bernardo do Campo',1000, 1001),
+('11122288877755','Quero Belo Horizonte',       1000, 1002),
+('11122233344457','Knor Poços de Calda',        NULL, 1003),
+('11122233344476','Knor Rio de Janeiro',        1003, 1004),
+('11122233344458','Predilecta Xique-xique',     NULL, 1005),
+('11199933344458','Predilecta Recife',          1005, 1006);
 
-INSERT INTO usuario (nome, email, senha, fkSupervisor, fkEmpresa)VALUES
-('Giovanna Flores', 'giovanna@email.com', 'gi120511', NULL, 1000),
-('Nathan Fioravanti', 'nathan@email.com', 'nathan79', 1000, 1000),
-('Lucas Espindola', 'lucas@email.com', 'lucas699', NULL, 1001),
-('Matheus Profeta', 'matheus@email.com', 'matheus7', 1002, 1001),
-('Max Maya', 'max@email.com', 'max45678', NULL, 1002),
-('Sara Cheque', 'sara@email.com', 'sara1234', 1004, 1002);
+INSERT INTO usuario (nome, email, senha, fkSupervisor, fkEmpresa) VALUES
+('Giovanna Flores',  'giovanna@email.com', 'gi120511', NULL, 1000),
+('Nathan Fioravanti','nathan@email.com',   'nathan79', 1000, 1000),
+('Lucas Espindola',  'lucas@email.com',    'lucas699', NULL, 1001),
+('Matheus Profeta',  'matheus@email.com',  'matheus7', 1002, 1001),
+('Max Maya',         'max@email.com',      'max45678', NULL, 1002),
+('Sara Cheque',      'sara@email.com',     'sara1234', 1004, 1002);
 
+-- Empresa 1000 com 8 maquinas
 INSERT INTO maquina (numMaquina, fkEmpresaMaquina) VALUES
-('M01', 1000),
-('M02', 1000),
-('M01', 1001),
-('M01', 1002),
-('M01', 1003),
-('M02', 1003),
-('M01', 1004),
-('M01', 1005),
-('M02', 1005),
-('M01', 1006);
+('M01', 1000), 
+('M02', 1000), 
+('M03', 1000), 
+('M04', 1000), 
+('M05', 1000), 
+('M06', 1000), 
+('M07', 1000), 
+('M08', 1000); 
 
+
+-- SENSORES — um por máquina, empresa 1000
+-- idSensor 1000 a 1007
 INSERT INTO sensor (estadoSensor, numSerie, fkMaquina) VALUES
-('Ativo','10002000','1000'),
-('Inativo','10002001','1001'),
-('Manutenção','10002002','1002'),
-('Ativo','10002003','1003'),
-('Inativo','10002004','1004'),
-('Ativo','10002005','1005'),
-('Inativo','10002006','1006'),
-('Manutenção','10002007','1007'),
-('Ativo','10002008','1008'),
-('Ativo','10002009','1009');
+('Ativo',     '10002000', 1000), 
+('Ativo',     '10002001', 1001), 
+('Ativo',     '10002002', 1002), 
+('Ativo',     '10002003', 1003), 
+('Ativo',     '10002004', 1004), 
+('Inativo',   '10002005', 1005), 
+('Inativo',   '10002006', 1006), 
+('Manutenção','10002007', 1007); 
 
-INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES -- arrumar
-(1000, 1),
-(1001, 1),
-(1002, 1);
 
--- VISUALISAÇÃO DE INFORMAÇÕES -- 
+-- REGISTROS DE HOJE (2026-05-21)
+-- Para o ranking e gráficos da dashboard geral
+-- Meta = 30 registros por dia = 100% eficiência
+
+-- Sensor 1000 (M01) — 30 registros — 100% eficiência
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1000,1,'2026-05-21 08:00:00'),(1000,1,'2026-05-21 08:01:00'),(1000,1,'2026-05-21 08:02:00'),
+(1000,1,'2026-05-21 09:00:00'),(1000,1,'2026-05-21 09:01:00'),(1000,1,'2026-05-21 09:02:00'),
+(1000,1,'2026-05-21 10:00:00'),(1000,1,'2026-05-21 10:01:00'),(1000,1,'2026-05-21 10:02:00'),
+(1000,1,'2026-05-21 11:00:00'),(1000,1,'2026-05-21 11:01:00'),(1000,1,'2026-05-21 11:02:00'),
+(1000,1,'2026-05-21 12:00:00'),(1000,1,'2026-05-21 12:01:00'),(1000,1,'2026-05-21 12:02:00'),
+(1000,1,'2026-05-21 13:00:00'),(1000,1,'2026-05-21 13:01:00'),(1000,1,'2026-05-21 13:02:00'),
+(1000,1,'2026-05-21 14:00:00'),(1000,1,'2026-05-21 14:01:00'),(1000,1,'2026-05-21 14:02:00'),
+(1000,1,'2026-05-21 15:00:00'),(1000,1,'2026-05-21 15:01:00'),(1000,1,'2026-05-21 15:02:00'),
+(1000,1,'2026-05-21 16:00:00'),(1000,1,'2026-05-21 16:01:00'),(1000,1,'2026-05-21 16:02:00'),
+(1000,1,'2026-05-21 17:00:00'),(1000,1,'2026-05-21 17:01:00'),(1000,1,'2026-05-21 17:02:00');
+
+-- Sensor 1001 (M02) — 25 registros — 83% eficiência
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1001,1,'2026-05-21 08:00:00'),(1001,1,'2026-05-21 08:01:00'),(1001,1,'2026-05-21 08:02:00'),
+(1001,1,'2026-05-21 09:00:00'),(1001,1,'2026-05-21 09:01:00'),(1001,1,'2026-05-21 09:02:00'),
+(1001,1,'2026-05-21 10:00:00'),(1001,1,'2026-05-21 10:01:00'),(1001,1,'2026-05-21 10:02:00'),
+(1001,1,'2026-05-21 11:00:00'),(1001,1,'2026-05-21 11:01:00'),(1001,1,'2026-05-21 12:00:00'),
+(1001,1,'2026-05-21 12:01:00'),(1001,1,'2026-05-21 13:00:00'),(1001,1,'2026-05-21 13:01:00'),
+(1001,1,'2026-05-21 14:00:00'),(1001,1,'2026-05-21 14:01:00'),(1001,1,'2026-05-21 15:00:00'),
+(1001,1,'2026-05-21 15:01:00'),(1001,1,'2026-05-21 16:00:00'),(1001,1,'2026-05-21 16:01:00'),
+(1001,1,'2026-05-21 16:02:00'),(1001,1,'2026-05-21 17:00:00'),(1001,1,'2026-05-21 17:01:00'),
+(1001,1,'2026-05-21 17:02:00');
+
+-- Sensor 1002 (M03) — 22 registros — 73% eficiência
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1002,1,'2026-05-21 08:00:00'),(1002,1,'2026-05-21 08:01:00'),(1002,1,'2026-05-21 09:00:00'),
+(1002,1,'2026-05-21 09:01:00'),(1002,1,'2026-05-21 10:00:00'),(1002,1,'2026-05-21 10:01:00'),
+(1002,1,'2026-05-21 11:00:00'),(1002,1,'2026-05-21 11:01:00'),(1002,1,'2026-05-21 12:00:00'),
+(1002,1,'2026-05-21 12:01:00'),(1002,1,'2026-05-21 13:00:00'),(1002,1,'2026-05-21 13:01:00'),
+(1002,1,'2026-05-21 14:00:00'),(1002,1,'2026-05-21 14:01:00'),(1002,1,'2026-05-21 15:00:00'),
+(1002,1,'2026-05-21 15:01:00'),(1002,1,'2026-05-21 16:00:00'),(1002,1,'2026-05-21 16:01:00'),
+(1002,1,'2026-05-21 16:02:00'),(1002,1,'2026-05-21 17:00:00'),(1002,1,'2026-05-21 17:01:00'),
+(1002,1,'2026-05-21 17:02:00');
+
+-- Sensor 1003 (M04) — 18 registros — 60% eficiência (atenção)
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1003,1,'2026-05-21 08:00:00'),(1003,1,'2026-05-21 08:01:00'),(1003,1,'2026-05-21 09:00:00'),
+(1003,1,'2026-05-21 09:01:00'),(1003,1,'2026-05-21 10:00:00'),(1003,1,'2026-05-21 11:00:00'),
+(1003,1,'2026-05-21 11:01:00'),(1003,1,'2026-05-21 12:00:00'),(1003,1,'2026-05-21 13:00:00'),
+(1003,1,'2026-05-21 13:01:00'),(1003,1,'2026-05-21 14:00:00'),(1003,1,'2026-05-21 14:01:00'),
+(1003,1,'2026-05-21 15:00:00'),(1003,1,'2026-05-21 15:01:00'),(1003,1,'2026-05-21 16:00:00'),
+(1003,1,'2026-05-21 16:01:00'),(1003,1,'2026-05-21 17:00:00'),(1003,1,'2026-05-21 17:01:00');
+
+-- Sensor 1004 (M05) — 12 registros — 40% eficiência (crítico)
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1004,1,'2026-05-21 08:00:00'),(1004,1,'2026-05-21 09:00:00'),(1004,1,'2026-05-21 10:00:00'),
+(1004,1,'2026-05-21 11:00:00'),(1004,1,'2026-05-21 12:00:00'),(1004,1,'2026-05-21 13:00:00'),
+(1004,1,'2026-05-21 14:00:00'),(1004,1,'2026-05-21 15:00:00'),(1004,1,'2026-05-21 16:00:00'),
+(1004,1,'2026-05-21 16:01:00'),(1004,1,'2026-05-21 17:00:00'),(1004,1,'2026-05-21 17:01:00');
+
+-- Sensor 1005 (M06) — 4 registros — 13% eficiência (crítico)
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1005,1,'2026-05-21 08:00:00'),(1005,1,'2026-05-21 11:00:00'),
+(1005,1,'2026-05-21 14:00:00'),(1005,1,'2026-05-21 17:00:00');
+
+-- Sensor 1006 (M07) — 0 registros hoje — 0% (inativo)
+-- Sensor 1007 (M08) — 0 registros hoje — 0% (manutenção)
+
+
+-- REGISTROS MENSAIS 2025 — sensor 1000
+-- Para o gráfico de barras ano anterior
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1000,1,'2025-01-05 08:00:00'),(1000,1,'2025-01-10 08:00:00'),(1000,1,'2025-01-15 08:00:00'),
+(1000,1,'2025-01-20 08:00:00'),(1000,1,'2025-01-25 08:00:00'),(1000,1,'2025-01-28 08:00:00'),
+(1000,1,'2025-02-05 08:00:00'),(1000,1,'2025-02-10 08:00:00'),(1000,1,'2025-02-15 08:00:00'),
+(1000,1,'2025-02-20 08:00:00'),(1000,1,'2025-02-25 08:00:00'),
+(1000,1,'2025-03-05 08:00:00'),(1000,1,'2025-03-10 08:00:00'),(1000,1,'2025-03-15 08:00:00'),
+(1000,1,'2025-03-20 08:00:00'),(1000,1,'2025-03-25 08:00:00'),(1000,1,'2025-03-28 08:00:00'),
+(1000,1,'2025-04-05 08:00:00'),(1000,1,'2025-04-10 08:00:00'),(1000,1,'2025-04-15 08:00:00'),
+(1000,1,'2025-04-20 08:00:00'),(1000,1,'2025-04-25 08:00:00'),
+(1000,1,'2025-05-05 08:00:00'),(1000,1,'2025-05-10 08:00:00'),(1000,1,'2025-05-15 08:00:00'),
+(1000,1,'2025-05-20 08:00:00'),(1000,1,'2025-05-25 08:00:00'),(1000,1,'2025-05-28 08:00:00'),
+(1000,1,'2025-06-05 08:00:00'),(1000,1,'2025-06-10 08:00:00'),(1000,1,'2025-06-15 08:00:00'),
+(1000,1,'2025-06-20 08:00:00'),(1000,1,'2025-06-25 08:00:00'),
+(1000,1,'2025-07-05 08:00:00'),(1000,1,'2025-07-10 08:00:00'),(1000,1,'2025-07-15 08:00:00'),
+(1000,1,'2025-07-20 08:00:00'),(1000,1,'2025-07-25 08:00:00'),(1000,1,'2025-07-28 08:00:00'),
+(1000,1,'2025-08-05 08:00:00'),(1000,1,'2025-08-10 08:00:00'),(1000,1,'2025-08-15 08:00:00'),
+(1000,1,'2025-08-20 08:00:00'),
+(1000,1,'2025-09-05 08:00:00'),(1000,1,'2025-09-10 08:00:00'),(1000,1,'2025-09-15 08:00:00'),
+(1000,1,'2025-09-20 08:00:00'),(1000,1,'2025-09-25 08:00:00'),(1000,1,'2025-09-28 08:00:00'),
+(1000,1,'2025-10-05 08:00:00'),(1000,1,'2025-10-10 08:00:00'),(1000,1,'2025-10-15 08:00:00'),
+(1000,1,'2025-10-20 08:00:00'),(1000,1,'2025-10-25 08:00:00'),
+(1000,1,'2025-11-05 08:00:00'),(1000,1,'2025-11-10 08:00:00'),(1000,1,'2025-11-15 08:00:00'),
+(1000,1,'2025-11-20 08:00:00'),(1000,1,'2025-11-25 08:00:00'),(1000,1,'2025-11-28 08:00:00'),
+(1000,1,'2025-12-05 08:00:00'),(1000,1,'2025-12-10 08:00:00'),(1000,1,'2025-12-15 08:00:00'),
+(1000,1,'2025-12-20 08:00:00'),(1000,1,'2025-12-25 08:00:00');
+
+-- REGISTROS MENSAIS 2026 — sensor 1000
+-- Para o gráfico de barras ano atual
+
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+(1000,1,'2026-01-05 08:00:00'),(1000,1,'2026-01-10 08:00:00'),(1000,1,'2026-01-15 08:00:00'),
+(1000,1,'2026-01-20 08:00:00'),(1000,1,'2026-01-25 08:00:00'),(1000,1,'2026-01-28 08:00:00'),
+(1000,1,'2026-01-29 08:00:00'),(1000,1,'2026-01-30 08:00:00'),
+(1000,1,'2026-02-05 08:00:00'),(1000,1,'2026-02-10 08:00:00'),(1000,1,'2026-02-15 08:00:00'),
+(1000,1,'2026-02-20 08:00:00'),(1000,1,'2026-02-25 08:00:00'),(1000,1,'2026-02-26 08:00:00'),
+(1000,1,'2026-03-05 08:00:00'),(1000,1,'2026-03-10 08:00:00'),(1000,1,'2026-03-15 08:00:00'),
+(1000,1,'2026-03-20 08:00:00'),(1000,1,'2026-03-25 08:00:00'),(1000,1,'2026-03-28 08:00:00'),
+(1000,1,'2026-03-29 08:00:00'),(1000,1,'2026-03-30 08:00:00'),
+(1000,1,'2026-04-05 08:00:00'),(1000,1,'2026-04-10 08:00:00'),(1000,1,'2026-04-15 08:00:00'),
+(1000,1,'2026-04-20 08:00:00'),(1000,1,'2026-04-25 08:00:00'),(1000,1,'2026-04-26 08:00:00'),
+(1000,1,'2026-04-27 08:00:00'),(1000,1,'2026-04-28 08:00:00'),
+(1000,1,'2026-05-01 08:00:00'),(1000,1,'2026-05-05 08:00:00'),(1000,1,'2026-05-10 08:00:00'),
+(1000,1,'2026-05-15 08:00:00'),(1000,1,'2026-05-18 08:00:00'),(1000,1,'2026-05-19 08:00:00'),
+(1000,1,'2026-05-20 08:00:00');
+
+
+-- SELECTS
 SELECT * FROM endereco;
 SELECT * FROM empresa;
 SELECT * FROM usuario;
 SELECT * FROM maquina;
 SELECT * FROM sensor;
-SELECT * FROM registroSensor; 
-    
--- Empresa + Máquina + Sensor + Registro
-SELECT e.nome AS 'Empresa', m.numMaquina AS 'Máquina', 
-s.numSerie AS 'Sensor', 
-rS.valorRegistro AS 'Registro', rS.hrRegistro AS 'Data/Hora'
-FROM registroSensor AS rS 
-JOIN sensor AS s 
-ON rS.fkSensor = s.idSensor
-JOIN maquina AS m
-ON s.fkMaquina = m.idMaquina
-JOIN empresa AS e
-ON m.fkEmpresaMaquina = e.idEmpresa;
+SELECT * FROM registroSensor;
 
--- Buscar registros entre horários; ex: 14H E 15H
-SELECT s.numSerie, rS.hrRegistro 
-FROM sensor AS s
-JOIN registroSensor AS rS
-WHERE hrRegistro
-BETWEEN '2026-04-27 14:00:00' 
-AND '2026-04-27 15:00:00'
-;
--- Empresa + Máquina;
-SELECT empresa.nome AS 'Nome da Empresa',numMaquina AS 'Nº da Máquina'  FROM maquina
-JOIN empresa on fkEmpresaMaquina = idEmpresa;
--- Máquina + Sensor;
-SELECT m.numMaquina, s.numSerie, s.estadoSensor
-FROM maquina AS m
-JOIN sensor AS s 
-ON m.idMaquina = s.fkMaquina;
--- Sensores ativos;
-SELECT numSerie FROM sensor WHERE estadoSensor = 'Ativo';
--- Usuários com suas empresas;
-SELECT e.nome AS 'Empresa', u.nome AS 'Usuário', u.email AS 'Email'
-FROM empresa AS e
-JOIN usuario AS u
-ON idEmpresa = fkEmpresa;
--- Usuarios com os supervisores 
-SELECT u.nome AS 'Funcionário', s.nome AS 'Supervisor'
-FROM usuario AS u
-LEFT JOIN usuario AS s
-ON u.fkSupervisor = s.idUsuario;
--- Empresas com os ceps
-SELECT e.nome AS 'Empresa', cep AS 'CEP'
-FROM empresa AS e 
-JOIN endereco 
-ON e.fkEndereco = idEndereco;
+-- Confirma ranking empresa 1000
+SELECT 
+    m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor,
+    COUNT(r.idRegistro) AS registros_hoje,
+    ROUND((COUNT(r.idRegistro) / 30) * 100, 0) AS eficiencia_pct
+FROM maquina m
+JOIN sensor s ON s.fkMaquina = m.idMaquina
+LEFT JOIN registroSensor r ON r.fkSensor = s.idSensor AND DATE(r.hrRegistro) = CURDATE()
+WHERE m.fkEmpresaMaquina = 1000
+GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
+ORDER BY eficiencia_pct DESC;
+
+SELECT 
+    DATE_FORMAT(r.hrRegistro, '%H:00') AS horario,
+    COUNT(r.idRegistro) AS producao
+FROM registroSensor r
+JOIN sensor s ON r.fkSensor = s.idSensor
+JOIN maquina m ON s.fkMaquina = m.idMaquina
+WHERE m.fkEmpresaMaquina = 1000
+AND DATE(r.hrRegistro) = CURDATE()
+GROUP BY horario
+ORDER BY horario;
+
+SELECT 
+            DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
+            COUNT(*) AS registro
+        FROM registroSensor
+        WHERE fkSensor = sensor.idSensor
+        AND DATE(hrRegistro) = CURDATE()
+        GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
+        ORDER BY momento_grafico ASC
+    ;
 
 
+-- REGISTROS MENSAIS 2025 e 2026
+-- Sensores ativos: 1000, 1001, 1002, 1003, 1004, 1005
+
+-- SENSOR 1001 (M02) — produção boa
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+-- 2025
+(1001,1,'2025-01-05 08:00:00'),(1001,1,'2025-01-10 08:00:00'),(1001,1,'2025-01-15 08:00:00'),(1001,1,'2025-01-20 08:00:00'),(1001,1,'2025-01-25 08:00:00'),
+(1001,1,'2025-02-05 08:00:00'),(1001,1,'2025-02-10 08:00:00'),(1001,1,'2025-02-15 08:00:00'),(1001,1,'2025-02-20 08:00:00'),
+(1001,1,'2025-03-05 08:00:00'),(1001,1,'2025-03-10 08:00:00'),(1001,1,'2025-03-15 08:00:00'),(1001,1,'2025-03-20 08:00:00'),(1001,1,'2025-03-25 08:00:00'),
+(1001,1,'2025-04-05 08:00:00'),(1001,1,'2025-04-10 08:00:00'),(1001,1,'2025-04-15 08:00:00'),(1001,1,'2025-04-20 08:00:00'),
+(1001,1,'2025-05-05 08:00:00'),(1001,1,'2025-05-10 08:00:00'),(1001,1,'2025-05-15 08:00:00'),(1001,1,'2025-05-20 08:00:00'),(1001,1,'2025-05-25 08:00:00'),
+(1001,1,'2025-06-05 08:00:00'),(1001,1,'2025-06-10 08:00:00'),(1001,1,'2025-06-15 08:00:00'),(1001,1,'2025-06-20 08:00:00'),
+(1001,1,'2025-07-05 08:00:00'),(1001,1,'2025-07-10 08:00:00'),(1001,1,'2025-07-15 08:00:00'),(1001,1,'2025-07-20 08:00:00'),(1001,1,'2025-07-25 08:00:00'),
+(1001,1,'2025-08-05 08:00:00'),(1001,1,'2025-08-10 08:00:00'),(1001,1,'2025-08-15 08:00:00'),(1001,1,'2025-08-20 08:00:00'),
+(1001,1,'2025-09-05 08:00:00'),(1001,1,'2025-09-10 08:00:00'),(1001,1,'2025-09-15 08:00:00'),(1001,1,'2025-09-20 08:00:00'),(1001,1,'2025-09-25 08:00:00'),
+(1001,1,'2025-10-05 08:00:00'),(1001,1,'2025-10-10 08:00:00'),(1001,1,'2025-10-15 08:00:00'),(1001,1,'2025-10-20 08:00:00'),
+(1001,1,'2025-11-05 08:00:00'),(1001,1,'2025-11-10 08:00:00'),(1001,1,'2025-11-15 08:00:00'),(1001,1,'2025-11-20 08:00:00'),(1001,1,'2025-11-25 08:00:00'),
+(1001,1,'2025-12-05 08:00:00'),(1001,1,'2025-12-10 08:00:00'),(1001,1,'2025-12-15 08:00:00'),(1001,1,'2025-12-20 08:00:00'),
+-- 2026
+(1001,1,'2026-01-05 08:00:00'),(1001,1,'2026-01-10 08:00:00'),(1001,1,'2026-01-15 08:00:00'),(1001,1,'2026-01-20 08:00:00'),(1001,1,'2026-01-25 08:00:00'),(1001,1,'2026-01-28 08:00:00'),
+(1001,1,'2026-02-05 08:00:00'),(1001,1,'2026-02-10 08:00:00'),(1001,1,'2026-02-15 08:00:00'),(1001,1,'2026-02-20 08:00:00'),(1001,1,'2026-02-25 08:00:00'),
+(1001,1,'2026-03-05 08:00:00'),(1001,1,'2026-03-10 08:00:00'),(1001,1,'2026-03-15 08:00:00'),(1001,1,'2026-03-20 08:00:00'),(1001,1,'2026-03-25 08:00:00'),(1001,1,'2026-03-28 08:00:00'),
+(1001,1,'2026-04-05 08:00:00'),(1001,1,'2026-04-10 08:00:00'),(1001,1,'2026-04-15 08:00:00'),(1001,1,'2026-04-20 08:00:00'),(1001,1,'2026-04-25 08:00:00'),
+(1001,1,'2026-05-01 08:00:00'),(1001,1,'2026-05-05 08:00:00'),(1001,1,'2026-05-10 08:00:00'),(1001,1,'2026-05-15 08:00:00'),(1001,1,'2026-05-18 08:00:00'),(1001,1,'2026-05-20 08:00:00');
 
 
+-- SENSOR 1002 (M03) — produção média
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+-- 2025
+(1002,1,'2025-01-05 08:00:00'),(1002,1,'2025-01-10 08:00:00'),(1002,1,'2025-01-20 08:00:00'),(1002,1,'2025-01-25 08:00:00'),
+(1002,1,'2025-02-05 08:00:00'),(1002,1,'2025-02-15 08:00:00'),(1002,1,'2025-02-20 08:00:00'),
+(1002,1,'2025-03-05 08:00:00'),(1002,1,'2025-03-10 08:00:00'),(1002,1,'2025-03-20 08:00:00'),(1002,1,'2025-03-25 08:00:00'),
+(1002,1,'2025-04-05 08:00:00'),(1002,1,'2025-04-15 08:00:00'),(1002,1,'2025-04-20 08:00:00'),
+(1002,1,'2025-05-05 08:00:00'),(1002,1,'2025-05-10 08:00:00'),(1002,1,'2025-05-20 08:00:00'),(1002,1,'2025-05-25 08:00:00'),
+(1002,1,'2025-06-05 08:00:00'),(1002,1,'2025-06-15 08:00:00'),(1002,1,'2025-06-20 08:00:00'),
+(1002,1,'2025-07-05 08:00:00'),(1002,1,'2025-07-10 08:00:00'),(1002,1,'2025-07-20 08:00:00'),(1002,1,'2025-07-25 08:00:00'),
+(1002,1,'2025-08-05 08:00:00'),(1002,1,'2025-08-15 08:00:00'),(1002,1,'2025-08-20 08:00:00'),
+(1002,1,'2025-09-05 08:00:00'),(1002,1,'2025-09-10 08:00:00'),(1002,1,'2025-09-20 08:00:00'),(1002,1,'2025-09-25 08:00:00'),
+(1002,1,'2025-10-05 08:00:00'),(1002,1,'2025-10-15 08:00:00'),(1002,1,'2025-10-20 08:00:00'),
+(1002,1,'2025-11-05 08:00:00'),(1002,1,'2025-11-10 08:00:00'),(1002,1,'2025-11-20 08:00:00'),(1002,1,'2025-11-25 08:00:00'),
+(1002,1,'2025-12-05 08:00:00'),(1002,1,'2025-12-15 08:00:00'),(1002,1,'2025-12-20 08:00:00'),
+-- 2026
+(1002,1,'2026-01-05 08:00:00'),(1002,1,'2026-01-10 08:00:00'),(1002,1,'2026-01-20 08:00:00'),(1002,1,'2026-01-25 08:00:00'),(1002,1,'2026-01-28 08:00:00'),
+(1002,1,'2026-02-05 08:00:00'),(1002,1,'2026-02-15 08:00:00'),(1002,1,'2026-02-20 08:00:00'),(1002,1,'2026-02-25 08:00:00'),
+(1002,1,'2026-03-05 08:00:00'),(1002,1,'2026-03-10 08:00:00'),(1002,1,'2026-03-20 08:00:00'),(1002,1,'2026-03-25 08:00:00'),(1002,1,'2026-03-28 08:00:00'),
+(1002,1,'2026-04-05 08:00:00'),(1002,1,'2026-04-15 08:00:00'),(1002,1,'2026-04-20 08:00:00'),(1002,1,'2026-04-25 08:00:00'),
+(1002,1,'2026-05-01 08:00:00'),(1002,1,'2026-05-05 08:00:00'),(1002,1,'2026-05-10 08:00:00'),(1002,1,'2026-05-15 08:00:00'),(1002,1,'2026-05-20 08:00:00');
 
+
+-- SENSOR 1003 (M04) — produção média-baixa
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+-- 2025
+(1003,1,'2025-01-10 08:00:00'),(1003,1,'2025-01-20 08:00:00'),(1003,1,'2025-01-25 08:00:00'),
+(1003,1,'2025-02-10 08:00:00'),(1003,1,'2025-02-20 08:00:00'),
+(1003,1,'2025-03-10 08:00:00'),(1003,1,'2025-03-20 08:00:00'),(1003,1,'2025-03-25 08:00:00'),
+(1003,1,'2025-04-10 08:00:00'),(1003,1,'2025-04-20 08:00:00'),
+(1003,1,'2025-05-10 08:00:00'),(1003,1,'2025-05-20 08:00:00'),(1003,1,'2025-05-25 08:00:00'),
+(1003,1,'2025-06-10 08:00:00'),(1003,1,'2025-06-20 08:00:00'),
+(1003,1,'2025-07-10 08:00:00'),(1003,1,'2025-07-20 08:00:00'),(1003,1,'2025-07-25 08:00:00'),
+(1003,1,'2025-08-10 08:00:00'),(1003,1,'2025-08-20 08:00:00'),
+(1003,1,'2025-09-10 08:00:00'),(1003,1,'2025-09-20 08:00:00'),(1003,1,'2025-09-25 08:00:00'),
+(1003,1,'2025-10-10 08:00:00'),(1003,1,'2025-10-20 08:00:00'),
+(1003,1,'2025-11-10 08:00:00'),(1003,1,'2025-11-20 08:00:00'),(1003,1,'2025-11-25 08:00:00'),
+(1003,1,'2025-12-10 08:00:00'),(1003,1,'2025-12-20 08:00:00'),
+-- 2026
+(1003,1,'2026-01-10 08:00:00'),(1003,1,'2026-01-20 08:00:00'),(1003,1,'2026-01-25 08:00:00'),(1003,1,'2026-01-28 08:00:00'),
+(1003,1,'2026-02-10 08:00:00'),(1003,1,'2026-02-20 08:00:00'),(1003,1,'2026-02-25 08:00:00'),
+(1003,1,'2026-03-10 08:00:00'),(1003,1,'2026-03-20 08:00:00'),(1003,1,'2026-03-25 08:00:00'),(1003,1,'2026-03-28 08:00:00'),
+(1003,1,'2026-04-10 08:00:00'),(1003,1,'2026-04-20 08:00:00'),(1003,1,'2026-04-25 08:00:00'),
+(1003,1,'2026-05-05 08:00:00'),(1003,1,'2026-05-10 08:00:00'),(1003,1,'2026-05-15 08:00:00'),(1003,1,'2026-05-20 08:00:00');
+
+
+-- SENSOR 1004 (M05) — produção baixa/crítica
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+-- 2025
+(1004,1,'2025-01-15 08:00:00'),(1004,1,'2025-01-28 08:00:00'),
+(1004,1,'2025-02-15 08:00:00'),(1004,1,'2025-02-25 08:00:00'),
+(1004,1,'2025-03-15 08:00:00'),(1004,1,'2025-03-28 08:00:00'),
+(1004,1,'2025-04-15 08:00:00'),(1004,1,'2025-04-25 08:00:00'),
+(1004,1,'2025-05-15 08:00:00'),(1004,1,'2025-05-28 08:00:00'),
+(1004,1,'2025-06-15 08:00:00'),(1004,1,'2025-06-25 08:00:00'),
+(1004,1,'2025-07-15 08:00:00'),(1004,1,'2025-07-28 08:00:00'),
+(1004,1,'2025-08-15 08:00:00'),(1004,1,'2025-08-25 08:00:00'),
+(1004,1,'2025-09-15 08:00:00'),(1004,1,'2025-09-28 08:00:00'),
+(1004,1,'2025-10-15 08:00:00'),(1004,1,'2025-10-25 08:00:00'),
+(1004,1,'2025-11-15 08:00:00'),(1004,1,'2025-11-28 08:00:00'),
+(1004,1,'2025-12-15 08:00:00'),(1004,1,'2025-12-25 08:00:00'),
+-- 2026
+(1004,1,'2026-01-15 08:00:00'),(1004,1,'2026-01-28 08:00:00'),(1004,1,'2026-01-30 08:00:00'),
+(1004,1,'2026-02-15 08:00:00'),(1004,1,'2026-02-25 08:00:00'),(1004,1,'2026-02-26 08:00:00'),
+(1004,1,'2026-03-15 08:00:00'),(1004,1,'2026-03-28 08:00:00'),(1004,1,'2026-03-30 08:00:00'),
+(1004,1,'2026-04-15 08:00:00'),(1004,1,'2026-04-25 08:00:00'),(1004,1,'2026-04-28 08:00:00'),
+(1004,1,'2026-05-05 08:00:00'),(1004,1,'2026-05-15 08:00:00'),(1004,1,'2026-05-20 08:00:00');
+
+
+-- SENSOR 1005 (M06) — produção muito baixa
+INSERT INTO registroSensor (fkSensor, valorRegistro, hrRegistro) VALUES
+-- 2025
+(1005,1,'2025-01-20 08:00:00'),(1005,1,'2025-02-20 08:00:00'),(1005,1,'2025-03-20 08:00:00'),
+(1005,1,'2025-04-20 08:00:00'),(1005,1,'2025-05-20 08:00:00'),(1005,1,'2025-06-20 08:00:00'),
+(1005,1,'2025-07-20 08:00:00'),(1005,1,'2025-08-20 08:00:00'),(1005,1,'2025-09-20 08:00:00'),
+(1005,1,'2025-10-20 08:00:00'),(1005,1,'2025-11-20 08:00:00'),(1005,1,'2025-12-20 08:00:00'),
+-- 2026
+(1005,1,'2026-01-20 08:00:00'),(1005,1,'2026-01-28 08:00:00'),
+(1005,1,'2026-02-20 08:00:00'),(1005,1,'2026-02-25 08:00:00'),
+(1005,1,'2026-03-20 08:00:00'),(1005,1,'2026-03-28 08:00:00'),
+(1005,1,'2026-04-20 08:00:00'),(1005,1,'2026-04-25 08:00:00'),
+(1005,1,'2026-05-10 08:00:00'),(1005,1,'2026-05-20 08:00:00');
+
+SELECT * FROM usuario;
+select * from registroSensor;
+-- suporte
+/*
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE TABLE registroSensor;
+TRUNCATE TABLE sensor;
+TRUNCATE TABLE maquina;
+TRUNCATE TABLE usuario;
+TRUNCATE TABLE empresa;
+TRUNCATE TABLE endereco;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+ALTER TABLE endereco AUTO_INCREMENT = 1000;
+ALTER TABLE empresa AUTO_INCREMENT = 1000;
+ALTER TABLE usuario AUTO_INCREMENT = 1000;
+ALTER TABLE maquina AUTO_INCREMENT = 1000;
+ALTER TABLE sensor AUTO_INCREMENT = 1000;
+ALTER TABLE registroSensor AUTO_INCREMENT = 1000; */
