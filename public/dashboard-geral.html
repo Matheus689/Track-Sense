@@ -32,7 +32,7 @@
         <section class="boxes">
             <div class="box">
                 <h3>Eficiência Média por hora</h3>
-                <p id="producao">87%</p>
+                <p id="producao"></p>
                 <h3>4.3% vs ontem</h3>
             </div>
             <div class="box">
@@ -111,34 +111,70 @@
 
 </html>
 <script>
+
     window.onload = function () {
         carregarDadosProd();
     }
 
-    // let idEmpresa = sessionStorage
+    let idEmpresa = sessionStorage.EMPRESA
 
     function carregarDadosProd() {
-        fetch('/medidas/tempo-real/1000')
+        // buscarMedidasEmTempoReal
+        fetch(`/medidas/tempo-real/${idEmpresa}`)
             .then(function (resposta) {
                 return resposta.json();
             })
             .then(function (resposta) {
-                var dados = resposta[0];
+
+                var dados = resposta;
+
+            const labels = dados.map(item => item.momento_grafico);
+
+            const valores = dados.map(item => item.registro);
+
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Produção Real',
+                    backgroundColor: 'rgb(90, 180, 13, 0.8)',
+                    borderColor: 'rgb(90, 180, 13, 0.8)',
+                    data: valores
+                },
+                {
+                    label: 'Meta',
+                    borderDash: [10, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    backgroundColor: 'rgb(255, 255, 255, 0.8)',
+                    borderColor: 'rgb(255, 255, 255, 0.8)',
+                    data: Array(valores.length).fill(30),
+                }]
+            };
+
+            new Chart(
+                document.getElementById('graficoProducao'),
+                {
+                    type: 'line',
+                    data: data
+                }
+            );
+
                 console.log(dados);
             });
     }
 
     let maquinasRanking = [];
-
-    fetch('/medidas/maquinas/1000')
+    
+    fetch(`/medidas/maquinas/${idEmpresa}`)
+    // buscarTodasMaquinas
         .then(res => res.json())
         .then(dados => {
 
         maquinasRanking = dados;
 
-        carregarRanking();
+        carregarRanking(dados);
 
-       // KPI Eficiencia méida
+       // KPI Eficiencia média
         let soma = 0;
         dados.forEach(item => {
             soma += Number(item.eficiencia);
@@ -200,49 +236,52 @@
 
     });
 
-    fetch('/medidas/producao-geral/1000')
+    // Producao real
+    fetch(`/medidas/producao-geral/${idEmpresa}`)
+    // buscarProducaoGeral
         .then(res => res.json())
         .then(dados => {
 
-            const labels = dados.map(item => item.horario);
+            // const labels = dados.map(item => item.horario);
 
-            const valores = dados.map(item => item.producao);
+            // const valores = dados.map(item => item.producao);
 
-            const data = {
-                labels: labels,
-                datasets: [{
-                    label: 'Produção Real',
-                    backgroundColor: 'rgb(90, 180, 13, 0.8)',
-                    borderColor: 'rgb(90, 180, 13, 0.8)',
-                    data: valores,
-                },
-                {
-                    label: 'Meta',
-                    borderDash: [10, 5],
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    backgroundColor: 'rgb(255, 255, 255, 0.8)',
-                    borderColor: 'rgb(255, 255, 255, 0.8)',
-                    data: Array(valores.length).fill(30),
-                }]
-            };
+            // const data = {
+            //     labels: labels,
+            //     datasets: [{
+            //         label: 'Produção Real',
+            //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
+            //         borderColor: 'rgb(90, 180, 13, 0.8)',
+            //         data: valores,
+            //     },
+            //     {
+            //         label: 'Meta',
+            //         borderDash: [10, 5],
+            //         borderWidth: 2,
+            //         pointRadius: 0,
+            //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
+            //         borderColor: 'rgb(255, 255, 255, 0.8)',
+            //         data: Array(valores.length).fill(30),
+            //     }]
+            // };
 
-            new Chart(
-                document.getElementById('graficoProducao'),
-                {
-                    type: 'line',
-                    data: data
-                }
-            );
+            // new Chart(
+            //     document.getElementById('graficoProducao'),
+            //     {
+            //         type: 'line',
+            //         data: data
+            //     }
+            // );
 
         });
 
-        fetch('/medidas/producao-diaria/1000')
+        fetch(`/medidas/producao-diaria/${idEmpresa}`)
+        // buscarProducaoDiariaMaquina
         .then(res => res.json())
         .then(dados => {
-
     const labelsMaquinas = dados.map(item => item.maquina);
 
+    // producao por maquina funcionando
     const valoresMaquinas = dados.map(item => item.producao);
 
     const data2 = {
@@ -263,7 +302,7 @@
             pointRadius: 0,
             backgroundColor: 'rgb(255, 255, 255, 0.8)',
             borderColor: 'rgb(255, 255, 255, 0.8)',
-            data: Array(valoresMaquinas.length).fill(50),
+            data: Array(valoresMaquinas.length).fill(60),
         }]
     };
 
@@ -306,12 +345,23 @@
                 statusTexto = "Crítica";
             }
 
+            // so por enquanto
+            // mudar o style do width da dash com 
+            if (item.eficiencia > 100){item.eficiencia = 100}
+            
+            // href="dashboard-especifica.html?idSensor=${item.idSensor}">
+            // ${item.maquina}
+
             tbody.innerHTML += `
-        
+            
         <tr>
             <td>${index + 1}</td>
     
-        <td><a href="dashboard-especifica.html?idSensor=${item.idSensor}">${item.maquina}</a></td>
+        <td>
+             
+                <button onclick="maquinaEspecifica(${item.idSensor})">Nome da maqina</button>
+            
+        </td>
 
             
             <td>
@@ -335,13 +385,20 @@
                         <td>
                             <span class="status ${statusClasse}">
                                 ${statusTexto}
-                                </span>
-                                </td>
-                                </tr>
+                            </span>
+                        </td>
+                    </tr>
                                 `;
         });
     }
 
-    carregarRanking();
+    function maquinaEspecifica(sensor){
+
+        sessionStorage.MAQUINA_ESPECIFICA = sensor
+        window.location.href = "dashboard-especifica.html";
+        
+    }
+
+    // carregarRanking();
 
 </script>

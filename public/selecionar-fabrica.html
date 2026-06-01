@@ -75,6 +75,7 @@
     // Mudar a producao esperada
 
     function verMatriz(){
+
         let idEmpresa = sessionStorage.EMPRESA_USUARIO
 
         fetch(`matriz/verMatriz/${idEmpresa}`)
@@ -82,6 +83,7 @@
         .then(function (resposta) {
             return resposta.json();
         })
+
         .then(function (dados) {
             console.log(dados);
 
@@ -123,6 +125,7 @@
             }
 
         })
+
         .catch(function (erro) {
             alert ("O usuario não possui empresas")
             console.log("Erro ao buscar empresa:", erro);
@@ -131,4 +134,5 @@
     }
 
 verMatriz()
+
 </script>

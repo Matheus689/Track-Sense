@@ -65,9 +65,8 @@
 </html>
 <script>
 
-    const idSensor = new URLSearchParams(window.location.search).get('idSensor');
 
-fetch(`/medidas/tempo-real/${idSensor}`)
+fetch(`/medidas/tempo-real/${idEmpresa}`)
     .then(res => res.json())
     .then(dados => {
 
@@ -128,6 +127,7 @@ fetch(`/medidas/tempo-real/${idSensor}`)
 
     const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
 
 fetch(`/medidas/producao-mensal/${idSensor}`)
     .then(res => res.json())

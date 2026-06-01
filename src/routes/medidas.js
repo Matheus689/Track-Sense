@@ -4,7 +4,7 @@ var router = express.Router();
 var medidaController = require("../controllers/medidaController");
 
 
-router.get("/tempo-real/:idSensor", function (req, res) {
+router.get("/tempo-real/:idEmpresa", function (req, res) {
     medidaController.buscarMedidasEmTempoReal(req, res);
 })
 
