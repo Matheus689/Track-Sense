@@ -20,10 +20,10 @@
                 <li><a href="trackSense.html">Home</a></li>
                 <li><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
+                <li><a href="index.html">Suporte</a></li>
                 <li id="linkLogout" style="display: block;">
                     <a href="#" onclick="logout()">Sair</a>
                 </li>
-                <li><a href="index.html">Suporte</a></li>
             </ul>
         </nav>
     </header>
@@ -39,16 +39,16 @@
                 <h3>Máquinas em risco - Abaixo de 80%</h3>
                 <p id="maquinaRisco">Máquina D</p>
             </div>
-        <div class="box">
-            <h3>Ajuste de velocidade</h3>
+            <div class="box">
+                <h3>Ajuste de velocidade</h3>
 
-            <p id="maquinaCritica">Máquina E</p>
+                <p id="maquinaCritica">Máquina E</p>
 
-            <h3 id="textoCritico">
-                22% abaixo da média.
-                Faltam 15.000 latas para a meta.
-            </h3>
-        </div>
+                <h3 id="textoCritico">
+                    22% abaixo da média.
+                    Faltam 15.000 latas para a meta.
+                </h3>
+            </div>
         </section>
         <section class="grafs">
             <section class="ranking-section">
@@ -128,117 +128,117 @@
 
                 var dados = resposta;
 
-            const labels = dados.map(item => item.momento_grafico);
+                const labels = dados.map(item => item.momento_grafico);
 
-            const valores = dados.map(item => item.registro);
+                const valores = dados.map(item => item.registro);
 
-            const data = {
-                labels: labels,
-                datasets: [{
-                    label: 'Produção Real',
-                    backgroundColor: 'rgb(90, 180, 13, 0.8)',
-                    borderColor: 'rgb(90, 180, 13, 0.8)',
-                    data: valores
-                },
-                {
-                    label: 'Meta',
-                    borderDash: [10, 5],
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    backgroundColor: 'rgb(255, 255, 255, 0.8)',
-                    borderColor: 'rgb(255, 255, 255, 0.8)',
-                    data: Array(valores.length).fill(30),
-                }]
-            };
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Produção Real',
+                        backgroundColor: 'rgb(90, 180, 13, 0.8)',
+                        borderColor: 'rgb(90, 180, 13, 0.8)',
+                        data: valores
+                    },
+                    {
+                        label: 'Meta',
+                        borderDash: [10, 5],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        backgroundColor: 'rgb(255, 255, 255, 0.8)',
+                        borderColor: 'rgb(255, 255, 255, 0.8)',
+                        data: Array(valores.length).fill(30),
+                    }]
+                };
 
-            new Chart(
-                document.getElementById('graficoProducao'),
-                {
-                    type: 'line',
-                    data: data
-                }
-            );
+                new Chart(
+                    document.getElementById('graficoProducao'),
+                    {
+                        type: 'line',
+                        data: data
+                    }
+                );
 
                 console.log(dados);
             });
     }
 
     let maquinasRanking = [];
-    
+
     fetch(`/medidas/maquinas/${idEmpresa}`)
-    // buscarTodasMaquinas
+        // buscarTodasMaquinas
         .then(res => res.json())
         .then(dados => {
 
-        maquinasRanking = dados;
+            maquinasRanking = dados;
 
-        carregarRanking(dados);
+            carregarRanking(dados);
 
-       // KPI Eficiencia média
-        let soma = 0;
-        dados.forEach(item => {
-            soma += Number(item.eficiencia);
-        });
-        let media = Math.round(soma / dados.length);
-        document.getElementById("producao").innerHTML =
-            media + "%";
-
-
-  // KPI Máquina em risco
-        let maquinasRisco = dados.filter(item =>
-            Number(item.eficiencia) < 80 
-        );
-
-        if (maquinasRisco.length > 0) {
-
-            let nomes = maquinasRisco.map(item => item.maquina);
-
-            document.getElementById("maquinaRisco").innerHTML =
-                nomes.join(", ");
-
-        } else {
-
-            document.getElementById("maquinaRisco").innerHTML =
-                "Nenhuma";
-        }
+            // KPI Eficiencia média
+            let soma = 0;
+            dados.forEach(item => {
+                soma += Number(item.eficiencia);
+            });
+            let media = Math.round(soma / dados.length);
+            document.getElementById("producao").innerHTML =
+                media + "%";
 
 
-    // KPI Ajuste de velocidade
-        // pega a pior máquina
-       let piorMaquina = dados.reduce((menor, atual) => {
+            // KPI Máquina em risco
+            let maquinasRisco = dados.filter(item =>
+                Number(item.eficiencia) < 80
+            );
 
-        if (Number(atual.eficiencia) < Number(menor.eficiencia)) {
-            return atual;
-        }
+            if (maquinasRisco.length > 0) {
 
-        return menor;
+                let nomes = maquinasRisco.map(item => item.maquina);
 
-    }, dados[0]);
+                document.getElementById("maquinaRisco").innerHTML =
+                    nomes.join(", ");
 
-        document.getElementById("maquinaCritica").innerHTML =
-            piorMaquina.maquina;
+            } else {
 
-
-        // calcula quanto falta pra meta
-        let faltando = 30 - piorMaquina.producao;
-
-        if (faltando < 0) {
-            faltando = 0;
-        }
+                document.getElementById("maquinaRisco").innerHTML =
+                    "Nenhuma";
+            }
 
 
-        // calcula diferença percentual
-        let abaixoMedia = 100 - piorMaquina.eficiencia;
+            // KPI Ajuste de velocidade
+            // pega a pior máquina
+            let piorMaquina = dados.reduce((menor, atual) => {
 
-        document.getElementById("textoCritico").innerHTML =
-            `${abaixoMedia}% abaixo da meta. 
+                if (Number(atual.eficiencia) < Number(menor.eficiencia)) {
+                    return atual;
+                }
+
+                return menor;
+
+            }, dados[0]);
+
+            document.getElementById("maquinaCritica").innerHTML =
+                piorMaquina.maquina;
+
+
+            // calcula quanto falta pra meta
+            let faltando = 30 - piorMaquina.producao;
+
+            if (faltando < 0) {
+                faltando = 0;
+            }
+
+
+            // calcula diferença percentual
+            let abaixoMedia = 100 - piorMaquina.eficiencia;
+
+            document.getElementById("textoCritico").innerHTML =
+                `${abaixoMedia}% abaixo da meta. 
             Faltam ${faltando} registros para atingir a meta.`;
 
-    });
+        });
 
     // Producao real
     fetch(`/medidas/producao-geral/${idEmpresa}`)
-    // buscarProducaoGeral
+        // buscarProducaoGeral
         .then(res => res.json())
         .then(dados => {
 
@@ -275,46 +275,46 @@
 
         });
 
-        fetch(`/medidas/producao-diaria/${idEmpresa}`)
+    fetch(`/medidas/producao-diaria/${idEmpresa}`)
         // buscarProducaoDiariaMaquina
         .then(res => res.json())
         .then(dados => {
-    const labelsMaquinas = dados.map(item => item.maquina);
+            const labelsMaquinas = dados.map(item => item.maquina);
 
-    // producao por maquina funcionando
-    const valoresMaquinas = dados.map(item => item.producao);
+            // producao por maquina funcionando
+            const valoresMaquinas = dados.map(item => item.producao);
 
-    const data2 = {
+            const data2 = {
 
-        labels: labelsMaquinas,
+                labels: labelsMaquinas,
 
-        datasets: [{
-            label: 'Produção Diária Máquina',
-            backgroundColor: 'rgb(90, 180, 13, 0.8)',
-            borderColor: 'rgb(90, 180, 13, 0.8)',
-            data: valoresMaquinas,
-        },
-        {
-            label: 'Meta',
-            type: 'line',
-            borderDash: [10, 5],
-            borderWidth: 2,
-            pointRadius: 0,
-            backgroundColor: 'rgb(255, 255, 255, 0.8)',
-            borderColor: 'rgb(255, 255, 255, 0.8)',
-            data: Array(valoresMaquinas.length).fill(60),
-        }]
-    };
+                datasets: [{
+                    label: 'Produção Diária Máquina',
+                    backgroundColor: 'rgb(90, 180, 13, 0.8)',
+                    borderColor: 'rgb(90, 180, 13, 0.8)',
+                    data: valoresMaquinas,
+                },
+                {
+                    label: 'Meta',
+                    type: 'line',
+                    borderDash: [10, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    backgroundColor: 'rgb(255, 255, 255, 0.8)',
+                    borderColor: 'rgb(255, 255, 255, 0.8)',
+                    data: Array(valoresMaquinas.length).fill(60),
+                }]
+            };
 
-    new Chart(
-        document.getElementById('graficoMaquinas'),
-        {
-            type: 'bar',
-            data: data2
-        }
-    );
+            new Chart(
+                document.getElementById('graficoMaquinas'),
+                {
+                    type: 'bar',
+                    data: data2
+                }
+            );
 
-});
+        });
 
     function logout() {
         localStorage.removeItem("logado");
@@ -347,8 +347,8 @@
 
             // so por enquanto
             // mudar o style do width da dash com 
-            if (item.eficiencia > 100){item.eficiencia = 100}
-            
+            if (item.eficiencia > 100) { item.eficiencia = 100 }
+
             // href="dashboard-especifica.html?idSensor=${item.idSensor}">
             // ${item.maquina}
 
@@ -392,13 +392,23 @@
         });
     }
 
-    function maquinaEspecifica(sensor){
+    function maquinaEspecifica(sensor) {
 
         sessionStorage.MAQUINA_ESPECIFICA = sensor
         window.location.href = "dashboard-especifica.html";
-        
+
     }
 
+    if (sessionStorage.getItem("logado") === "true") {
+        document.getElementById("linkDashboard").style.display = "block";
+        document.getElementById("linkLogout").style.display = "block";
+        document.getElementById("linkLogin").style.display = "none";
+    }
+
+    function logout() {
+        sessionStorage.removeItem("logado");
+        window.location.href = "login.html";
+    }
     // carregarRanking();
 
 </script>

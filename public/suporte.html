@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BobIA</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/suporte.css">
 </head>
+
 <body>
+    <header class="header">
+        <a href="trackSense.html">
+            <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
+        </a>
+
+        <nav class="nav-bar">
+            <ul>
+                <li><a href="trackSense.html">Home</a></li>
+                <li id="linkDashboard" style="display: none;">
+                    <a href="selecionar-fabrica.html">Dashboard</a>
+                </li>
+                <li>
+                    <a href="calculadora.html">Calculadora Financeira</a>
+                </li>
+                <li id="linkLogin"><a href="Login.html">Login</a></li>
+                <li><a class="active" href="suporte.html">Suporte</a></li>
+                <li id="linkLogout" style="display: none;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
     <div id="container">
         <h1>BobIA</h1>
@@ -18,7 +43,7 @@
     </div>
 
     <script>
-        
+
         async function gerarResposta() {
             const pergunta = document.getElementById('pergunta').value;
 
@@ -36,7 +61,18 @@
             document.getElementById('resposta').innerText = data.resultado;
         }
 
+        if (sessionStorage.getItem("logado") === "true") {
+            document.getElementById("linkDashboard").style.display = "block";
+            document.getElementById("linkLogout").style.display = "block";
+            document.getElementById("linkLogin").style.display = "none";
+        }
+
+        function logout() {
+            sessionStorage.removeItem("logado");
+            window.location.href = "login.html";
+        }
     </script>
-    
+
 </body>
+
 </html>
