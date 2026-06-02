@@ -151,7 +151,7 @@ function CadCadastrar() {
 }
 
 function LogEntrar() {
-        // let emailDigitado = inpEmail.value.toLowerCase();
+    // let emailDigitado = inpEmail.value.toLowerCase();
     // let senhaDigitada = inpSenha.value;
     // let usuarioEncontrado = false;
 

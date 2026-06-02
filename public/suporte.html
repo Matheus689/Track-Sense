@@ -1,52 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
+<<<<<<< HEAD
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="css/suporte.css">
    <title>Suporte</title>
+=======
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BobIA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/suporte.css">
+>>>>>>> d70ae95015b5abf5b4b8c5500383e9242488e664
 </head>
+
 <body>
-   <header class="header">
+    <header class="header">
         <a href="trackSense.html">
             <img src="assets/logo-minimalista-tracksense.png" alt="Logo TrackSense">
-         </a>
-         
-         <nav class="nav-bar">
+        </a>
+
+        <nav class="nav-bar">
             <ul>
-               <li><a href="trackSense.html">Home</a></li>
-               <li><a class="active" id="a_suporte" style="display: none;" href="suporte.html">Suporte</a></li>
-               <li><a href="calculadora.html">Calculadora Financeira</a></li>
-               <li><a href="login.html">Login</a></li>
+                <li><a href="trackSense.html">Home</a></li>
+                <li id="linkDashboard" style="display: none;">
+                    <a href="selecionar-fabrica.html">Dashboard</a>
+                </li>
+                <li>
+                    <a href="calculadora.html">Calculadora Financeira</a>
+                </li>
+                <li id="linkLogin"><a href="Login.html">Login</a></li>
+                <li><a class="active" href="suporte.html">Suporte</a></li>
+                <li id="linkLogout" style="display: none;">
+                    <a href="#" onclick="logout()">Sair</a>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <section id="sessao1">
-       <div id="bobia">
-           <h1>BobIA</h1>
-           <textarea id="pergunta" type="text" placeholder="Digite a pergunta..."></textarea>
-           <br><br>
-           <button onclick="gerarResposta()">Gerar Resposta</button>
-           <h3>Resposta da IA:</h3>
-           <div id="resposta"></div>
-       </div>
-    </section>
+    <div id="container">
+        <h1>BobIA</h1>
+        <textarea id="pergunta" type="text" placeholder="Digite a pergunta..."></textarea>
+        <br><br>
+        <button onclick="gerarResposta()">Gerar Resposta</button>
+        <h3>Resposta da IA:</h3>
+        <div id="resposta"></div>
+    </div>
 
+    <script>
 
-
-</body>
-</html>
-
-<script>
-   if(sessionStorage.getItem('SUPORTE')){
-      document.getElementById('a_suporte').style.display = "block";
-   }  
-
-   async function gerarResposta() {
+        async function gerarResposta() {
             const pergunta = document.getElementById('pergunta').value;
 
-            const response = await fetch('/perguntar', {
+            const response = await fetch('suporte/perguntar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -60,4 +68,18 @@
             document.getElementById('resposta').innerText = data.resultado;
         }
 
-</script>
+        if (sessionStorage.getItem("logado") === "true") {
+            document.getElementById("linkDashboard").style.display = "block";
+            document.getElementById("linkLogout").style.display = "block";
+            document.getElementById("linkLogin").style.display = "none";
+        }
+
+        function logout() {
+            sessionStorage.removeItem("logado");
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+
+</html>

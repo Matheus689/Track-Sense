@@ -26,6 +26,7 @@
         <li>
           <a href="calculadora.html">Calculadora Financeira</a>
         </li>
+        <li id="linkSuporte" style="display: none;"><a href="suporte.html">Suporte</a></li>
         <li id="linkLogin"><a href="Login.html">Login</a></li>
         <li id="linkLogout" style="display: none;">
           <a href="#" onclick="logout()">Sair</a>
@@ -205,14 +206,16 @@
 
 </html>
 <script>
-  if (localStorage.getItem("logado") === "true") {
+  if (sessionStorage.getItem("logado") === "true") {
     document.getElementById("linkDashboard").style.display = "block";
     document.getElementById("linkLogout").style.display = "block";
     document.getElementById("linkLogin").style.display = "none";
+    document.getElementById("linkSuporte").style.display = "block";
+
   }
 
   function logout() {
-    localStorage.removeItem("logado");
+    sessionStorage.removeItem("logado");
     window.location.href = "login.html";
   }
 </script>

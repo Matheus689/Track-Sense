@@ -19,6 +19,7 @@
                 <li><a href="trackSense.html">Home</a></li>
                 <li><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
+                <li><a href="suporte.html">Suporte</a></li>
                 <li id="linkLogout" style="display: block;">
                     <a href="#" onclick="logout()">Sair</a>
                 </li>
@@ -32,12 +33,12 @@
         <div class="conteudoContainer">
             <h1>Selecione uma fábrica</h1>
 
-            <div class="fabricas">
-
+            <div id="fabricas" class="fabricas">
+                <!-- 
                 <div class="card" onclick="selecionarFabrica('SP')">
                     <h2>Fábrica São Paulo</h2>
                     <p>24 máquinas</p>
-                    <span class="normal">Operando normalmente</span> <!-- pega a API-->
+                    <span class="normal">Operando normalmente</span> 
                 </div>
 
                 <div class="card" onclick="selecionarFabrica('CP')">
@@ -51,7 +52,7 @@
                     <p>31 máquinas</p>
                     <span class="normal">Operando normalmente</span>
                 </div>
-
+                 -->
             </div>
 
         </div>
@@ -63,10 +64,86 @@
 </html>
 
 <script>
-    function selecionarFabrica(nome) {
 
-        localStorage.setItem("fabricaSelecionada", nome);
+    function selecionarFabrica(idEmpresa) {
+
+        sessionStorage.EMPRESA = idEmpresa
 
         window.location.href = "dashboard-geral.html";
+    }
+
+    let producaoEsperada = 100
+    // Mudar a producao esperada
+
+    function verMatriz() {
+
+        let idEmpresa = sessionStorage.EMPRESA_USUARIO
+
+        fetch(`matriz/verMatriz/${idEmpresa}`)
+
+            .then(function (resposta) {
+                return resposta.json();
+            })
+
+            .then(function (dados) {
+                console.log(dados);
+
+                if (dados.length > 1) {
+
+                    for (let i = 0; i < dados.length; i++) {
+
+
+                        let eficienciaReal = ((dados[i].eficiencia / producaoEsperada) * 100).toFixed()
+
+                        let card =
+                            `
+                        <div class="card" onclick="selecionarFabrica('${dados[i].idEmpresa}')"
+                            <h2>${dados[i].nome}</h2>
+                            <p>${dados[i].maquinas} máquinas</p>
+
+                    `
+                        if (eficienciaReal < 60) {
+                            card +=
+                                `
+                            <span class="alerta">Maquinas em alerta</span>
+                        </div>
+
+                        `
+                        } else {
+                            card +=
+                                `
+                            <span class="normal">Operação normal</span>
+                        `
+                        }
+
+                        fabricas.innerHTML += card
+
+
+                    }
+                } else {
+
+                    selecionarFabrica(dados[0].idEmpresa)
+                }
+
+            })
+
+            .catch(function (erro) {
+                alert("O usuario não possui empresas")
+                console.log("Erro ao buscar empresa:", erro);
+            });
+
+    }
+
+    verMatriz();
+
+    if (sessionStorage.getItem("logado") === "true") {
+        document.getElementById("linkDashboard").style.display = "block";
+        document.getElementById("linkLogout").style.display = "block";
+        document.getElementById("linkLogin").style.display = "none";
+    }
+
+    function logout() {
+        sessionStorage.removeItem("logado");
+        window.location.href = "login.html";
     }
 </script>

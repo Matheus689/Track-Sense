@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <header class="header">
         <a href="trackSense.html">
@@ -18,6 +20,7 @@
                 <li><a href="trackSense.html">Home</a></li>
                 <li><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
+                <li><a href="suporte.html">Suporte</a></li>
                 <li id="linkLogout" style="display: block;">
                     <a href="#" onclick="logout()">Sair</a>
                 </li>
@@ -40,7 +43,7 @@
                 <h3>Máquina com Menor Produção (%)</h3>
                 <p id="maquina">Máquina D (15%)</p>
             </div> -->
-                <!-- <p id="maquina">Máquina D (22,71%)</p>
+            <!-- <p id="maquina">Máquina D (22,71%)</p>
             </div> -->
         </section>
         <section class="alert">
@@ -62,125 +65,136 @@
             </section> -->
         </section>
 </body>
+
 </html>
 <script>
 
-    const idSensor = new URLSearchParams(window.location.search).get('idSensor');
 
-fetch(`/medidas/tempo-real/${idSensor}`)
-    .then(res => res.json())
-    .then(dados => {
+    fetch(`/medidas/tempo-real/${idEmpresa}`)
+        .then(res => res.json())
+        .then(dados => {
 
-        const labels = dados.map(d => {
-            return new Date(d.momento_grafico).toLocaleTimeString();
-        });
+            const labels = dados.map(d => {
+                return new Date(d.momento_grafico).toLocaleTimeString();
+            });
 
-        const valores = dados.map(d => d.registro);
+            const valores = dados.map(d => d.registro);
 
-        new Chart(document.getElementById("graphicLine"), {
-            type: "line",
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: "Produção Real",
-                        data: valores,
-                        borderColor: "lightblue",
-                        backgroundColor: "lightblue",
-                        tension: 0.3
-                    },
-                    {
-                        label: "Meta Esperada",
-                        data: valores.map(() => 80),
-                        borderColor: "red",
-                        borderDash: [5, 5]
-                    }
-                ]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: "white"
+            new Chart(document.getElementById("graphicLine"), {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Produção Real",
+                            data: valores,
+                            borderColor: "lightblue",
+                            backgroundColor: "lightblue",
+                            tension: 0.3
+                        },
+                        {
+                            label: "Meta Esperada",
+                            data: valores.map(() => 80),
+                            borderColor: "red",
+                            borderDash: [5, 5]
                         }
-                    }
+                    ]
                 },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: "white"
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "white"
+                            }
                         }
                     },
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: "white"
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "white"
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: "white"
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
 
-    })
-    .catch(erro => {
-        console.log("Erro ao buscar dados:", erro);
-    });
+        })
+        .catch(erro => {
+            console.log("Erro ao buscar dados:", erro);
+        });
 
     const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
-fetch(`/medidas/producao-mensal/${idSensor}`)
-    .then(res => res.json())
-    .then(dados => {
 
-        // separa ano atual e ano anterior
-        const anoAtual = new Date().getFullYear();
-        const anoAnterior = anoAtual - 1;
+    fetch(`/medidas/producao-mensal/${idSensor}`)
+        .then(res => res.json())
+        .then(dados => {
 
-        const dadosAnoAtual    = new Array(12).fill(0);
-        const dadosAnoAnterior = new Array(12).fill(0);
+            // separa ano atual e ano anterior
+            const anoAtual = new Date().getFullYear();
+            const anoAnterior = anoAtual - 1;
 
-        dados.forEach(d => {
-            const indice = d.mes - 1; 
-            if (d.ano == anoAtual) {
-                dadosAnoAtual[indice] = d.totalLatas;
-            } else if (d.ano == anoAnterior) {
-                dadosAnoAnterior[indice] = d.totalLatas;
-            }
-        });
+            const dadosAnoAtual = new Array(12).fill(0);
+            const dadosAnoAnterior = new Array(12).fill(0);
 
-        new Chart(document.getElementById("graphicBar"), {
-            type: "bar",
-            data: {
-                labels: nomesMeses,
-                datasets: [
-                    {
-                        label: `Produção ${anoAnterior}`,
-                        data: dadosAnoAnterior,
-                        backgroundColor: "lightblue",
-                        borderWidth: 2
-                    },
-                    {
-                        label: `Produção ${anoAtual}`,
-                        data: dadosAnoAtual,
-                        backgroundColor: "navy",
-                        borderColor: "navy"
-                    }
-                ]
-            },
-            options: {
-                plugins: {
-                    legend: { labels: { color: "white" } }
-                },
-                scales: {
-                    x: { ticks: { color: "white" } },
-                    y: { beginAtZero: true, ticks: { color: "white" } }
+            dados.forEach(d => {
+                const indice = d.mes - 1;
+                if (d.ano == anoAtual) {
+                    dadosAnoAtual[indice] = d.totalLatas;
+                } else if (d.ano == anoAnterior) {
+                    dadosAnoAnterior[indice] = d.totalLatas;
                 }
-            }
-        });
-    })
-    .catch(erro => {
-        console.log("Erro ao buscar produção mensal:", erro);
-    });
+            });
 
+            new Chart(document.getElementById("graphicBar"), {
+                type: "bar",
+                data: {
+                    labels: nomesMeses,
+                    datasets: [
+                        {
+                            label: `Produção ${anoAnterior}`,
+                            data: dadosAnoAnterior,
+                            backgroundColor: "lightblue",
+                            borderWidth: 2
+                        },
+                        {
+                            label: `Produção ${anoAtual}`,
+                            data: dadosAnoAtual,
+                            backgroundColor: "navy",
+                            borderColor: "navy"
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: { labels: { color: "white" } }
+                    },
+                    scales: {
+                        x: { ticks: { color: "white" } },
+                        y: { beginAtZero: true, ticks: { color: "white" } }
+                    }
+                }
+            });
+        })
+        .catch(erro => {
+            console.log("Erro ao buscar produção mensal:", erro);
+        });
+
+    if (sessionStorage.getItem("logado") === "true") {
+        document.getElementById("linkDashboard").style.display = "block";
+        document.getElementById("linkLogout").style.display = "block";
+        document.getElementById("linkLogin").style.display = "none";
+    }
+
+    function logout() {
+        sessionStorage.removeItem("logado");
+        window.location.href = "login.html";
+    }
 </script>
