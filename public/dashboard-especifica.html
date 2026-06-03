@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,6 @@
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
     <header class="header">
         <a href="trackSense.html">
@@ -20,7 +18,6 @@
                 <li><a href="trackSense.html">Home</a></li>
                 <li><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
-                <li><a href="suporte.html">Suporte</a></li>
                 <li id="linkLogout" style="display: block;">
                     <a href="#" onclick="logout()">Sair</a>
                 </li>
@@ -39,15 +36,9 @@
                 <h3>Meta de Produção Mensal (%)</h3>
                 <p id="totaltxt">676.000 / 845.000 latas (80%)</p>
             </div>
-            <!-- <div class="box">
-                <h3>Máquina com Menor Produção (%)</h3>
-                <p id="maquina">Máquina D (15%)</p>
-            </div> -->
-            <!-- <p id="maquina">Máquina D (22,71%)</p>
-            </div> -->
         </section>
         <section class="alert">
-            <p id="alert">Sistema operando normalmente</p>
+            <p id="alertTxt">Sistema operando normalmente</p>
         </section>
 
         <section class="graphic-box">
@@ -59,311 +50,306 @@
                 <h2 id="tituloBarra">Produção de Latas no Mês do Ano Anterior vs Ano Atual (latas/mês)<br></h2>
                 <canvas id="graphicBar"></canvas>
             </section>
-            <!-- <section class="graphic">
-                <h2>Distribuição de Produção por Máquina (%)</h2>
-                <canvas id="graphicPie"></canvas>
-            </section> -->
         </section>
 </body>
-
 </html>
+
 <script>
+    let nomesMeses = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro'
+];
 
-let idMaquina = sessionStorage.MAQUINA_ESPECIFICA
+let idMaquina = sessionStorage.MAQUINA_ESPECIFICA;
 
-<<<<<<< HEAD
-fetch(`/medidas/maquinaEspecifica/${idMaquina}`)
-    .then(res => res.json())
-    .then(dados => {
+//#region Grafico Linha
 
-    // Valores puxados:
+function DadosLinha() {
+    fetch(`/medidas/producao-minuto/${idMaquina}`)
 
-//   {
-//     dia: 2026-05-18T11:00:00.000Z,
-//     totalLatas: 1,
-//     ano: 2026,
-//     mes: 5,
-//     idSensor: 1000,
-//     estadoSensor: 'Ativo',
-//     numMaquina: 'M01',
-//     fkEmpresaMaquina: 1000
-//   },
+        .then(function(resposta){
+            return resposta.json();
+        })
 
-        nomeMaquina.innerHTML = `Maquina ${dados[0].numMaquina}`
+        .then(function(dados){
+            console.log("DADOS LINHA");
+            console.log(dados);
+            atualizarKPI(dados);
+            plotarGraficoLinha(dados);
+        })
 
-        producao.innerHTML = `${dados[dados.length - 1].totalLatas} latas/min`
+        .catch(function(erro){
+            console.log(erro);
+        });
 
-        let totalLatasMes = 0
-        let mesAtual = new Date().getMonth();
-        let metaMes = 20
-        let totalMin = 0
+}
 
-        for (let i = 0; i < dados.length; i++){
-            if (dados[i].mes == mesAtual){
-                totalLatasMes += dados[i].totalLatas
-            }
+function plotarGraficoLinha(dados) {
 
-            if (dados[i].dia == dados[i -1].dia){
+    let momento = [];
+    let totalLatas = [];
 
+    for (let i = 0; i < dados.length; i++) {
+        momento.push(dados[i].momento_grafico);
+        totalLatas.push(dados[i].totalLatas);
+    }
+
+    new Chart(graphicLine, {
+        type: "line",
+        data: {
+            labels: momento,
+            datasets: [
+                {
+                    label: "Produção Real",
+                    data: totalLatas,
+                    borderColor: "lightblue",
+                    backgroundColor: "rgba(173, 216, 230, 0.2)",
+                    tension: 0.3,
+                    fill: true
+                },
+                {
+                    label: "Meta Esperada",
+                    data: totalLatas.map(function(){
+                        return 80;
+                    }),
+                    borderColor: "red",
+                    borderDash: [5, 5],
+                    pointRadius: 0
+                }
+            ]
+        },
+
+        options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "white"
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: "white"
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: "white"
+                    }
+                }
             }
         }
-
-        totaltxt.innerHTML = `${totalLatasMes} / ${metaMes} (${((totalLatasMes * metaMes) / 100).toFixed()}%) `
-                        // <p id="totaltxt">676.000 / 845.000 latas (80%)</p> 
-
-        const labels = dados.map(d => {
-            return new Date(d.data).toLocaleTimeString();
-        });
-
-        const valores = dados.map(d => d.totalLatas);
-=======
-    fetch(`/medidas/tempo-real/${idEmpresa}`)
-        .then(res => res.json())
-        .then(dados => {
-
-            const labels = dados.map(d => {
-                return new Date(d.momento_grafico).toLocaleTimeString();
-            });
-
-            const valores = dados.map(d => d.registro);
->>>>>>> 109c17c6faf54511e15ceab3712c4b645bc2eb4f
-
-            new Chart(document.getElementById("graphicLine"), {
-                type: "line",
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Produção Real",
-                            data: valores,
-                            borderColor: "lightblue",
-                            backgroundColor: "lightblue",
-                            tension: 0.3
-                        },
-                        {
-                            label: "Meta Esperada",
-                            data: valores.map(() => 80),
-                            borderColor: "red",
-                            borderDash: [5, 5]
-                        }
-                    ]
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: "white"
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                color: "white"
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: "white"
-                            }
-                        }
-                    }
-                }
-            });
-
-<<<<<<< HEAD
-
-    
-        // separa ano atual e ano anterior
-        const anoAtual = new Date().getFullYear();
-        const anoAnterior = anoAtual - 1;
-
-        console.log(anoAtual)
-        console.log(anoAnterior)
-
-        const dadosAnoAtual    = new Array(12).fill(0);
-        const dadosAnoAnterior = new Array(12).fill(0);
-
-        console.log(dadosAnoAtual)
-        console.log(dadosAnoAnterior)
-
-        dados.forEach(d => {
-            const indice = d.mes - 1; 
-            if (d.ano == anoAtual) {
-                dadosAnoAtual[indice] = d.totalLatas;
-            } else if (d.ano == anoAnterior) {
-                dadosAnoAnterior[indice] = d.totalLatas;
-            }
-        });
-
-        new Chart(document.getElementById("graphicBar"), {
-            type: "bar",
-            data: {
-                labels: nomesMeses,
-                datasets: [
-                    {
-                        label: `Produção ${anoAnterior}`,
-                        data: dadosAnoAnterior,
-                        backgroundColor: "lightblue",
-                        borderWidth: 2
-                    },
-                    {
-                        label: `Produção ${anoAtual}`,
-                        data: dadosAnoAtual,
-                        backgroundColor: "navy",
-                        borderColor: "navy"
-                    }
-                ]
-            },
-            options: {
-                plugins: {
-                    legend: { labels: { color: "white" } }
-                },
-                scales: {
-                    x: { ticks: { color: "white" } },
-                    y: { beginAtZero: true, ticks: { color: "white" } }
-                }
-            }
-        });
-    
-
-    })
-    .catch(erro => {
-        console.log("Erro ao buscar dados:", erro);
     });
+}
 
-    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+//#endregion
 
 
-// fetch(`/medidas/producao-mensal/${idSensor}`)
-//     .then(res => res.json())
-    // .then(dados => {
 
-    //     // separa ano atual e ano anterior
-    //     const anoAtual = new Date().getFullYear();
-    //     const anoAnterior = anoAtual - 1;
+//#region Grafico Barra
 
-    //     const dadosAnoAtual    = new Array(12).fill(0);
-    //     const dadosAnoAnterior = new Array(12).fill(0);
+function dadosBarra() {
 
-    //     dados.forEach(d => {
-    //         const indice = d.mes - 1; 
-    //         if (d.ano == anoAtual) {
-    //             dadosAnoAtual[indice] = d.totalLatas;
-    //         } else if (d.ano == anoAnterior) {
-    //             dadosAnoAnterior[indice] = d.totalLatas;
-    //         }
-    //     });
+    fetch(`/medidas/producao-mensal-maquina/${idMaquina}`)
 
-    //     new Chart(document.getElementById("graphicBar"), {
-    //         type: "bar",
-    //         data: {
-    //             labels: nomesMeses,
-    //             datasets: [
-    //                 {
-    //                     label: `Produção ${anoAnterior}`,
-    //                     data: dadosAnoAnterior,
-    //                     backgroundColor: "lightblue",
-    //                     borderWidth: 2
-    //                 },
-    //                 {
-    //                     label: `Produção ${anoAtual}`,
-    //                     data: dadosAnoAtual,
-    //                     backgroundColor: "navy",
-    //                     borderColor: "navy"
-    //                 }
-    //             ]
-    //         },
-    //         options: {
-    //             plugins: {
-    //                 legend: { labels: { color: "white" } }
-    //             },
-    //             scales: {
-    //                 x: { ticks: { color: "white" } },
-    //                 y: { beginAtZero: true, ticks: { color: "white" } }
-    //             }
-    //         }
-    //     });
-    // })
-    // .catch(erro => {
-    //     console.log("Erro ao buscar produção mensal:", erro);
-    // });
-
-=======
+        .then(function(resposta){
+            return resposta.json();
         })
-        .catch(erro => {
-            console.log("Erro ao buscar dados:", erro);
+
+        .then(function(dados){
+            console.log("DADOS BARRA");
+            console.log(dados);
+
+            plotarGraficoBarra(dados);
+            atualizarKPImensal(dados)
+        })
+
+        .catch(function(erro){
+            console.log(erro);
         });
 
-    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+}
 
+function plotarGraficoBarra(dados) {
 
-    fetch(`/medidas/producao-mensal/${idSensor}`)
-        .then(res => res.json())
-        .then(dados => {
+    let anoAtual = new Date().getFullYear();
+    let anoAnterior = anoAtual - 1;
+    let dadosAnoAtual = new Array(12).fill(0);
+    let dadosAnoAnterior = new Array(12).fill(0);
 
-            // separa ano atual e ano anterior
-            const anoAtual = new Date().getFullYear();
-            const anoAnterior = anoAtual - 1;
+    for (let i = 0; i < dados.length; i++) {
 
-            const dadosAnoAtual = new Array(12).fill(0);
-            const dadosAnoAnterior = new Array(12).fill(0);
+        let indiceMes = dados[i].mes - 1;
 
-            dados.forEach(d => {
-                const indice = d.mes - 1;
-                if (d.ano == anoAtual) {
-                    dadosAnoAtual[indice] = d.totalLatas;
-                } else if (d.ano == anoAnterior) {
-                    dadosAnoAnterior[indice] = d.totalLatas;
-                }
-            });
+        if (dados[i].ano == anoAtual) {
+            dadosAnoAtual[indiceMes] = dados[i].totalLatas;
+        }
 
-            new Chart(document.getElementById("graphicBar"), {
-                type: "bar",
-                data: {
-                    labels: nomesMeses,
-                    datasets: [
-                        {
-                            label: `Produção ${anoAnterior}`,
-                            data: dadosAnoAnterior,
-                            backgroundColor: "lightblue",
-                            borderWidth: 2
-                        },
-                        {
-                            label: `Produção ${anoAtual}`,
-                            data: dadosAnoAtual,
-                            backgroundColor: "navy",
-                            borderColor: "navy"
-                        }
-                    ]
+        if (dados[i].ano == anoAnterior) {
+            dadosAnoAnterior[indiceMes] = dados[i].totalLatas;
+        }
+
+    }
+
+    new Chart(graphicBar, {
+
+        type: "bar",
+        data: {
+            labels: nomesMeses,
+            datasets: [
+                {
+                    label: `Produção ${anoAnterior}`,
+                    data: dadosAnoAnterior,
+                    backgroundColor: "lightblue",
+                    borderWidth: 1
                 },
-                options: {
-                    plugins: {
-                        legend: { labels: { color: "white" } }
-                    },
-                    scales: {
-                        x: { ticks: { color: "white" } },
-                        y: { beginAtZero: true, ticks: { color: "white" } }
+                {
+                    label: `Produção ${anoAtual}`,
+                    data: dadosAnoAtual,
+                    backgroundColor: "navy",
+                    borderWidth: 1
+                }
+            ]
+        },
+
+        options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "white"
                     }
                 }
-            });
+            },
+
+            scales: {
+                x: {
+                    ticks: {
+                        color: "white"
+                    }
+                },
+
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: "white"
+                    }
+                }
+            }
+        }
+    });
+}
+
+//#endregion
+
+
+
+//#region KPI
+
+function atualizarKPI(dados) {
+
+    if (dados.length == 0) {
+        return;
+    }
+
+    let ultimaProducao = dados[dados.length - 1].totalLatas;
+    producao.innerHTML = `${ultimaProducao} latas/min`;
+
+    // Nao sei se é mensal ou por minuto a mensagem de alerta :(
+
+    // if (ultimaProducao >= 80) {
+    //     alertTxt.innerHTML = "Sistema operando normalmente";
+    // } else {
+    //     alertTxt.innerHTML = "Produção abaixo da meta";
+    // }
+
+}
+
+function atualizarKPImensal(dados){
+
+    console.log("dentro da kpi")
+    console.log(dados)
+
+    let metaMensal = 70
+    let mesAtual = new Date().getMonth();
+
+    console.log(mesAtual)
+
+    for (let i = 0; i < dados.length; i++){
+        if (dados[i].mes == mesAtual){
+            var produzidoMensal = dados[i].totalLatas
+            console.log(produzidoMensal)
+        }
+    }
+
+    let total =  (produzidoMensal * 100) / metaMensal
+    // <p id="totaltxt">676.000 / 845.000 latas (80%)</p>
+    totaltxt.innerHTML = `${produzidoMensal} / ${metaMensal} (${total.toFixed()}%)`
+
+    if (total < 10){
+        alertTxt.innerHTML = `Produção muito abaixo do limite aceitável`
+    } else if (total < 40){
+        alertTxt.innerHTML = `produção abaixo da meta` 
+    } else if (total < 70){
+        alertTxt.innerHTML = `Ritmo de produção reduzido`
+    } else {
+        alertTxt.innerHTML = `Sistema operando normalmente`
+    }
+
+
+
+    // qtd    pc
+    // 70      100
+    // 20      x
+    // 70 * x = 20 * 100
+    // 70x =  200
+    // 200/70 = x
+}
+
+//#endregion
+
+
+
+//#region Nome da maquina
+
+function NomeMaquina() {
+
+    fetch(`/medidas/maquinaEspecifica/${idMaquina}`)
+
+        .then(function(resposta){
+            return resposta.json();
         })
-        .catch(erro => {
-            console.log("Erro ao buscar produção mensal:", erro);
+
+        .then(function(dados){
+            console.log("DADOS MAQUINA");
+            console.log(dados);
+
+            if (dados.length > 0) {
+                nomeMaquina.innerHTML = `Máquina ${dados[0].numMaquina}`;
+            }
+        })
+
+        .catch(function(erro){
+            console.log(erro);
         });
 
-    if (sessionStorage.getItem("logado") === "true") {
-        document.getElementById("linkDashboard").style.display = "block";
-        document.getElementById("linkLogout").style.display = "block";
-        document.getElementById("linkLogin").style.display = "none";
-    }
+}
 
-    function logout() {
-        sessionStorage.removeItem("logado");
-        window.location.href = "login.html";
-    }
->>>>>>> 109c17c6faf54511e15ceab3712c4b645bc2eb4f
+//#endregion
+
+NomeMaquina();
+DadosLinha();
+dadosBarra();
+
 </script>
