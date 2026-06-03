@@ -19,9 +19,10 @@
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
                 <li id="linkDashboard" style="display: none;">
-                    <a href="dashboard.html">Dashboard</a>
+                    <a href="dashboard-geral.html">Dashboard</a>
                 </li>
                 <li><a class="active" href="#">Calculadora Financeira</a></li>
+                <li id="linkSuporte" style="display: none;"><a href="suporte.html">Suporte</a></li>
                 <li id="linkLogin">
                     <a href="Login.html">Login</a>
                 </li>
@@ -173,14 +174,15 @@ como fazer a conta do erro de sensor;
         }
     }
 
-    if (localStorage.getItem("logado") === "true") {
+    if (sessionStorage.getItem("logado") === "true") {
         document.getElementById("linkDashboard").style.display = "block";
         document.getElementById("linkLogout").style.display = "block";
         document.getElementById("linkLogin").style.display = "none";
+        document.getElementById("linkSuporte").style.display = "block";
     }
 
     function logout() {
-        localStorage.removeItem("logado");
+        sessionStorage.removeItem("logado");
         window.location.href = "login.html";
     }
 
