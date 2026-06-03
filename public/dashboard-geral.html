@@ -359,7 +359,7 @@
     
         <td>
              
-                <button onclick="maquinaEspecifica(${item.idSensor})">Nome da maqina</button>
+                <button onclick="maquinaEspecifica(${item.idSensor})">${item.maquina}</button>
             
         </td>
 
@@ -395,7 +395,7 @@
     function maquinaEspecifica(sensor){
 
         sessionStorage.MAQUINA_ESPECIFICA = sensor
-        window.location.href = "dashboard-especifica.html";
+        window.location.href = "dashboard-especifica-copy.html";
         
     }
 

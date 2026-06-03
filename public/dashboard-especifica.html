@@ -26,7 +26,7 @@
     </header>
 
     <main class="main">
-        <h1>Máquina X</h1>
+        <h1 id="nomeMaquina">Máquina X</h1>
         <section class="boxes">
             <div class="box">
                 <h3>Produção Atual (latas/min)</h3>
@@ -34,7 +34,7 @@
             </div>
             <div class="box">
                 <h3>Meta de Produção Mensal (%)</h3>
-                <p id="total">676.000 / 845.000 latas (80%)</p>
+                <p id="totaltxt">676.000 / 845.000 latas (80%)</p>
             </div>
             <!-- <div class="box">
                 <h3>Máquina com Menor Produção (%)</h3>
@@ -65,16 +65,52 @@
 </html>
 <script>
 
+let idMaquina = sessionStorage.MAQUINA_ESPECIFICA
 
-fetch(`/medidas/tempo-real/${idEmpresa}`)
+fetch(`/medidas/maquinaEspecifica/${idMaquina}`)
     .then(res => res.json())
     .then(dados => {
 
+    // Valores puxados:
+
+//   {
+//     dia: 2026-05-18T11:00:00.000Z,
+//     totalLatas: 1,
+//     ano: 2026,
+//     mes: 5,
+//     idSensor: 1000,
+//     estadoSensor: 'Ativo',
+//     numMaquina: 'M01',
+//     fkEmpresaMaquina: 1000
+//   },
+
+        nomeMaquina.innerHTML = `Maquina ${dados[0].numMaquina}`
+
+        producao.innerHTML = `${dados[dados.length - 1].totalLatas} latas/min`
+
+        let totalLatasMes = 0
+        let mesAtual = new Date().getMonth();
+        let metaMes = 20
+        let totalMin = 0
+
+        for (let i = 0; i < dados.length; i++){
+            if (dados[i].mes == mesAtual){
+                totalLatasMes += dados[i].totalLatas
+            }
+
+            if (dados[i].dia == dados[i -1].dia){
+
+            }
+        }
+
+        totaltxt.innerHTML = `${totalLatasMes} / ${metaMes} (${((totalLatasMes * metaMes) / 100).toFixed()}%) `
+                        // <p id="totaltxt">676.000 / 845.000 latas (80%)</p> 
+
         const labels = dados.map(d => {
-            return new Date(d.momento_grafico).toLocaleTimeString();
+            return new Date(d.data).toLocaleTimeString();
         });
 
-        const valores = dados.map(d => d.registro);
+        const valores = dados.map(d => d.totalLatas);
 
         new Chart(document.getElementById("graphicLine"), {
             type: "line",
@@ -120,25 +156,20 @@ fetch(`/medidas/tempo-real/${idEmpresa}`)
             }
         });
 
-    })
-    .catch(erro => {
-        console.log("Erro ao buscar dados:", erro);
-    });
 
-    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-
-
-fetch(`/medidas/producao-mensal/${idSensor}`)
-    .then(res => res.json())
-    .then(dados => {
-
+    
         // separa ano atual e ano anterior
         const anoAtual = new Date().getFullYear();
         const anoAnterior = anoAtual - 1;
 
+        console.log(anoAtual)
+        console.log(anoAnterior)
+
         const dadosAnoAtual    = new Array(12).fill(0);
         const dadosAnoAnterior = new Array(12).fill(0);
+
+        console.log(dadosAnoAtual)
+        console.log(dadosAnoAnterior)
 
         dados.forEach(d => {
             const indice = d.mes - 1; 
@@ -178,9 +209,69 @@ fetch(`/medidas/producao-mensal/${idSensor}`)
                 }
             }
         });
+    
+
     })
     .catch(erro => {
-        console.log("Erro ao buscar produção mensal:", erro);
+        console.log("Erro ao buscar dados:", erro);
     });
+
+    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+
+// fetch(`/medidas/producao-mensal/${idSensor}`)
+//     .then(res => res.json())
+    // .then(dados => {
+
+    //     // separa ano atual e ano anterior
+    //     const anoAtual = new Date().getFullYear();
+    //     const anoAnterior = anoAtual - 1;
+
+    //     const dadosAnoAtual    = new Array(12).fill(0);
+    //     const dadosAnoAnterior = new Array(12).fill(0);
+
+    //     dados.forEach(d => {
+    //         const indice = d.mes - 1; 
+    //         if (d.ano == anoAtual) {
+    //             dadosAnoAtual[indice] = d.totalLatas;
+    //         } else if (d.ano == anoAnterior) {
+    //             dadosAnoAnterior[indice] = d.totalLatas;
+    //         }
+    //     });
+
+    //     new Chart(document.getElementById("graphicBar"), {
+    //         type: "bar",
+    //         data: {
+    //             labels: nomesMeses,
+    //             datasets: [
+    //                 {
+    //                     label: `Produção ${anoAnterior}`,
+    //                     data: dadosAnoAnterior,
+    //                     backgroundColor: "lightblue",
+    //                     borderWidth: 2
+    //                 },
+    //                 {
+    //                     label: `Produção ${anoAtual}`,
+    //                     data: dadosAnoAtual,
+    //                     backgroundColor: "navy",
+    //                     borderColor: "navy"
+    //                 }
+    //             ]
+    //         },
+    //         options: {
+    //             plugins: {
+    //                 legend: { labels: { color: "white" } }
+    //             },
+    //             scales: {
+    //                 x: { ticks: { color: "white" } },
+    //                 y: { beginAtZero: true, ticks: { color: "white" } }
+    //             }
+    //         }
+    //     });
+    // })
+    // .catch(erro => {
+    //     console.log("Erro ao buscar produção mensal:", erro);
+    // });
 
 </script>

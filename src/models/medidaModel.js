@@ -32,14 +32,14 @@ function buscarUltimasMedidas(idEmpresa) {
 
 function buscarMedidasEmTempoReal(idEpresa) {
     // var instrucaoSql = `
-    //     SELECT 
-    //         DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
-    //         COUNT(*) AS registro
-    //     FROM registroSensor
-    //     WHERE fkSensor = ${idSensor}
-    //     AND DATE(hrRegistro) = CURDATE()
-    //     GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
-    //     ORDER BY momento_grafico ASC
+        // SELECT 
+        //     DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
+        //     COUNT(*) AS registro
+        // FROM registroSensor
+        // WHERE fkSensor = ${idSensor}
+        // AND DATE(hrRegistro) = CURDATE()
+        // GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
+        // ORDER BY momento_grafico ASC
     // `;
     var instrucaoSql = `
         select 
@@ -145,7 +145,72 @@ function buscarProducaoMensal(idSensor) {
     return database.executar(instrucaoSql);
 }
 
+function maquinaEspecifica(idMaquina) {
+
+    var instrucaoSql = `
+        select
+            idMaquina,
+            numMaquina
+        from maquina
+        where idMaquina = ${idMaquina};
+    `;
+
+    console.log(instrucaoSql);
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarProducaoMinuto(idMaquina) {
+
+    var instrucaoSql = `
+        select
+            date_format(hrRegistro, '%H:%i') as momento_grafico,
+            sum(valorRegistro) as totalLatas
+        from registroSensor
+        join sensor
+            on registroSensor.fkSensor = sensor.idSensor
+        join maquina
+            on sensor.fkMaquina = maquina.idMaquina
+        where idMaquina = ${idMaquina}
+        group by date_format(hrRegistro, '%H:%i')
+        order by momento_grafico;
+    `;
+
+    console.log(instrucaoSql);
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarProducaoMensalMaquina(idMaquina) {
+
+    var instrucaoSql = `
+        select
+            year(hrRegistro) as ano,
+            month(hrRegistro) as mes,
+            sum(valorRegistro) as totalLatas
+        from registroSensor
+        join sensor
+            on registroSensor.fkSensor = sensor.idSensor
+        join maquina
+            on sensor.fkMaquina = maquina.idMaquina
+        where idMaquina = ${idMaquina}
+        group by
+            year(hrRegistro),
+            month(hrRegistro)
+        order by
+            ano,
+            mes;
+    `;
+
+    console.log(instrucaoSql);
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
+    buscarProducaoMensalMaquina,
+    buscarProducaoMinuto,
+    maquinaEspecifica,
     buscarUltimasMedidas,
     buscarMedidasEmTempoReal,
     buscarTodasMaquinas,

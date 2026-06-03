@@ -116,8 +116,71 @@ function buscarProducaoMensal(req, res) {
     });
 }
 
+function maquinaEspecifica(req, res) {
+    var idMaquina = req.params.idMaquina;
+
+    medidaModel.maquinaEspecifica(idMaquina)
+    .then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
+function buscarProducaoMinuto(req, res) {
+
+    var idMaquina = req.params.idMaquina;
+
+    medidaModel.buscarProducaoMinuto(idMaquina)
+
+        .then(function(resultado){
+
+            res.status(200).json(resultado);
+
+        })
+
+        .catch(function(erro){
+
+            console.log(erro);
+
+            res.status(500).json(erro.sqlMessage);
+
+        });
+
+}
+
+function buscarProducaoMensalMaquina(req, res) {
+
+    var idMaquina = req.params.idMaquina;
+
+    medidaModel.buscarProducaoMensalMaquina(idMaquina)
+
+        .then(function(resultado){
+
+            res.status(200).json(resultado);
+
+        })
+
+        .catch(function(erro){
+
+            console.log(erro);
+
+            res.status(500).json(erro.sqlMessage);
+
+        });
+
+}
+
 
 module.exports = {
+    buscarProducaoMensalMaquina,
+    buscarProducaoMinuto,
+    maquinaEspecifica,
     buscarUltimasMedidas,
     buscarMedidasEmTempoReal,
     buscarTodasMaquinas,

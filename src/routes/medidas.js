@@ -25,4 +25,16 @@ router.get("/producao-mensal/:idSensor", function (req, res) {
     medidaController.buscarProducaoMensal(req, res);
 });
 
+router.get("/maquinaEspecifica/:idMaquina", function (req, res) {
+    medidaController.maquinaEspecifica(req, res);
+});
+
+router.get("/producao-minuto/:idMaquina", function(req, res){
+    medidaController.buscarProducaoMinuto(req, res);
+});
+
+router.get("/producao-mensal-maquina/:idMaquina", function(req, res){
+    medidaController.buscarProducaoMensalMaquina(req, res);
+});
+
 module.exports = router;
