@@ -62,41 +62,25 @@ function buscarMedidasEmTempoReal(idEpresa) {
 }
 
 // ranking de todas as maquinas
-function buscarTodasMaquinas(idEmpresa, limite) {
+function buscarTodasMaquinas(idEmpresa) {
     var instrucaoSql = `
         SELECT 
             m.idMaquina,
             m.numMaquina AS maquina,
             s.idSensor,
             s.estadoSensor,
-
-            ROUND(AVG(r.valorRegistro),0) AS producao,
-
-            ROUND(
-                (AVG(r.valorRegistro) / 80) * 100,
-                0
-            ) AS eficiencia
-
+            ROUND(AVG(r.valorRegistro), 0) AS producao,
+            ROUND(AVG(r.valorRegistro), 0) AS eficiencia
         FROM maquina m
-        JOIN sensor s 
-            ON s.fkMaquina = m.idMaquina
-
-        LEFT JOIN registroSensor r
+        JOIN sensor s ON s.fkMaquina = m.idMaquina
+        LEFT JOIN registroSensor r 
             ON r.fkSensor = s.idSensor
-
+            AND DATE(r.hrRegistro) = CURDATE()
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
-
-        GROUP BY
-            m.idMaquina,
-            m.numMaquina,
-            s.idSensor,
-            s.estadoSensor
-
-        ORDER BY eficiencia ASC;
-    `
-
+        GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
+        ORDER BY eficiencia DESC
+    `;
     console.log(instrucaoSql);
-
     return database.executar(instrucaoSql);
 }
 
