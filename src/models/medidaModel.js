@@ -31,35 +31,32 @@ function buscarUltimasMedidas(idEmpresa) {
 }
 
 function buscarMedidasEmTempoReal(idEpresa) {
-    // var instrucaoSql = `
-        // SELECT 
-        //     DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
-        //     COUNT(*) AS registro
-        // FROM registroSensor
-        // WHERE fkSensor = ${idSensor}
-        // AND DATE(hrRegistro) = CURDATE()
-        // GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
-        // ORDER BY momento_grafico ASC
-    // `;
+
     var instrucaoSql = `
-        select 
-			DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
-            COUNT(*) AS registro,
-            empresa.idEmpresa
-		from empresa
-        join maquina 
-			on empresa.idEmpresa = maquina.fkEmpresaMaquina
-		join sensor 
-			on maquina.idMaquina = sensor.fkMaquina
-		join registroSensor
-			on registroSensor.fkSensor = sensor.idSensor
-		where empresa.idEmpresa = ${idEpresa}
-        -- and DATE(hrRegistro) = CURDATE()
-		GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
+        SELECT 
+            DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
+
+            ROUND(AVG(valorRegistro),0) AS registro
+
+        FROM empresa
+
+        JOIN maquina
+            ON empresa.idEmpresa = maquina.fkEmpresaMaquina
+
+        JOIN sensor
+            ON maquina.idMaquina = sensor.fkMaquina
+
+        JOIN registroSensor
+            ON registroSensor.fkSensor = sensor.idSensor
+
+        WHERE empresa.idEmpresa = ${idEpresa}
+
+        GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
+
         ORDER BY momento_grafico ASC;
     `;
 
-    console.log(`Buscar medidas em tempo real <br>${instrucaoSql}`);
+    console.log(instrucaoSql);
 
     return database.executar(instrucaoSql);
 }
@@ -72,53 +69,86 @@ function buscarTodasMaquinas(idEmpresa, limite) {
             m.numMaquina AS maquina,
             s.idSensor,
             s.estadoSensor,
-            COUNT(r.idRegistro) AS producao,
-            ROUND((COUNT(r.idRegistro) / 30) * 100, 0) AS eficiencia
+
+            ROUND(AVG(r.valorRegistro),0) AS producao,
+
+            ROUND(
+                (AVG(r.valorRegistro) / 80) * 100,
+                0
+            ) AS eficiencia
+
         FROM maquina m
-        JOIN sensor s ON s.fkMaquina = m.idMaquina
-        LEFT JOIN registroSensor r 
+        JOIN sensor s 
+            ON s.fkMaquina = m.idMaquina
+
+        LEFT JOIN registroSensor r
             ON r.fkSensor = s.idSensor
+
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
-        -- AND DATE(r.hrRegistro) = CURDATE()
-        GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
+
+        GROUP BY
+            m.idMaquina,
+            m.numMaquina,
+            s.idSensor,
+            s.estadoSensor
+
         ORDER BY eficiencia ASC;
     `
+
     console.log(instrucaoSql);
 
     return database.executar(instrucaoSql);
 }
 
 function buscarProducaoGeral(idEmpresa) {
+
     var instrucaoSql = `
         SELECT 
             DATE_FORMAT(r.hrRegistro, '%H:00') AS horario,
-            COUNT(r.idRegistro) AS producao
+
+            ROUND(AVG(r.valorRegistro),0) AS producao
+
         FROM registroSensor r
-        JOIN sensor s ON r.fkSensor = s.idSensor
-        JOIN maquina m ON s.fkMaquina = m.idMaquina
+
+        JOIN sensor s
+            ON r.fkSensor = s.idSensor
+
+        JOIN maquina m
+            ON s.fkMaquina = m.idMaquina
+
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
         AND DATE(r.hrRegistro) = CURDATE()
+
         GROUP BY horario
+
         ORDER BY horario;
     `;
+
     console.log(instrucaoSql);
+
     return database.executar(instrucaoSql);
 }
 
-function buscarProducaoDiariaMaquina (idEmpresa) {
+function buscarProducaoDiariaMaquina(idEmpresa) {
 
     var instrucaoSql = `
-    
         SELECT 
             m.numMaquina AS maquina,
-            COUNT(r.idRegistro) AS producao
+
+            ROUND(AVG(r.valorRegistro),0) AS producao
+
         FROM maquina m
-        JOIN sensor s ON s.fkMaquina = m.idMaquina
+
+        JOIN sensor s
+            ON s.fkMaquina = m.idMaquina
+
         LEFT JOIN registroSensor r
             ON r.fkSensor = s.idSensor
-            -- AND DATE(r.hrRegistro) = CURDATE()
+
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
+
         GROUP BY m.idMaquina
+
         ORDER BY producao DESC;
     `;
 
@@ -132,10 +162,9 @@ function buscarProducaoMensal(idSensor) {
         SELECT 
             MONTH(hrRegistro) as mes,
             YEAR(hrRegistro) as ano,
-            COUNT(*) as totalLatas
+            SUM(valorRegistro) as totalLatas
         FROM registroSensor
         WHERE fkSensor = ${idSensor}
-        AND valorRegistro = 1
         GROUP BY YEAR(hrRegistro), MONTH(hrRegistro)
         ORDER BY ano, mes
     `;
