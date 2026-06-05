@@ -59,10 +59,10 @@
                     </div>
 
                     <div class="ranking-filters">
-                        <button>Todas</button>
-                        <button>Normal</button>
-                        <button>Atenção</button>
-                        <button>Crítica</button>
+                        <button id="btnTodas">Todas</button>
+                        <button id="btnNormal">Normal</button>
+                        <button id="btnAtencao">Atenção</button>
+                        <button id="btnCritica">Crítica</button>
                     </div>
                 </div>
 
@@ -321,13 +321,33 @@
         window.location.href = "login.html";
     };
 
-    function carregarRanking() {
+    function carregarRanking(filtro = "todas") {
 
         const tbody = document.getElementById("rankingBody");
 
         tbody.innerHTML = "";
 
-        maquinasRanking.forEach((item, index) => {
+        let dadosFiltrados = maquinasRanking;
+
+        if (filtro === "normal") {
+            dadosFiltrados = maquinasRanking.filter(item =>
+                item.eficiencia >= 80
+            );
+        }
+
+        if (filtro === "atencao") {
+            dadosFiltrados = maquinasRanking.filter(item =>
+                item.eficiencia < 80 && item.eficiencia >= 50
+            );
+        }
+
+        if (filtro === "critica") {
+            dadosFiltrados = maquinasRanking.filter(item =>
+                item.eficiencia < 50
+            );
+        }
+
+        dadosFiltrados.forEach((item, index) => {
 
             let cor = "green";
             let statusClasse = "status-normal";
@@ -391,6 +411,22 @@
                                 `;
         });
     }
+
+    document.getElementById("btnTodas").onclick = () => {
+        carregarRanking("todas");
+    };
+
+    document.getElementById("btnNormal").onclick = () => {
+        carregarRanking("normal");
+    };
+
+    document.getElementById("btnAtencao").onclick = () => {
+        carregarRanking("atencao");
+    };
+
+    document.getElementById("btnCritica").onclick = () => {
+        carregarRanking("critica");
+    };
 
     function maquinaEspecifica(sensor) {
 
