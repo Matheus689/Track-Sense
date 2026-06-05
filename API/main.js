@@ -57,16 +57,15 @@ const serial = async (
 
         // insere os dados no banco de dados (se habilitado)
         if (HABILITAR_OPERACAO_INSERIR) {
-
-            // este insert irá inserir os dados na tabela "medida"
-            await poolBancoDados.execute(
-                'INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES (1001, ?)',
-                [sensorBloqueio]
-            );
-            console.log("valores inseridos no banco: " + sensorBloqueio);
-
+            if (sensorBloqueio == 1) {
+                for(let i = 0; i < 100; i++) {
+                    await poolBancoDados.execute(
+                    'INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES (1001, 1)'
+                    );
+                }
+                console.log("100 registros inseridos no banco");
+            }     
         }
-
     });
 
     // evento para lidar com erros na comunicação serial
