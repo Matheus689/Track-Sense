@@ -82,7 +82,7 @@ function buscarTodasMaquinas(idEmpresa) {
             s.idSensor,
             s.estadoSensor,
             COUNT(r.idRegistro) AS producao,
-            ROUND((COUNT(r.idRegistro) / 30) * 100, 0) AS eficiencia
+            ROUND((COUNT(r.idRegistro) / 80) * 100, 0) AS eficiencia
         FROM maquina m
         JOIN sensor s ON s.fkMaquina = m.idMaquina
         LEFT JOIN registroSensor r 
