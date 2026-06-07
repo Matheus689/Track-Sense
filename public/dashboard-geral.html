@@ -54,16 +54,18 @@
             <section class="ranking-section">
 
                 <div class="ranking-header">
+
                     <div>
                         <h2>Produção Geral da Fábrica</h2>
                     </div>
 
                     <div class="ranking-filters">
-                        <button id="btnTodas">Todas</button>
-                        <button id="btnNormal">Normal</button>
-                        <button id="btnAtencao">Atenção</button>
-                        <button id="btnCritica">Crítica</button>
+                        <button id="btnTodas" onclick="carregarRanking('todas')">Todas</button>
+                        <button id="btnNormal" onclick="carregarRanking('normal')">Normal</button>
+                        <button id="btnAtencao" onclick="carregarRanking('atencao')">Atenção</button>
+                        <button id="btnCritica" onclick="carregarRanking('critica')">Crítica</button>
                     </div>
+
                 </div>
 
                 <table class="ranking-table">
@@ -111,7 +113,7 @@
 
 </html>
 <script>
-    
+
     let maquinasRanking = [];
     let filtroAtivo = "todas";
 
@@ -124,29 +126,34 @@
 
     function carregarRanking(filtro = "todas") {
 
+        document.getElementById("btnTodas").classList.remove("ativo");
+        document.getElementById("btnNormal").classList.remove("ativo");
+        document.getElementById("btnAtencao").classList.remove("ativo");
+        document.getElementById("btnCritica").classList.remove("ativo");
+
         filtroAtivo = filtro;
         const tbody = document.getElementById("rankingBody");
-
         tbody.innerHTML = "";
 
         let dadosFiltrados = maquinasRanking;
 
+        if (filtro === "todas") {
+            document.getElementById("btnTodas").classList.add("ativo");
+        }
+
         if (filtro === "normal") {
-            dadosFiltrados = maquinasRanking.filter(item =>
-                item.eficiencia >= 80
-            );
+            document.getElementById("btnNormal").classList.add("ativo");
+            dadosFiltrados = maquinasRanking.filter(item => item.eficiencia >= 80);
         }
 
         if (filtro === "atencao") {
-            dadosFiltrados = maquinasRanking.filter(item =>
-                item.eficiencia < 80 && item.eficiencia >= 50
-            );
+            document.getElementById("btnAtencao").classList.add("ativo");
+            dadosFiltrados = maquinasRanking.filter(item => item.eficiencia < 80 && item.eficiencia >= 50);
         }
 
         if (filtro === "critica") {
-            dadosFiltrados = maquinasRanking.filter(item =>
-                item.eficiencia < 50
-            );
+            document.getElementById("btnCritica").classList.add("ativo");
+            dadosFiltrados = maquinasRanking.filter(item => item.eficiencia < 50);
         }
 
         dadosFiltrados.forEach((item, index) => {
@@ -230,232 +237,237 @@
         carregarRanking("critica");
     };
 
-  window.onload = atualizarPagina;
 
-    setInterval(atualizarPagina, 2000);
-    
-
-    function atualizarPagina(){
-
-    let idEmpresa = sessionStorage.EMPRESA
+    window.onload = atualizarPagina()
 
 
-    function carregarDadosProd() {
-        // buscarMedidasEmTempoReal
-        fetch(`/medidas/tempo-real/${idEmpresa}`)
-            .then(function (resposta) {
-                return resposta.json();
-            })
-            .then(function (resposta) {
+    function atualizarPagina() {
 
-                var dados = resposta;
 
-                const labels = dados.map(item => item.momento_grafico);
+        let idEmpresa = sessionStorage.EMPRESA
 
-                const valores = dados.map(item => item.registro);
+        function carregarDadosProd() {
+            // buscarMedidasEmTempoReal
+            fetch(`/medidas/tempo-real/${idEmpresa}`)
+                .then(function (resposta) {
+                    return resposta.json();
+                })
+                .then(function (resposta) {
 
-                const data = {
-                    labels: labels,
+                    var dados = resposta;
+
+                    const labels = dados.map(item => item.momento_grafico);
+
+                    const valores = dados.map(item => item.registro);
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Produção Real',
+                            backgroundColor: 'rgb(90, 180, 13, 0.8)',
+                            borderColor: 'rgb(90, 180, 13, 0.8)',
+                            data: valores
+                        },
+                        {
+                            label: 'Meta',
+                            borderDash: [10, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            backgroundColor: 'rgb(255, 255, 255, 0.8)',
+                            borderColor: 'rgb(255, 255, 255, 0.8)',
+                            data: Array(valores.length).fill(30),
+                        }]
+                    };
+
+                    new Chart(
+                        document.getElementById('graficoProducao'),
+                        {
+                            type: 'line',
+                            data: data
+                        }
+                    );
+
+                    console.log(dados);
+                });
+        }
+
+        carregarDadosProd();
+
+
+        function atualizarMaquinas() {
+            // buscarTodasMaquinas
+            fetch(`/medidas/maquinas/${idEmpresa}`)
+                .then(res => res.json())
+                .then(dados => {
+
+                    maquinasRanking = dados;
+
+                    carregarRanking(filtroAtivo);
+
+                    // KPI Eficiencia média
+                    let soma = 0;
+                    dados.forEach(item => {
+                        soma += Number(item.eficiencia);
+                    });
+                    let media = Math.round(soma / dados.length);
+                    document.getElementById("producao").innerHTML =
+                        media + "%";
+
+
+                    // KPI Máquina em risco
+                    let maquinasRisco = dados.filter(item =>
+                        Number(item.eficiencia) < 80
+                    );
+
+                    if (maquinasRisco.length > 0) {
+
+                        let nomes = maquinasRisco.map(item => item.maquina);
+
+                        document.getElementById("maquinaRisco").innerHTML =
+                            nomes.join(", ");
+
+                    } else {
+
+                        document.getElementById("maquinaRisco").innerHTML =
+                            "Nenhuma";
+                    }
+
+
+                    // KPI Ajuste de velocidade
+                    // pega a pior máquina
+                    let piorMaquina = dados.reduce((menor, atual) => {
+
+                        if (Number(atual.eficiencia) < Number(menor.eficiencia)) {
+                            return atual;
+                        }
+
+                        return menor;
+
+                    }, dados[0]);
+
+                    document.getElementById("maquinaCritica").innerHTML =
+                        piorMaquina.maquina;
+
+
+                    // calcula quanto falta pra meta
+                    let faltando = 30 - piorMaquina.producao;
+
+                    if (faltando < 0) {
+                        faltando = 0;
+                    }
+
+
+                    // calcula diferença percentual
+                    let abaixoMedia = 100 - piorMaquina.eficiencia;
+
+                    document.getElementById("textoCritico").innerHTML =
+                        `${abaixoMedia}% abaixo da meta. 
+                        Faltam ${faltando} registros para atingir a meta.`;
+
+                    console.log("Dados Atualizados")
+                });
+        }
+
+        atualizarMaquinas();
+        setInterval(atualizarMaquinas, 3000);
+
+        // Producao real
+        fetch(`/medidas/producao-geral/${idEmpresa}`)
+            // buscarProducaoGeral
+            .then(res => res.json())
+            .then(dados => {
+
+                // const labels = dados.map(item => item.horario);
+
+                // const valores = dados.map(item => item.producao);
+
+                // const data = {
+                //     labels: labels,
+                //     datasets: [{
+                //         label: 'Produção Real',
+                //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
+                //         borderColor: 'rgb(90, 180, 13, 0.8)',
+                //         data: valores,
+                //     },
+                //     {
+                //         label: 'Meta',
+                //         borderDash: [10, 5],
+                //         borderWidth: 2,
+                //         pointRadius: 0,
+                //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
+                //         borderColor: 'rgb(255, 255, 255, 0.8)',
+                //         data: Array(valores.length).fill(30),
+                //     }]
+                // };
+
+                // new Chart(
+                //     document.getElementById('graficoProducao'),
+                //     {
+                //         type: 'line',
+                //         data: data
+                //     }
+                // );
+
+            });
+
+        fetch(`/medidas/producao-diaria/${idEmpresa}`)
+            // buscarProducaoDiariaMaquina
+            .then(res => res.json())
+            .then(dados => {
+                const labelsMaquinas = dados.map(item => item.maquina);
+
+                // producao por maquina funcionando
+                const valoresMaquinas = dados.map(item => item.producao);
+
+                const data2 = {
+
+                    labels: labelsMaquinas,
+
                     datasets: [{
-                        label: 'Produção Real',
+                        label: 'Produção Diária Máquina',
                         backgroundColor: 'rgb(90, 180, 13, 0.8)',
                         borderColor: 'rgb(90, 180, 13, 0.8)',
-                        data: valores
+                        data: valoresMaquinas,
                     },
                     {
                         label: 'Meta',
+                        type: 'line',
                         borderDash: [10, 5],
                         borderWidth: 2,
                         pointRadius: 0,
                         backgroundColor: 'rgb(255, 255, 255, 0.8)',
                         borderColor: 'rgb(255, 255, 255, 0.8)',
-                        data: Array(valores.length).fill(30),
+                        data: Array(valoresMaquinas.length).fill(60),
                     }]
                 };
 
                 new Chart(
-                    document.getElementById('graficoProducao'),
+                    document.getElementById('graficoMaquinas'),
                     {
-                        type: 'line',
-                        data: data
+                        type: 'bar',
+                        data: data2
                     }
                 );
 
-                console.log(dados);
             });
+
+        function logout() {
+            localStorage.removeItem("logado");
+            window.location.href = "login.html";
+        };
+
+        if (sessionStorage.getItem("logado") === "true") {
+            document.getElementById("linkDashboard").style.display = "block";
+            document.getElementById("linkLogout").style.display = "block";
+            document.getElementById("linkLogin").style.display = "none";
+        }
+
+        function logout() {
+            sessionStorage.removeItem("logado");
+            window.location.href = "login.html";
+        }
+        // carregarRanking();
+
     }
-
-    carregarDadosProd(); 
-
-
-    fetch(`/medidas/maquinas/${idEmpresa}`)
-        // buscarTodasMaquinas
-        .then(res => res.json())
-        .then(dados => {
-
-            maquinasRanking = dados;
-
-            carregarRanking(dados);
-
-            // KPI Eficiencia média
-            let soma = 0;
-            dados.forEach(item => {
-                soma += Number(item.eficiencia);
-            });
-            let media = Math.round(soma / dados.length);
-            document.getElementById("producao").innerHTML =
-                media + "%";
-
-
-            // KPI Máquina em risco
-            let maquinasRisco = dados.filter(item =>
-                Number(item.eficiencia) < 80
-            );
-
-            if (maquinasRisco.length > 0) {
-
-                let nomes = maquinasRisco.map(item => item.maquina);
-
-                document.getElementById("maquinaRisco").innerHTML =
-                    nomes.join(", ");
-
-            } else {
-
-                document.getElementById("maquinaRisco").innerHTML =
-                    "Nenhuma";
-            }
-
-
-            // KPI Ajuste de velocidade
-            // pega a pior máquina
-            let piorMaquina = dados.reduce((menor, atual) => {
-
-                if (Number(atual.eficiencia) < Number(menor.eficiencia)) {
-                    return atual;
-                }
-
-                return menor;
-
-            }, dados[0]);
-
-            document.getElementById("maquinaCritica").innerHTML =
-                piorMaquina.maquina;
-
-
-            // calcula quanto falta pra meta
-            let faltando = 30 - piorMaquina.producao;
-
-            if (faltando < 0) {
-                faltando = 0;
-            }
-
-
-            // calcula diferença percentual
-            let abaixoMedia = 100 - piorMaquina.eficiencia;
-
-            document.getElementById("textoCritico").innerHTML =
-                `${abaixoMedia}% abaixo da meta. 
-            Faltam ${faltando} registros para atingir a meta.`;
-
-        });
-
-    // Producao real
-    fetch(`/medidas/producao-geral/${idEmpresa}`)
-        // buscarProducaoGeral
-        .then(res => res.json())
-        .then(dados => {
-
-            // const labels = dados.map(item => item.horario);
-
-            // const valores = dados.map(item => item.producao);
-
-            // const data = {
-            //     labels: labels,
-            //     datasets: [{
-            //         label: 'Produção Real',
-            //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
-            //         borderColor: 'rgb(90, 180, 13, 0.8)',
-            //         data: valores,
-            //     },
-            //     {
-            //         label: 'Meta',
-            //         borderDash: [10, 5],
-            //         borderWidth: 2,
-            //         pointRadius: 0,
-            //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
-            //         borderColor: 'rgb(255, 255, 255, 0.8)',
-            //         data: Array(valores.length).fill(30),
-            //     }]
-            // };
-
-            // new Chart(
-            //     document.getElementById('graficoProducao'),
-            //     {
-            //         type: 'line',
-            //         data: data
-            //     }
-            // );
-
-        });
-
-    fetch(`/medidas/producao-diaria/${idEmpresa}`)
-        // buscarProducaoDiariaMaquina
-        .then(res => res.json())
-        .then(dados => {
-            const labelsMaquinas = dados.map(item => item.maquina);
-
-            // producao por maquina funcionando
-            const valoresMaquinas = dados.map(item => item.producao);
-
-            const data2 = {
-
-                labels: labelsMaquinas,
-
-                datasets: [{
-                    label: 'Produção Diária Máquina',
-                    backgroundColor: 'rgb(90, 180, 13, 0.8)',
-                    borderColor: 'rgb(90, 180, 13, 0.8)',
-                    data: valoresMaquinas,
-                },
-                {
-                    label: 'Meta',
-                    type: 'line',
-                    borderDash: [10, 5],
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    backgroundColor: 'rgb(255, 255, 255, 0.8)',
-                    borderColor: 'rgb(255, 255, 255, 0.8)',
-                    data: Array(valoresMaquinas.length).fill(60),
-                }]
-            };
-
-            new Chart(
-                document.getElementById('graficoMaquinas'),
-                {
-                    type: 'bar',
-                    data: data2
-                }
-            );
-
-        });
-
-    function logout() {
-        localStorage.removeItem("logado");
-        window.location.href = "login.html";
-    };
-
-    if (sessionStorage.getItem("logado") === "true") {
-        document.getElementById("linkDashboard").style.display = "block";
-        document.getElementById("linkLogout").style.display = "block";
-        document.getElementById("linkLogin").style.display = "none";
-    }
-
-    function logout() {
-        sessionStorage.removeItem("logado");
-        window.location.href = "login.html";
-    }
-    // carregarRanking();
-
-}
 
 </script>
