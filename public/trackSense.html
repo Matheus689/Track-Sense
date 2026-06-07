@@ -43,7 +43,8 @@
         <h1> Não deixe sua margem de lucro pipocar <br></h1>
         <h2>conte com a gente!</h2>
       </div>
-      <div class="overlay"></div>
+      <div class="overlay">
+      </div>
       <p class="slogan2">Faça sua simulação de perdas sem o nosso produto!<br>
         <button class="botCal" onclick="ir()">Simule já</button>
       </p>
@@ -52,6 +53,7 @@
           window.location.href = "calculadora.html";
         }
       </script>
+      
     </section>
 
     <section class="cards">
@@ -102,6 +104,14 @@
 
 
     <section class="section-module" id="modulo">
+
+      
+
+        <script>
+          function irCadEmpresa() {
+            window.location.href = "cadEmpresa.html"
+          }
+        </script>
 
       <div class="service-section" id="servicos">
         <h2>SERVIÇOS</h2>
@@ -160,18 +170,7 @@
 
 
       <section>
-        <div class="service-section" id="cadEmpresa">
-          <h1>Leve sua produção para o próximo nível</h1>
-          <p>Monitore suas máquinas em tempo real, reduza desperdícios e tenha mais controle sobre sua linha de produção
-            com a TrackSense.</p>
-          <button onclick="irCadEmpresa()" id="btn_cadEmpresa">Cadastrar Empresa</button>
-        </div>
-
-        <script>
-          function irCadEmpresa() {
-            window.location.href = "cadEmpresa.html"
-          }
-        </script>
+        
 
 
         <!-- <div class="bloq side2">
@@ -193,7 +192,12 @@
           </div>
         </div> -->
       </section>
-
+      <div class="service-section" id="cadEmpresa">
+          <h1>Leve sua produção para o próximo nível</h1>
+          <p>Monitore suas máquinas em tempo real, reduza desperdícios e tenha mais controle sobre sua linha de produção
+            com a TrackSense.</p>
+          <button onclick="irCadEmpresa()" id="btn_cadEmpresa">Cadastrar Empresa</button>
+        </div>
     </section>
   </main>
 

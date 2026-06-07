@@ -295,3 +295,7 @@ P {
 #sessaoCadEmpresa .input p{
     font-size: 0.10vh;
 }
+
+.msgErro{
+    color: red;
+}
