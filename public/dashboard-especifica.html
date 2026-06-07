@@ -30,15 +30,15 @@
         <section class="boxes">
             <div class="box">
                 <h3>Produção Atual (latas/min)</h3>
-                <p id="producao">83 latas/min</p>
+                <p id="producao">valores</p>
             </div>
             <div class="box">
                 <h3>Meta de Produção Mensal (%)</h3>
-                <p id="totaltxt">676.000 / 845.000 latas (80%)</p>
+                <p id="totaltxt">valoress</p>
             </div>
         </section>
         <section class="alert">
-            <p id="alertTxt">Sistema operando normalmente</p>
+            <p id="alertTxt">valores</p>
         </section>
 
         <section class="graphic-box">
@@ -268,22 +268,30 @@ function atualizarKPI(dados) {
 
     // Nao sei se é mensal ou por minuto a mensagem de alerta :(
 
-    // if (ultimaProducao >= 80) {
-    //     alertTxt.innerHTML = "Sistema operando normalmente";
-    // } else {
-    //     alertTxt.innerHTML = "Produção abaixo da meta";
-    // }
+    if (ultimaProducao < 10){
+        alertTxt.innerHTML = `Produção muito abaixo do limite aceitável`
+    } else if (ultimaProducao < 40){
+        alertTxt.innerHTML = `produção abaixo da meta` 
+    } else if (ultimaProducao < 150){
+        alertTxt.innerHTML = `Ritmo de produção reduzido`
+    } else {
+        alertTxt.innerHTML = `Sistema operando normalmente`
+    }
 
 }
 
 function atualizarKPImensal(dados){
 
-    console.log("dentro da kpi")
+    console.log("dentro da kpi MENSAL")
+    console.log("DADOS")
     console.log(dados)
 
-    let metaMensal = 80
-    let mesAtual = new Date().getMonth();
+// 0: {ano: 2026, mes: 6, totalLatas: '108381'}ano: 2026mes: 6totalLatas: "108381"[[Prototype]]: Objectlength: 1[[Prototype]]: Array(0)
 
+    let metaMensal = 700000
+    let mesAtual = new Date().getMonth() + 1;
+
+    console.log('mes atual')
     console.log(mesAtual)
 
     for (let i = 0; i < dados.length; i++){
@@ -297,15 +305,15 @@ function atualizarKPImensal(dados){
     // <p id="totaltxt">676.000 / 845.000 latas (80%)</p>
     totaltxt.innerHTML = `${produzidoMensal} / ${metaMensal} (${total.toFixed()}%)`
 
-    if (total < 10){
-        alertTxt.innerHTML = `Produção muito abaixo do limite aceitável`
-    } else if (total < 40){
-        alertTxt.innerHTML = `produção abaixo da meta` 
-    } else if (total < 70){
-        alertTxt.innerHTML = `Ritmo de produção reduzido`
-    } else {
-        alertTxt.innerHTML = `Sistema operando normalmente`
-    }
+    // if (total < 10){
+    //     alertTxt.innerHTML = `Produção muito abaixo do limite aceitável`
+    // } else if (total < 40){
+    //     alertTxt.innerHTML = `produção abaixo da meta` 
+    // } else if (total < 70){
+    //     alertTxt.innerHTML = `Ritmo de produção reduzido`
+    // } else {
+    //     alertTxt.innerHTML = `Sistema operando normalmente`
+    // }
 
 
 

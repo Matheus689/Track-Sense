@@ -65,13 +65,13 @@ const serial = async (
 
                 for(let i = 0; i < 100; i++) {
                     await poolBancoDados.execute(
-                    'INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES (1001, 1)'
+                    'INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES (1000, 1)'
                     );
                 }  
                 console.log("100 registros inseridos no banco");
 
                 // while(true){
-                    for (let i = 0; i < 8; i++){
+                    for (let i = 0; i <= 8; i++){
                         let aleatorio = valorAleatorio(1, 0)
                         if (aleatorio == 1){
                             for(let j = 0; j < 100; j++) {
