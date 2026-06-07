@@ -41,7 +41,8 @@ function buscarMedidasEmTempoReal(idEmpresa) {
             JOIN empresa ON idEmpresa = maquina.fkEmpresaMaquina
         WHERE idEmpresa = ${idEmpresa}
         GROUP BY momento_grafico
-        ORDER BY momento_grafico ASC;
+        ORDER BY momento_grafico desc
+        limit 15;
 
 
         -- SELECT 

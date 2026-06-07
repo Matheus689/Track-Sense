@@ -28,7 +28,11 @@ const serial = async (
 
     // lista as portas seriais disponíveis e procura pelo Arduino
     const portas = await serialport.SerialPort.list();
-    const portaArduino = portas.find((porta) => porta.vendorId == 2341 && porta.productId == 43);
+
+    console.log(portas);
+    // const portaArduino = portas.find((porta) => porta.vendorId == 2341 && porta.productId == 43);
+    const portaArduino = portas.find((porta) => porta.vendorId == "1A86" && porta.productId == 7523);
+    
     if (!portaArduino) {
         throw new Error('O arduino não foi encontrado em nenhuma porta serial');
     }
@@ -58,15 +62,44 @@ const serial = async (
         // insere os dados no banco de dados (se habilitado)
         if (HABILITAR_OPERACAO_INSERIR) {
             if (sensorBloqueio == 1) {
+
                 for(let i = 0; i < 100; i++) {
                     await poolBancoDados.execute(
                     'INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES (1001, 1)'
                     );
-                }
+                }  
                 console.log("100 registros inseridos no banco");
-            }     
+
+                // while(true){
+                    for (let i = 0; i < 8; i++){
+                        let aleatorio = valorAleatorio(1, 0)
+                        if (aleatorio == 1){
+                            for(let j = 0; j < 100; j++) {
+                                await poolBancoDados.execute(
+                                    `INSERT INTO registroSensor (fkSensor, valorRegistro) VALUES (100${i}, 1)`
+                                );
+                            }
+                            console.log(`100 registros da maquina ${i} inseridos no banco`);
+                        } else if (aleatorio == 0){
+                            console.log(`Nenhum valor inserido na maquina ${i}`)
+                        }
+                    }
+                // }
+
+            }    
+            
+
+
         }
     });
+
+    function valorAleatorio(max, min){
+        let intervalo = max - min
+        let aleatorio = Math.random()
+        let resultado = aleatorio * intervalo + min
+
+        return resultado.toFixed()
+    }
 
     // evento para lidar com erros na comunicação serial
     arduino.on('error', (mensagem) => {

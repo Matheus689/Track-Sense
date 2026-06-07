@@ -111,12 +111,16 @@
 
 </html>
 <script>
+    
+  window.onload = atualizarPagina;
 
-    window.onload = function () {
-        carregarDadosProd();
-    }
+    setInterval(atualizarPagina, 2000);
+    
+
+    function atualizarPagina(){
 
     let idEmpresa = sessionStorage.EMPRESA
+
 
     function carregarDadosProd() {
         // buscarMedidasEmTempoReal
@@ -162,6 +166,8 @@
                 console.log(dados);
             });
     }
+
+    carregarDadosProd(); 
 
     let maquinasRanking = [];
 
@@ -446,5 +452,7 @@
         window.location.href = "login.html";
     }
     // carregarRanking();
+
+}
 
 </script>
