@@ -45,29 +45,6 @@ function buscarMedidasEmTempoReal(idEmpresa) {
         GROUP BY momento_grafico
         ORDER BY momento_grafico desc
         limit 15;
-
-
-        -- SELECT 
-        --     DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
-
-        --     ROUND(AVG(valorRegistro),0) AS registro
-
-        -- FROM empresa
-
-        -- JOIN maquina
-        --     ON empresa.idEmpresa = maquina.fkEmpresaMaquina
-
-        -- JOIN sensor
-        --     ON maquina.idMaquina = sensor.fkMaquina
-
-        -- JOIN registroSensor
-        --     ON registroSensor.fkSensor = sensor.idSensor
-
-        -- WHERE empresa.idEmpresa = ${idEmpresa}
-
-        -- GROUP BY DATE_FORMAT(hrRegistro, '%H:%i')
-
-        -- ORDER BY momento_grafico ASC;
     `;
 
     console.log(instrucaoSql);
@@ -207,7 +184,12 @@ function buscarProducaoMensalMaquina(idMaquina) {
         select
             year(hrRegistro) as ano,
             month(hrRegistro) as mes,
-            sum(valorRegistro) as totalLatas
+        CASE
+            WHEN SUM(valorRegistro) < 1000
+                THEN SUM(valorRegistro) * 700
+            ELSE
+                SUM(valorRegistro)
+        END AS totalLatas
         from registroSensor
         join sensor
             on registroSensor.fkSensor = sensor.idSensor
