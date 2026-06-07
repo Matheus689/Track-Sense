@@ -112,6 +112,124 @@
 </html>
 <script>
     
+    let maquinasRanking = [];
+    let filtroAtivo = "todas";
+
+    function maquinaEspecifica(sensor) {
+
+        sessionStorage.MAQUINA_ESPECIFICA = sensor
+
+        window.location.href = "dashboard-especifica.html";
+    }
+
+    function carregarRanking(filtro = "todas") {
+
+        filtroAtivo = filtro;
+        const tbody = document.getElementById("rankingBody");
+
+        tbody.innerHTML = "";
+
+        let dadosFiltrados = maquinasRanking;
+
+        if (filtro === "normal") {
+            dadosFiltrados = maquinasRanking.filter(item =>
+                item.eficiencia >= 80
+            );
+        }
+
+        if (filtro === "atencao") {
+            dadosFiltrados = maquinasRanking.filter(item =>
+                item.eficiencia < 80 && item.eficiencia >= 50
+            );
+        }
+
+        if (filtro === "critica") {
+            dadosFiltrados = maquinasRanking.filter(item =>
+                item.eficiencia < 50
+            );
+        }
+
+        dadosFiltrados.forEach((item, index) => {
+
+            let cor = "green";
+            let statusClasse = "status-normal";
+            let statusTexto = "Normal";
+
+            if (item.eficiencia < 80 && item.eficiencia >= 50) {
+                cor = "yellow";
+                statusClasse = "status-warning";
+                statusTexto = "Atenção";
+            }
+
+            if (item.eficiencia < 50) {
+                cor = "red";
+                statusClasse = "status-critical";
+                statusTexto = "Crítica";
+            }
+
+            // so por enquanto
+            // mudar o style do width da dash com 
+            if (item.eficiencia > 100) { item.eficiencia = 100 }
+
+            // href="dashboard-especifica.html?idSensor=${item.idSensor}">
+            // ${item.maquina}
+
+            tbody.innerHTML += `
+            
+        <tr>
+            <td>${index + 1}</td>
+    
+        <td>
+             
+                <button onclick="maquinaEspecifica(${item.idMaquina})">${item.maquina}</button>
+            
+        </td>
+
+            
+            <td>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    
+                    <div class="progress-container">
+                        <div 
+                        class="progress-bar ${cor}"
+                        style="width:${item.eficiencia}%">
+                        </div>
+                        </div>
+                        
+                        <span>${item.eficiencia}%</span>
+                        
+                        </div>
+                        </td>
+                        
+                        <td>${item.producao} l/min</td>
+                        
+                        
+                        <td>
+                            <span class="status ${statusClasse}">
+                                ${statusTexto}
+                            </span>
+                        </td>
+                    </tr>
+                                `;
+        });
+    }
+
+    document.getElementById("btnTodas").onclick = () => {
+        carregarRanking("todas");
+    };
+
+    document.getElementById("btnNormal").onclick = () => {
+        carregarRanking("normal");
+    };
+
+    document.getElementById("btnAtencao").onclick = () => {
+        carregarRanking("atencao");
+    };
+
+    document.getElementById("btnCritica").onclick = () => {
+        carregarRanking("critica");
+    };
+
   window.onload = atualizarPagina;
 
     setInterval(atualizarPagina, 2000);
@@ -169,7 +287,6 @@
 
     carregarDadosProd(); 
 
-    let maquinasRanking = [];
 
     fetch(`/medidas/maquinas/${idEmpresa}`)
         // buscarTodasMaquinas
@@ -326,120 +443,6 @@
         localStorage.removeItem("logado");
         window.location.href = "login.html";
     };
-
-    function carregarRanking(filtro = "todas") {
-
-        const tbody = document.getElementById("rankingBody");
-
-        tbody.innerHTML = "";
-
-        let dadosFiltrados = maquinasRanking;
-
-        if (filtro === "normal") {
-            dadosFiltrados = maquinasRanking.filter(item =>
-                item.eficiencia >= 80
-            );
-        }
-
-        if (filtro === "atencao") {
-            dadosFiltrados = maquinasRanking.filter(item =>
-                item.eficiencia < 80 && item.eficiencia >= 50
-            );
-        }
-
-        if (filtro === "critica") {
-            dadosFiltrados = maquinasRanking.filter(item =>
-                item.eficiencia < 50
-            );
-        }
-
-        dadosFiltrados.forEach((item, index) => {
-
-            let cor = "green";
-            let statusClasse = "status-normal";
-            let statusTexto = "Normal";
-
-            if (item.eficiencia < 80 && item.eficiencia >= 50) {
-                cor = "yellow";
-                statusClasse = "status-warning";
-                statusTexto = "Atenção";
-            }
-
-            if (item.eficiencia < 50) {
-                cor = "red";
-                statusClasse = "status-critical";
-                statusTexto = "Crítica";
-            }
-
-            // so por enquanto
-            // mudar o style do width da dash com 
-            if (item.eficiencia > 100) { item.eficiencia = 100 }
-
-            // href="dashboard-especifica.html?idSensor=${item.idSensor}">
-            // ${item.maquina}
-
-            tbody.innerHTML += `
-            
-        <tr>
-            <td>${index + 1}</td>
-    
-        <td>
-             
-                <button onclick="maquinaEspecifica(${item.idSensor})">${item.maquina}</button>
-            
-        </td>
-
-            
-            <td>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    
-                    <div class="progress-container">
-                        <div 
-                        class="progress-bar ${cor}"
-                        style="width:${item.eficiencia}%">
-                        </div>
-                        </div>
-                        
-                        <span>${item.eficiencia}%</span>
-                        
-                        </div>
-                        </td>
-                        
-                        <td>${item.producao} l/min</td>
-                        
-                        
-                        <td>
-                            <span class="status ${statusClasse}">
-                                ${statusTexto}
-                            </span>
-                        </td>
-                    </tr>
-                                `;
-        });
-    }
-
-    document.getElementById("btnTodas").onclick = () => {
-        carregarRanking("todas");
-    };
-
-    document.getElementById("btnNormal").onclick = () => {
-        carregarRanking("normal");
-    };
-
-    document.getElementById("btnAtencao").onclick = () => {
-        carregarRanking("atencao");
-    };
-
-    document.getElementById("btnCritica").onclick = () => {
-        carregarRanking("critica");
-    };
-
-    function maquinaEspecifica(sensor) {
-
-        sessionStorage.MAQUINA_ESPECIFICA = sensor
-
-        window.location.href = "dashboard-especifica.html";
-    }
 
     if (sessionStorage.getItem("logado") === "true") {
         document.getElementById("linkDashboard").style.display = "block";

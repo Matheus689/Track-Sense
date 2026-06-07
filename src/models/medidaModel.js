@@ -81,8 +81,8 @@ function buscarTodasMaquinas(idEmpresa) {
             m.numMaquina AS maquina,
             s.idSensor,
             s.estadoSensor,
-            ROUND(AVG(r.valorRegistro), 0) AS producao,
-            ROUND(AVG(r.valorRegistro), 0) AS eficiencia
+            COUNT(r.idRegistro) AS producao,
+            ROUND((COUNT(r.idRegistro) / 30) * 100, 0) AS eficiencia
         FROM maquina m
         JOIN sensor s ON s.fkMaquina = m.idMaquina
         LEFT JOIN registroSensor r 
@@ -90,7 +90,7 @@ function buscarTodasMaquinas(idEmpresa) {
             AND DATE(r.hrRegistro) = CURDATE()
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
         GROUP BY m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor
-        ORDER BY eficiencia DESC
+        ORDER BY eficiencia ASC;
     `;
     console.log(instrucaoSql);
     return database.executar(instrucaoSql);
@@ -101,22 +101,13 @@ function buscarProducaoGeral(idEmpresa) {
     var instrucaoSql = `
         SELECT 
             DATE_FORMAT(r.hrRegistro, '%H:00') AS horario,
-
-            ROUND(AVG(r.valorRegistro),0) AS producao
-
+            COUNT(r.idRegistro) AS producao
         FROM registroSensor r
-
-        JOIN sensor s
-            ON r.fkSensor = s.idSensor
-
-        JOIN maquina m
-            ON s.fkMaquina = m.idMaquina
-
+        JOIN sensor s ON r.fkSensor = s.idSensor
+        JOIN maquina m ON s.fkMaquina = m.idMaquina
         WHERE m.fkEmpresaMaquina = ${idEmpresa}
-        AND DATE(r.hrRegistro) = CURDATE()
-
+        AND DATE(r.hrRegistro) = CURDATE() 
         GROUP BY horario
-
         ORDER BY horario;
     `;
 
