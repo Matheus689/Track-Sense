@@ -12,6 +12,7 @@ CREATE TABLE empresa (
     idEmpresa INT AUTO_INCREMENT PRIMARY KEY,
     cnpj CHAR(14) UNIQUE,
     nome VARCHAR(45),
+	codEmpresa CHAR(6),
     fkMatriz INT,
         CONSTRAINT chFkMatriz FOREIGN KEY (fkMatriz) REFERENCES empresa(idEmpresa),
     fkEndereco INT,
@@ -24,7 +25,6 @@ CREATE TABLE usuario (
     email VARCHAR(50) NOT NULL,
     senha VARCHAR(14) NOT NULL,
     dtCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    codEmpresa CHAR(6),
     fkSupervisor INT,
         CONSTRAINT chFkSupervisor FOREIGN KEY (fkSupervisor) REFERENCES usuario(idUsuario),
     fkEmpresa INT,
@@ -62,29 +62,29 @@ INSERT INTO endereco (numero, cep) VALUES
 ('1003','09100203'),('1004','09100204'),('1005','09100205'),('1006','09100206');
 
 -- Matriz Quero
-INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11122233344455', 'Quero Paulista', NULL, 1000);
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco, codEmpresa) VALUES
+('11122233344455', 'Quero Paulista', NULL, 1000, 'QUEPAD'); 
 
 -- Filiais Quero
-INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11122233377755', 'Quero São Bernardo do Campo', 1000, 1001), -- ID 1001
-('11122288877755', 'Quero Belo Horizonte',         1000, 1002); -- ID 1002
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco, codEmpresa) VALUES
+('11122233377755', 'Quero São Bernardo do Campo', 1000, 1001, 'QUESBC'), 
+('11122288877755', 'Quero Belo Horizonte',         1000, 1002, 'QUEBHO'); 
 
 -- Matriz Knor
-INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11122233344457', 'Knor Poços de Calda', NULL, 1003);
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco, codEmpresa) VALUES
+('11122233344457', 'Knor Poços de Calda', NULL, 1003, 'KNOPCA'); 
 
 -- Filial da Knor
-INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11122233344476', 'Knor Rio de Janeiro', 1003, 1004);
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco, codEmpresa) VALUES
+('11122233344476', 'Knor Rio de Janeiro', 1003, 1004, 'KNORIO'); 
 
 -- Matriz da Predilecta
-INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11122233344458', 'Predilecta Xique-xique', NULL, 1005);
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco, codEmpresa) VALUES
+('11122233344458', 'Predilecta Xique-xique', NULL, 1005, 'PREXIQ'); 
 
 -- Filial da Predilecta 
-INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11199933344458', 'Predilecta Recife', 1005, 1006);
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco, codEmpresa) VALUES
+('11199933344458', 'Predilecta Recife', 1005, 1006, 'PREREC'); 
 
 INSERT INTO usuario (nome, email, senha, fkSupervisor, fkEmpresa) VALUES
 ('Giovanna Flores',  'giovanna@email.com', 'gi120511', NULL, 1000),
