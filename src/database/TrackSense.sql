@@ -1,3 +1,5 @@
+
+
 CREATE DATABASE trackSense;
 USE trackSense;
 
@@ -762,4 +764,114 @@ FROM maquina m JOIN sensor s ON s.fkMaquina = m.idMaquina
 LEFT JOIN registroSensor r ON r.fkSensor = s.idSensor AND DATE(r.hrRegistro) = CURDATE()
 WHERE m.fkEmpresaMaquina = 1002
 GROUP BY m.idMaquina, m.numMaquina, s.idSensor ORDER BY eficiencia_pct DESC;
+
+
+-- CRIAÇÂO DE VIEWS ////////////////////////////////////////
+
+DROP VIEW IF EXISTS view_verMatriz;
+
+CREATE VIEW view_verMatriz AS
+select 
+	empresa.idEmpresa,
+	empresa.nome,
+	empresa.fkMatriz,
+	count(distinct( maquina.idMaquina)) as maquinas  ,
+	count(registroSensor.valorRegistro) as eficiencia
+from empresa
+	left join maquina
+        on maquina.fkEmpresaMaquina = idEmpresa 
+	left join sensor 
+		on sensor.fkMaquina = maquina.idMaquina
+	left join registroSensor
+		on registroSensor.fkSensor = sensor.idSensor and registroSensor.valorRegistro = 1
+	GROUP BY empresa.idEmpresa, empresa.nome, empresa.fkMatriz ;
+            
+DROP VIEW IF EXISTS view_buscarUltimasMedidas;
+            
+CREATE VIEW view_buscarUltimasMedidas AS
+SELECT
+	empresa.idEmpresa,
+	valorRegistro AS registro, 
+	hrRegistro AS momento_grafico
+FROM registroSensor
+	JOIN sensor 
+		ON registroSensor.fkSensor = sensor.idSensor
+	JOIN maquina
+		ON sensor.fkMaquina = maquina.idMaquina
+	JOIN empresa 
+		ON maquina.fkEmpresaMaquina = empresa.idEmpresa;
+                
+DROP VIEW IF EXISTS view_buscarUltimasMedidas;
+                
+CREATE VIEW view_buscarMedidasEmTempoReal AS
+SELECT 
+	DATE_FORMAT(hrRegistro, '%H:%i') AS momento_grafico,
+	SUM(valorRegistro) AS registro,
+	idEmpresa
+		FROM registroSensor
+	JOIN sensor ON idSensor = registroSensor.fkSensor
+	JOIN maquina ON idMaquina = sensor.fkMaquina
+	JOIN empresa ON idEmpresa = maquina.fkEmpresaMaquina
+GROUP BY idEmpresa, momento_grafico;
+		
+CREATE VIEW view_buscarTodasMaquinas AS
+SELECT 
+	m.fkEmpresaMaquina,
+	m.idMaquina,
+	m.numMaquina AS maquina,
+	s.idSensor,
+	s.estadoSensor,
+	COUNT(r.idRegistro) AS producao,
+	ROUND((COUNT(r.idRegistro) / 80) * 100, 0) AS eficiencia
+FROM maquina m
+	JOIN sensor s ON s.fkMaquina = m.idMaquina
+	LEFT JOIN registroSensor r 
+		ON r.fkSensor = s.idSensor
+	AND DATE(r.hrRegistro) = CURDATE()
+GROUP BY m.fkEmpresaMaquina, m.idMaquina, m.numMaquina, s.idSensor, s.estadoSensor;
+
+DROP VIEW IF EXISTS view_buscarProducaoDiariaMaquina;
+
+CREATE VIEW view_buscarProducaoDiariaMaquina AS
+SELECT 
+	m.fkEmpresaMaquina, 
+	m.idMaquina,
+	m.numMaquina AS maquina,
+	SUM(valorRegistro) AS producao
+FROM maquina m
+	JOIN sensor s
+		ON s.fkMaquina = m.idMaquina
+	LEFT JOIN registroSensor r
+		ON r.fkSensor = s.idSensor
+GROUP BY m.fkEmpresaMaquina, m.idMaquina, m.numMaquina; 
+
+DROP VIEW IF EXISTS view_buscarProducaoMensal;
+	
+CREATE VIEW view_buscarProducaoMensal AS
+SELECT 
+	registroSensor.fkSensor,
+	MONTH(hrRegistro) as mes,
+	YEAR(hrRegistro) as ano,
+	SUM(valorRegistro) as totalLatas
+FROM registroSensor
+GROUP BY fkSensor, ano, mes;
+ 
+CREATE VIEW view_buscarProducaoMensalMaquina AS
+Select
+	maquina.idMaquina,
+	year(hrRegistro) as ano,
+	month(hrRegistro) as mes,
+        CASE
+            WHEN SUM(valorRegistro) < 1000
+                THEN SUM(valorRegistro) * 700
+            ELSE
+                SUM(valorRegistro)
+        END AS totalLatas
+	from registroSensor
+        join sensor
+            on registroSensor.fkSensor = sensor.idSensor
+        join maquina
+            on sensor.fkMaquina = maquina.idMaquina
+	GROUP BY maquina.idMaquina, ano, mes;
+            
 
