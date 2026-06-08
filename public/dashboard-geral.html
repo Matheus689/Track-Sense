@@ -18,11 +18,11 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
-                <li><a class="active" href="#">Dashboard</a></li>
+                <li id="linkDashboard"><a class="active" href="#">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
                 <li><a href="suporte.html">Suporte</a></li>
                 <li id="linkLogout" style="display: block;">
-                    <a href="#" onclick="logout()">Sair</a>
+                    <a href="Login.html" onclick="logout()">Sair</a>
                 </li>
             </ul>
         </nav>
@@ -74,10 +74,8 @@
                         <tr>
                             <th>#</th>
                             <th>Máquina</th>
-                            <!-- <th>Linha</th> -->
                             <th>Eficiência</th>
                             <th>Produção Atual</th>
-                            <!-- <th>Meta</th> -->
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -174,12 +172,9 @@
                 statusTexto = "Crítica";
             }
 
-            // so por enquanto
-            // mudar o style do width da dash com 
+
             if (item.eficiencia > 100) { item.eficiencia = 100 }
 
-            // href="dashboard-especifica.html?idSensor=${item.idSensor}">
-            // ${item.maquina}
 
             tbody.innerHTML += `
             
@@ -334,7 +329,6 @@
 
 
                     // KPI Ajuste de velocidade
-                    // pega a pior máquina
                     let piorMaquina = dados.reduce((menor, atual) => {
 
                         if (Number(atual.eficiencia) < Number(menor.eficiencia)) {
@@ -356,7 +350,6 @@
                         faltando = 0;
                     }
 
-
                     // calcula diferença percentual
                     let abaixoMedia = 100 - piorMaquina.eficiencia;
 
@@ -377,36 +370,36 @@
             .then(res => res.json())
             .then(dados => {
 
-                // const labels = dados.map(item => item.horario);
+                const labels = dados.map(item => item.horario);
 
-                // const valores = dados.map(item => item.producao);
+                const valores = dados.map(item => item.producao);
 
-                // const data = {
-                //     labels: labels,
-                //     datasets: [{
-                //         label: 'Produção Real',
-                //         backgroundColor: 'rgb(90, 180, 13, 0.8)',
-                //         borderColor: 'rgb(90, 180, 13, 0.8)',
-                //         data: valores,
-                //     },
-                //     {
-                //         label: 'Meta',
-                //         borderDash: [10, 5],
-                //         borderWidth: 2,
-                //         pointRadius: 0,
-                //         backgroundColor: 'rgb(255, 255, 255, 0.8)',
-                //         borderColor: 'rgb(255, 255, 255, 0.8)',
-                //         data: Array(valores.length).fill(30),
-                //     }]
-                // };
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Produção Real',
+                        backgroundColor: 'rgb(90, 180, 13, 0.8)',
+                        borderColor: 'rgb(90, 180, 13, 0.8)',
+                        data: valores,
+                    },
+                    {
+                        label: 'Meta',
+                        borderDash: [10, 5],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        backgroundColor: 'rgb(255, 255, 255, 0.8)',
+                        borderColor: 'rgb(255, 255, 255, 0.8)',
+                        data: Array(valores.length).fill(30),
+                    }]
+                };
 
-                // new Chart(
-                //     document.getElementById('graficoProducao'),
-                //     {
-                //         type: 'line',
-                //         data: data
-                //     }
-                // );
+                new Chart(
+                    document.getElementById('graficoProducao'),
+                    {
+                        type: 'line',
+                        data: data
+                    }
+                );
 
             });
 
@@ -416,7 +409,6 @@
             .then(dados => {
                 const labelsMaquinas = dados.map(item => item.maquina);
 
-                // producao por maquina funcionando
                 const valoresMaquinas = dados.map(item => item.producao);
 
                 const data2 = {
@@ -451,23 +443,16 @@
 
             });
 
-        function logout() {
-            localStorage.removeItem("logado");
-            window.location.href = "login.html";
-        };
 
         if (sessionStorage.getItem("logado") === "true") {
             document.getElementById("linkDashboard").style.display = "block";
             document.getElementById("linkLogout").style.display = "block";
-            document.getElementById("linkLogin").style.display = "none";
         }
-
-        function logout() {
-            sessionStorage.removeItem("logado");
-            window.location.href = "login.html";
-        }
-        // carregarRanking();
 
     }
 
+    function logout() {
+        localStorage.removeItem("logado");
+        window.location.href = "login.html";
+    };
 </script>

@@ -34,25 +34,7 @@
             <h1>Selecione uma fábrica</h1>
 
             <div id="fabricas" class="fabricas">
-                <!-- 
-                <div class="card" onclick="selecionarFabrica('SP')">
-                    <h2>Fábrica São Paulo</h2>
-                    <p>24 máquinas</p>
-                    <span class="normal">Operando normalmente</span> 
-                </div>
-
-                <div class="card" onclick="selecionarFabrica('CP')">
-                    <h2>Fábrica Campinas</h2>
-                    <p>18 máquinas</p>
-                    <span class="alerta">2 alertas críticos</span>
-                </div>
-
-                <div class="card" onclick="selecionarFabrica('SC')">
-                    <h2>Fábrica Sorocaba</h2>
-                    <p>31 máquinas</p>
-                    <span class="normal">Operando normalmente</span>
-                </div>
-                 -->
+                
             </div>
 
         </div>
@@ -82,7 +64,6 @@
                 console.log(dados);
 
                 if (dados.length > 1) {
-                    // Limpa a div antes de renderizar para não duplicar dados caso mude de página
                     fabricas.innerHTML = ""; 
 
                     for (let i = 0; i < dados.length; i++) {

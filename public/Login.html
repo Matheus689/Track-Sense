@@ -64,13 +64,8 @@
         var senhaVar = inpSenha.value;
 
         if (emailVar == "" || senhaVar == "") {
-            // cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            // finalizarAguardar();
             return false;
-        }
-        else {
-            // setInterval(sumirMensagem, 5000)
         }
 
         console.log("FORM LOGIN: ", emailVar);
@@ -101,10 +96,6 @@
                     sessionStorage.EMPRESA = json.fkEmpresa;
                     sessionStorage.setItem("logado", true);
                     window.location.href = "selecionar-fabrica.html";
-                    // sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
-
-
-                    // apenas para exibir o loading
 
                 });
 
@@ -114,7 +105,6 @@
 
                 resposta.text().then(texto => {
                     console.error(texto);
-                    // finalizarAguardar(texto);
                 });
             }
 
@@ -125,7 +115,4 @@
         return false;
     }
 
-    // function sumirMensagem() {
-    //     cardErro.style.display = "none"
-    // }
 </script>
