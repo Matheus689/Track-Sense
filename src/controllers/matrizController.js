@@ -21,9 +21,6 @@ function verMatriz(req, res) {
     });
 }
 
-
-
-
 module.exports = {
     verMatriz
 }
