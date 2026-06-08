@@ -38,6 +38,20 @@
             <h1>TrackSense</h1>
             <p>Simule as perdas produtivas causadas por erros de contagem e visualize o prejuízo financeiro da operação
                 em poucos segundos.</p>
+
+            <div  id="cadEmpresa" style="display: none;">
+                <h1>Leve sua produção para o próximo nível</h1>
+                <p>Monitore suas máquinas em tempo real, reduza desperdícios e tenha mais controle sobre sua linha de
+                    produção com a TrackSense.</p>
+                <button onclick="irCadEmpresa()" id="btn_cadEmpresa">Cadastrar Empresa</button>
+            </div>
+
+            <script>
+                function irCadEmpresa() {
+                    window.location.href = "cadEmpresa.html"
+                }
+            </script>
+
         </div>
 
         <div class="calculator-card">
@@ -172,6 +186,8 @@ como fazer a conta do erro de sensor;
         } else {
             analise.innerHTML = "⚠️ O sistema ainda não se paga neste cenário."
         }
+
+        document.getElementById("cadEmpresa").style.display = "block"
     }
 
     if (sessionStorage.getItem("logado") === "true") {
