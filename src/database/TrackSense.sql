@@ -24,6 +24,7 @@ CREATE TABLE usuario (
     email VARCHAR(50) NOT NULL,
     senha VARCHAR(14) NOT NULL,
     dtCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    codEmpresa CHAR(6),
     fkSupervisor INT,
         CONSTRAINT chFkSupervisor FOREIGN KEY (fkSupervisor) REFERENCES usuario(idUsuario),
     fkEmpresa INT,
@@ -60,14 +61,30 @@ INSERT INTO endereco (numero, cep) VALUES
 ('1000','09100200'),('1001','09100201'),('1002','09100202'),
 ('1003','09100203'),('1004','09100204'),('1005','09100205'),('1006','09100206');
 
+-- Matriz Quero
 INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
-('11122233344455','Quero Paulista',            NULL, 1000),
-('11122233377755','Quero São Bernardo do Campo',1000, 1001),
-('11122288877755','Quero Belo Horizonte',       1000, 1002),
-('11122233344457','Knor Poços de Calda',        NULL, 1003),
-('11122233344476','Knor Rio de Janeiro',        1003, 1004),
-('11122233344458','Predilecta Xique-xique',     NULL, 1005),
-('11199933344458','Predilecta Recife',          1005, 1006);
+('11122233344455', 'Quero Paulista', NULL, 1000);
+
+-- Filiais Quero
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
+('11122233377755', 'Quero São Bernardo do Campo', 1000, 1001), -- ID 1001
+('11122288877755', 'Quero Belo Horizonte',         1000, 1002); -- ID 1002
+
+-- Matriz Knor
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
+('11122233344457', 'Knor Poços de Calda', NULL, 1003);
+
+-- Filial da Knor
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
+('11122233344476', 'Knor Rio de Janeiro', 1003, 1004);
+
+-- Matriz da Predilecta
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
+('11122233344458', 'Predilecta Xique-xique', NULL, 1005);
+
+-- Filial da Predilecta 
+INSERT INTO empresa (cnpj, nome, fkMatriz, fkEndereco) VALUES
+('11199933344458', 'Predilecta Recife', 1005, 1006);
 
 INSERT INTO usuario (nome, email, senha, fkSupervisor, fkEmpresa) VALUES
 ('Giovanna Flores',  'giovanna@email.com', 'gi120511', NULL, 1000),

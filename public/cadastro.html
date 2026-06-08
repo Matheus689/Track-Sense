@@ -47,7 +47,8 @@
                     placeholder="Confirme sua Senha*">
                 <div class="msgErro" id="mensagem_erro"></div>
 
-                <!-- <input type="text" id="inpCodEmpresa" oninput="cadCodEmpresa()" placeholder="Código da Empresa"> -->
+            <input type="text" id="inpCodEmpresa" placeholder="Código da Empresa*">
+            <div class="msgErro" id="mensagemEmpresa"></div>
             </div>
 
             <button onclick="cadastrar()" class="button">Cadastrar</button>
@@ -77,16 +78,15 @@
         var emailVar = inpEmail.value;
         var senhaVar = inpSenha.value;
         var confirmacaoSenhaVar = inpSenhaConf.value;
-        // var codigoVar = codigo_input.value;
-        // var idEmpresaVincular
+        var codEmpresaVar = inpCodEmpresa.value;
 
         // Verificando se há algum campo em branco
         if (
             nomeVar == "" ||
             emailVar == "" ||
             senhaVar == "" ||
-            confirmacaoSenhaVar == ""
-            //   codigoVar == ""
+            confirmacaoSenhaVar == "" ||
+            codEmpresaVar == ""
         ) {
             //   cardErro.style.display = "block";
             mensagem_erro.innerHTML =
@@ -123,23 +123,15 @@
                 nomeServer: nomeVar,
                 emailServer: emailVar,
                 senhaServer: senhaVar,
-                // idEmpresaVincularServer: idEmpresaVincular
+                codEmpresaServer: codEmpresaVar
             }),
         })
             .then(function (resposta) {
-                console.log("resposta: ", resposta);
-
                 if (resposta.ok) {
-                    //   cardErro.style.display = "block";
-
-                    mensagem_erro.innerHTML =
-                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-
+                    mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando...";
                     window.location = "Login.html";
-
-                    //   limparFormulario();
-                    //   finalizarAguardar();
+                } else if (resposta.status == 404) {
+                    mensagemEmpresa.innerHTML = "Código de empresa não encontrado.";
                 } else {
                     throw "Houve um erro ao tentar realizar o cadastro!";
                 }
