@@ -5,7 +5,6 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>TrackSense | Cadastro de Empresa</title>
-   <script src="js/script.js" defer></script>
    <link rel="stylesheet" href="css/loginCadastro.css">
    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
@@ -34,27 +33,30 @@
          <div class="input">
             <input type="text" id="inpNome" placeholder="Nome da Empresa">
 
-            <input type="text" id="inpCNPJ" oninput="cadValidarCNPJ()" placeholder="CNPJ da Empresa">
-            <div id="exibirResultadoCNPJ"></div>
+            <input type="text" id="inpCNPJ" oninput="validarCNPJ()" placeholder="CNPJ da Empresa"><br>
+            <div class="msgErroEmpresa" id="msgErroCnpj"></div>
 
             <div id="div_localizacao">
-               <input type="text" id="inpCep" placeholder="CEP da Empresa">
-               <input type="text" id="inpNumero" placeholder="N°">
-            </div>
+               <input type="text" id="inpCep" oninput="validarCep()" placeholder="CEP da Empresa">
 
-            <input type="password" id="inpSenha" oninput="cadValidarCadastro()" placeholder="Código da Empresa">
+               <input type="text" id="inpNumero" oninput="validarNumero()" placeholder="N°">
+            </div><br>
+            <div class="msgErroEmpresa" id="msgErroLocalizacao"></div>
+
+            <input type="text" id="inpCodigo" oninput="validarCodigo()" placeholder="Código da Empresa"><br>
+            <div class="msgErroEmpresa" id="msgErroCodigo"></div>
 
          </div>
 
-            <div id="botaos">
-               <button onclick="CadCadastrar()" class="button">Cadastrar</button>
+         <div id="botaos">
+            <button onclick="cadastrar()" class="button">Cadastrar</button>
 
-               <p class="text">Sua empresa já possui cadastro? <br><b><a href="cadastro.html">Cadastre seu usuário</a></b>
-               </p>
+            <p class="text">Sua empresa já possui cadastro? <br><b><a href="cadastro.html">Cadastre seu usuário</a></b>
+            </p>
 
-               <p class="text">Não possui código da empresa?
-                  Entre em contato: <br> Tel: (11)94002-8922
-            </div>
+            <p class="text">Não possui código da empresa?
+               Entre em contato: <br> Tel: (11)94002-8922
+         </div>
       </div>
 
       <div class="bloq side3 log">
@@ -71,3 +73,93 @@
 </body>
 
 </html>
+
+<script>
+   let validacaoCnpj = false;
+   let validacaoCep = false;
+   let validacaoNumero = false;
+   let validacaoCodigo = false;
+
+   function validarCNPJ() {
+      let cnpj = inpCNPJ.value;
+
+      if (!/^\d+$/.test(cnpj)) {
+         msgErroCnpj.innerHTML = `CNPJ deve conter apenas números`;
+         validacaoCnpj = false;
+      } else if (cnpj.length != 14) {
+         msgErroCnpj.innerHTML = `CNPJ inválido`;
+         validacaoCnpj = false;
+      } else {
+         msgErroCnpj.innerHTML = ``;
+         validacaoCnpj = true;
+      }
+      verificarTudo();
+   }
+
+   function validarCep() {
+      let cep = inpCep.value;
+
+      if (!/^\d+$/.test(cep)) {
+         msgErroLocalizacao.innerHTML = `CEP deve conter apenas números`;
+         validacaoCep = false;
+      } else if (cep.length != 8) {
+         msgErroLocalizacao.innerHTML = `CEP inválido`;
+         validacaoCep = false;
+      } else {
+         msgErroLocalizacao.innerHTML = ``;
+         validacaoCep = true;
+      }
+      verificarTudo();
+   }
+
+   function validarNumero() {
+      let numero = inpNumero.value;
+
+      if (!/^\d+$/.test(numero)) {
+         msgErroLocalizacao.innerHTML = `Número deve conter apenas dígitos`;
+         validacaoNumero = false;
+      } else if (Number(numero) > 9999 || numero.length == 0) {
+         msgErroLocalizacao.innerHTML = `Número inválido`;
+         validacaoNumero = false;
+      } else {
+         msgErroLocalizacao.innerHTML = ``;
+         validacaoNumero = true;
+      }
+      verificarTudo();
+   }
+
+   function validarCodigo() {
+      let codigo = inpCodigo.value;
+
+      if (codigo.length != 6) {
+         msgErroCodigo.innerHTML = `Código de Empresa inválido`;
+         validacaoCodigo = false;
+      } else {
+         msgErroCodigo.innerHTML = ``;
+         validacaoCodigo = true;
+      }
+      verificarTudo();
+   }
+
+   function verificarTudo() {
+      if (validacaoCnpj && validacaoCep && validacaoNumero && validacaoCodigo) {
+         console.log("Empresa Validada");
+      }
+   }
+
+   function cadastrar(){
+      
+   }
+
+   if (sessionStorage.getItem("logado") === "true") {
+      document.getElementById("linkDashboard").style.display = "block";
+      document.getElementById("linkLogout").style.display = "block";
+      document.getElementById("linkLogin").style.display = "none";
+      document.getElementById("linkSuporte").style.display = "block";
+   }
+
+   function logout() {
+      sessionStorage.removeItem("logado");
+      window.location.href = "login.html";
+   }
+</script>
