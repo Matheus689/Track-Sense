@@ -56,7 +56,7 @@
     function verMatriz() {
         let idEmpresa = sessionStorage.EMPRESA; 
 
-        fetch(`matriz/verMatriz/${idEmpresa}`)
+        fetch(`/matriz/verMatriz/${idEmpresa}`)
             .then(function (resposta) {
                 return resposta.json();
             })

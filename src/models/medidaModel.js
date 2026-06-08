@@ -79,6 +79,7 @@ function buscarProducaoMensal(idSensor) {
     var instrucaoSql = `
         SELECT * FROM view_buscarProducaoMensal
         WHERE fkSensor = ${idSensor}
+        
         ORDER BY ano, mes
     `;
 
