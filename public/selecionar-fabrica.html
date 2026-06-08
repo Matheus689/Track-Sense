@@ -17,7 +17,7 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
-                <li><a class="active" href="#">Dashboard</a></li>
+                <li><a class="active" href="selecionar-fabrica.html">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
                 <li><a href="suporte.html">Suporte</a></li>
                 <li id="linkLogout" style="display: block;">
@@ -47,7 +47,7 @@
 
 <script>
     function selecionarFabrica(idEmpresa) {
-        sessionStorage.EMPRESA = idEmpresa;
+        sessionStorage.EMPRESASELECT = idEmpresa;
         window.location.href = "dashboard-geral.html";
     }
 
