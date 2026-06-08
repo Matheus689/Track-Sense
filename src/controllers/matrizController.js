@@ -40,7 +40,7 @@ function cadEmpresa(req, res) {
     } else if (codEmpresa == undefined) {
         res.status(400).send("O código da empresa está undefined!");
     } else {
-        matrizModel.cadEmpresa(nome, cnpj, cep, numero, codEmpresa)
+        matrizModel.cadEmpresa(cnpj, nome, codEmpresa, cep, numero)
             .then(function (resultado) {
                 res.status(201).json(resultado);
             })
