@@ -64,9 +64,18 @@ function buscarProducaoGeral(idEmpresa) {
 function buscarProducaoDiariaMaquina(idEmpresa) {
 
     var instrucaoSql = `
-        SELECT * FROM view_buscarProducaoDiariaMaquina
-        WHERE fkEmpresaMaquina = ${idEmpresa} 
-        AND data = CURDATE()
+        SELECT 
+            m.fkEmpresaMaquina, 
+            m.idMaquina,
+            m.numMaquina AS maquina,
+            DATE(r.hrRegistro) AS data,
+            SUM(valorRegistro) AS producao
+        FROM maquina m
+        JOIN sensor s ON s.fkMaquina = m.idMaquina
+        LEFT JOIN registroSensor r ON r.fkSensor = s.idSensor
+        WHERE m.fkEmpresaMaquina = ${idEmpresa} 
+            AND DATE(r.hrRegistro) = CURDATE()
+        GROUP BY m.fkEmpresaMaquina, m.idMaquina, m.numMaquina, DATE(r.hrRegistro)
         ORDER BY producao DESC;
     `;
 
@@ -79,7 +88,7 @@ function buscarProducaoMensal(idSensor) {
     var instrucaoSql = `
         SELECT * FROM view_buscarProducaoMensal
         WHERE fkSensor = ${idSensor}
-        
+
         ORDER BY ano, mes
     `;
 
