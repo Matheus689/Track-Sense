@@ -18,7 +18,7 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="trackSense.html">Home</a></li>
-                <li id="linkDashboard"><a class="active" href="#">Dashboard</a></li>
+                <li id="linkDashboard"><a class="active" href="selecionar-fabrica.html">Dashboard</a></li>
                 <li><a href="calculadora.html">Calculadora Financeira</a></li>
                 <li><a href="suporte.html">Suporte</a></li>
                 <li id="linkLogout" style="display: block;">
@@ -239,7 +239,7 @@
     function atualizarPagina() {
 
 
-        let idEmpresa = sessionStorage.EMPRESA
+        let idEmpresa = sessionStorage.EMPRESASELECT
 
         function carregarDadosProd() {
             // buscarMedidasEmTempoReal
@@ -270,7 +270,7 @@
                             pointRadius: 0,
                             backgroundColor: 'rgb(255, 255, 255, 0.8)',
                             borderColor: 'rgb(255, 255, 255, 0.8)',
-                            data: Array(valores.length).fill(30),
+                            data: Array(valores.length).fill(80),
                         }]
                     };
 
@@ -344,7 +344,7 @@
 
 
                     // calcula quanto falta pra meta
-                    let faltando = 30 - piorMaquina.producao;
+                    let faltando = 80 - piorMaquina.producao;
 
                     if (faltando < 0) {
                         faltando = 0;
@@ -389,7 +389,7 @@
                         pointRadius: 0,
                         backgroundColor: 'rgb(255, 255, 255, 0.8)',
                         borderColor: 'rgb(255, 255, 255, 0.8)',
-                        data: Array(valores.length).fill(30),
+                        data: Array(valores.length).fill(80),
                     }]
                 };
 
@@ -429,7 +429,7 @@
                         pointRadius: 0,
                         backgroundColor: 'rgb(255, 255, 255, 0.8)',
                         borderColor: 'rgb(255, 255, 255, 0.8)',
-                        data: Array(valoresMaquinas.length).fill(60),
+                        data: Array(valoresMaquinas.length).fill(5000),
                     }]
                 };
 
