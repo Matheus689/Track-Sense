@@ -116,7 +116,7 @@
       let numero = inpNumero.value;
 
       if (!/^\d+$/.test(numero)) {
-         msgErroLocalizacao.innerHTML = `Número deve conter apenas dígitos`;
+         msgErroLocalizacao.innerHTML = `Número deve conter apenas números`;
          validacaoNumero = false;
       } else if (Number(numero) > 9999 || numero.length == 0) {
          msgErroLocalizacao.innerHTML = `Número inválido`;
@@ -148,7 +148,40 @@
    }
 
    function cadastrar(){
-      
+      let nomeVar = inpNome.value;
+      let cnpjVar = inpCNPJ.value;
+      let cepVar = inpCep.value;
+      let numeroVar = inpNumero.value;
+      let codigoVar = inpCodigo.value;
+
+      fetch("/matriz/cadEmpresa", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                cnpjServer: cnpjVar,
+                cepServer: cepVar,
+                numeroServer: numeroVar,
+                codEmpresaServer: codigoVar
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    alert("Cadastro de empresa realizado com sucesso! Redirecionando...");
+                    window.location = "cadastro.html";
+                } else {
+                    alert( "Houve um erro ao tentar realizar o cadastro!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+        return false;
    }
 
    if (sessionStorage.getItem("logado") === "true") {

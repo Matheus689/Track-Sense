@@ -7,5 +7,9 @@ router.get("/verMatriz/:idEmpresa", function (req, res) {
     matrizController.verMatriz(req, res);
 })
 
+router.post("/cadEmpresa", function (req, res) {
+    matrizController.cadEmpresa(req, res);
+});
+
 
 module.exports = router;
